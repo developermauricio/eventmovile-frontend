@@ -123,4 +123,7 @@ export default {
   color: rgba(0, 0, 0, 0.58);
   background-color: transparent !important;
 }
+.page-content-wrapper.items-schedule{
+  margin-bottom: 0px !important;
+}
 </style>

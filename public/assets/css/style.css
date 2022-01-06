@@ -8726,3 +8726,10 @@ input[type=color].form-control.is-valid, input[type=color].form-control:valid {
 [data-theme=dark] body .single-plan-check {
   border-color: rgba(255, 255, 255, 0.1);
 }
+
+.slide-photo-event #tns2-mw{
+  overflow: inherit !important;
+}
+.slide-photo-event .tns-ovh{
+  overflow: inherit !important;
+}

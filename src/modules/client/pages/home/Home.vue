@@ -4,6 +4,8 @@
   <Bannerprincipal/>
   <Ticketinfo/>
   <Schedule/>
+  <Speakers/>
+  <Photosevent/>
   <ButtonFloat/>
 </template>
 
@@ -11,7 +13,7 @@
 import {defineAsyncComponent} from "vue";
 
 export default {
-  name: "Layout",
+  name: "Home",
   components: {
     Headerhome: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Headerhome')),
     Ticketinfo: defineAsyncComponent(() => import(/* webpackChunkName: "Ticketinfo"*/ '@/modules/client/pages/home/components/TicketIinfo')),
@@ -19,6 +21,8 @@ export default {
     Headerwelcome: defineAsyncComponent(() => import(/* webpackChunkName: "Headerwelcome"*/ '@/modules/client/pages/home/components/Headerwelcome')),
     Bannerprincipal: defineAsyncComponent(() => import(/* webpackChunkName: "Bannerprincipal"*/ '@/modules/client/pages/home/components/Bannerprincipal')),
     Schedule: defineAsyncComponent(() => import(/* webpackChunkName: "Schedule"*/ '@/modules/client/pages/home/components/Schedule')),
+    Speakers: defineAsyncComponent(() => import(/* webpackChunkName: "Speakers"*/ '@/modules/client/pages/home/components/Speakers')),
+    Photosevent: defineAsyncComponent(() => import(/* webpackChunkName: "Photosevent"*/ '@/modules/client/pages/home/components/Photosevent')),
   },
 
   mounted() {
