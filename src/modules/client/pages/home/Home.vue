@@ -1,12 +1,19 @@
 <template>
-  <Headerhome/>
-  <Headerwelcome/>
-  <Bannerprincipal/>
-  <Ticketinfo/>
-  <Schedule/>
-  <Speakers/>
-  <Photosevent/>
-  <ButtonFloat/>
+  <div>
+    <Headerhome/>
+    <Headerwelcome/>
+    <Bannerprincipal/>
+    <Ticketinfo/>
+    <Schedule/>
+    <Speakers/>
+    <Photosevent/>
+    <Evaluateevent/>
+    <ButtonFloat/>
+    <div id="nav">
+      <Navbar/>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -23,6 +30,8 @@ export default {
     Schedule: defineAsyncComponent(() => import(/* webpackChunkName: "Schedule"*/ '@/modules/client/pages/home/components/Schedule')),
     Speakers: defineAsyncComponent(() => import(/* webpackChunkName: "Speakers"*/ '@/modules/client/pages/home/components/Speakers')),
     Photosevent: defineAsyncComponent(() => import(/* webpackChunkName: "Photosevent"*/ '@/modules/client/pages/home/components/Photosevent')),
+    Evaluateevent: defineAsyncComponent(() => import(/* webpackChunkName: "Evaluateevent"*/ '@/modules/client/pages/home/components/Evaluateevent')),
+    Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton'))
   },
 
   mounted() {

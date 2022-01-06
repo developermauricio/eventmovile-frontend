@@ -1,6 +1,6 @@
 <template>
   <!-- Header Area -->
-  <div class="header-area" id="headerArea">
+  <div class="header-area header-home" id="headerArea">
     <div class="container">
       <!-- # Paste your Header Content from here -->
       <!-- # Header Five Layout -->
@@ -106,5 +106,7 @@ export default {
 </script>
 
 <style scoped>
-
+.header-area.header-home{
+  border-bottom: none !important;
+}
 </style>

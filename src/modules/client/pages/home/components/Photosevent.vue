@@ -8,7 +8,7 @@
       <h3 class="text-photos-event">Fotos del evento</h3>
     </a>
   </div>
-  <div class="container slide-photo-event" style="height: 30rem">
+  <div class="container slide-photo-event">
     <div class="items-photo-event gallery-img">
       <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png" alt=""></a>
       <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png" alt=""></a>

@@ -25,8 +25,8 @@
                      aria-controls="offcanvasBottom">
                   <div class="card-body text-center text-info-speaker">
                     <img class="mb-3 img-thumbnail" src="assets/img/person-1.png" alt="">
-                    <p class="mb-1">TAILANDIA</p>
-                    <h6>Jenny Wilson</h6>
+                    <p class="mb-1 text-truncate">TAILANDIA</p>
+                    <h6 class="text-truncate">Jenny Wilson</h6>
                   </div>
                 </div>
               </div>
