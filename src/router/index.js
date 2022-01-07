@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../modules/client/pages/home/Home'
+import EventLIVE from '../modules/client/pages/eventLive/EventLIVE'
 
 const routes = [
   {
@@ -14,7 +15,12 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  },
+  {
+    path: '/event-live',
+    name: 'eventLive',
+    component: EventLIVE
+  },
 ]
 
 const router = createRouter({
