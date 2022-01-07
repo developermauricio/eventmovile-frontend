@@ -17,14 +17,22 @@
                 <div class="icon-wrapper ">
                   <p>oct 10 00:00 am</p>
                 </div>
-                <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+
+                <div class="pt-3">
+                  <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                  <p>En vivo ahora</p>
+                </div>
+
                 <i class="bi bi-chevron-right pe-3"></i>
               </a>
               <a class="affan-page-item time-schedule-content" href="page-login.html">
                 <div class="icon-wrapper ">
                   <p>oct 10 00:00 am</p>
                 </div>
-                <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                <div class="pt-3">
+                  <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                  <p>En vivo ahora</p>
+                </div>
                 <i class="bi bi-chevron-right pe-3"></i>
               </a>
             </div>
@@ -33,14 +41,20 @@
                 <div class="icon-wrapper ">
                   <p>oct 10 00:00 am</p>
                 </div>
-                <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                <div class="pt-3">
+                  <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                  <p>En vivo ahora</p>
+                </div>
                 <i class="bi bi-chevron-right pe-3"></i>
               </a>
               <a class="affan-page-item time-schedule-content" href="page-login.html">
                 <div class="icon-wrapper ">
                   <p>oct 10 00:00 am</p>
                 </div>
-                <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                <div class="pt-3">
+                  <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                  <p>En vivo ahora</p>
+                </div>
                 <i class="bi bi-chevron-right pe-3"></i>
               </a>
             </div>
@@ -122,5 +136,8 @@ export default {
 .controls-slide-schedule .page-link{
   color: rgba(0, 0, 0, 0.58);
   background-color: transparent !important;
+}
+.page-content-wrapper.items-schedule{
+  margin-bottom: 0px !important;
 }
 </style>

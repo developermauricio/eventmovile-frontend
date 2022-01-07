@@ -1,5 +1,5 @@
 <template>
-  <div class="content-banner-principal">
+  <div class="content-banner-principal container ps-0 pe-0">
     <img src="/assets/img/principal-banner.png" alt="">
   </div>
 
@@ -13,10 +13,14 @@ export default {
 
 <style scoped>
 .content-banner-principal {
-  margin: 0;
+  /*margin: 0;*/
   position: relative;
   width: 100%;
   height: 250px;
+}
+
+.content-banner-principal img{
+  width: 100% !important;
 }
 
 @media (max-width: 375px) and (min-width: 320px) {
@@ -27,19 +31,19 @@ export default {
 
 @media (max-width: 767px) and (min-width: 488px) {
   .content-banner-principal {
-    height: 300px;
+    height: 350px;
   }
 }
 
 @media (max-width: 1024px) and (min-width: 768px) {
   .content-banner-principal {
-    height: 320px;
+    height: 380px;
   }
 }
 
 @media  (min-width: 1024px) {
   .content-banner-principal {
-    height: 320px;
+    height: 490px;
   }
 }
 </style>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../modules/client/pages/home/Home'
 import EventLIVE from '../modules/client/pages/eventLive/EventLIVE'
+import Qr from '../modules/client/pages/qr/qr'
 
 const routes = [
   {
@@ -8,6 +9,13 @@ const routes = [
     name: 'Home',
     component: Home
   },
+
+  {
+    path: '/qr',
+    name: 'Qr',
+    component: Qr
+  },
+
   {
     path: '/about',
     name: 'About',
@@ -29,3 +37,4 @@ const router = createRouter({
 })
 
 export default router
+

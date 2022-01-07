@@ -1,19 +1,28 @@
 <template>
-  <div id="nav">
-    <Navbar/>
-  </div>
-  <router-view/>
+  <router-view v-slot="{ Component }">
+    <transition :name="animationName" mode="out-in">
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
 
 <script>
-  import {defineAsyncComponent} from 'vue'
-
-  export default {
-    name: 'App',
-    components:{
-      Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton'))
+export default {
+  name: 'App',
+  data () {
+    return {
+      animationName: 'slide-left'
+    }
+  },
+  components: {},
+  watch: {
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.animationName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
     }
   }
+}
 </script>
 
 <style>
@@ -36,5 +45,16 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: .3s;
+}
+.slide-enter {
+  transform: translate(100%, 0);
+}
+.slide-leave-to {
+  transform: translate(-100%, 0);
 }
 </style>
