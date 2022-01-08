@@ -3,7 +3,8 @@
   <EframeLIVE/>
   <Tabs/>
   <FloatButtonFile/>
-  <FloatButtonChat/>
+  <FloatButtonQuestion/>
+  <RateActivity/>
 </template>
 
 <script>
@@ -16,7 +17,8 @@ export default {
     EframeLIVE: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/EframeLIVE')),
     Tabs: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Tabs')),
     FloatButtonFile: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonFile')),    
-    FloatButtonChat: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonChat')),    
+    FloatButtonQuestion: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonQuestion')),    
+    RateActivity: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/RateActivity')),    
   },
 
   mounted() {

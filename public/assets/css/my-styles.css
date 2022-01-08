@@ -5,3 +5,13 @@
 .style-margin-buttom {
     margin-bottom: 7rem;
 }
+.style-color-icon {
+    color: #a133b4;
+}
+.style-color-button {
+    background-color: #9b27b0 !important;
+    border-color: #9b27b0 !important;
+}
+.style-text-color {
+    color: #828282;
+}
