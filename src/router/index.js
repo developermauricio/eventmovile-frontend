@@ -1,19 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../modules/client/pages/home/Home'
-import EventLIVE from '../modules/client/pages/eventLive/EventLIVE'
-import Qr from '../modules/client/pages/qr/qr'
-
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/home/Home.vue')
   },
 
   {
     path: '/qr',
     name: 'Qr',
-    component: Qr
+    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/qr/Qr.vue')
+  },
+
+  {
+    path: '/networking',
+    name: 'Networking',
+    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/networking/Networking.vue')
   },
 
   {
@@ -27,7 +29,7 @@ const routes = [
   {
     path: '/event-live',
     name: 'eventLive',
-    component: EventLIVE
+    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/eventLive/EventLIVE')
   },
 ]
 

@@ -201,7 +201,7 @@
               </button>
             </div>
           </li>
-        </ul>   
+        </ul>
     </div>
 </template>
 

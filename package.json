@@ -10,6 +10,7 @@
   "dependencies": {
     "baguettebox.js": "^1.11.1",
     "core-js": "^3.6.5",
+    "v-autocomplete": "^1.8.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"
   },

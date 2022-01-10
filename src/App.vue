@@ -1,10 +1,7 @@
 <template>
-  <router-view v-slot="{ Component }">
-    <transition :name="animationName" mode="out-in">
-      <component :is="Component" />
-    </transition>
-  </router-view>
+  <router-view/>
 </template>
+
 
 <script>
 export default {
