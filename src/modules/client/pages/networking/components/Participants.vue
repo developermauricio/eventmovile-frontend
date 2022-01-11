@@ -288,8 +288,9 @@
 </template>
 
 <script>
+import 'vuesax/dist/vuesax.css'
 export default {
-  name: "Participants"
+  name: "Participants",
 }
 </script>
 
