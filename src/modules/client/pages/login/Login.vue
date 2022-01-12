@@ -1,25 +1,71 @@
 <template>
-  <!-- Login Wrapper Area -->
-  <div class="login-wrapper d-flex align-items-center justify-content-center">
-    <div class="custom-container">
-      <div class="text-center px-4"><img class="login-intro-img" src="img/bg-img/36.png" alt=""></div>
-      <!-- Register Form -->
-      <div class="register-form mt-4">
-        <h6 class="mb-3 text-center">Log in to continue to Affan.</h6>
-        <form action="page-home.html">
-          <div class="form-group">
-            <input v-model="form.email" class="form-control" type="email" placeholder="Correo electrónico">
+  <div>
+
+    <!-- Header Area -->
+    <div class="header-area header-home" id="headerArea">
+      <div class="container">
+        <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
+          <!-- Logo Wrapper -->
+          <router-link :to="`/${urlBack}`">
+            <svg class="bi bi-arrow-left-short" width="32" height="32" viewBox="0 0 16 16" fill="currentColor"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"></path>
+            </svg>
+          </router-link>
+          <!-- Navbar Toggler -->
+          <div class="chat-user--info d-flex align-items-center">
+                       <!-- Imagen del usuario -->
+            <div class="user-thumbnail-name  ms-4">
+              <a href="" class="text-register">REGISTRATE</a>
+            </div>
           </div>
-<!--          <div class="form-group position-relative">-->
-<!--            <input class="form-control" id="psw-input" type="password" placeholder="Enter Password">-->
-<!--            <div class="position-absolute" id="password-visibility"><i class="bi bi-eye"></i><i class="bi bi-eye-slash"></i></div>-->
-<!--          </div>-->
-          <button class="btn btn-primary w-100" type="submit" @click.prevent="onSubmit">Sign In</button>
-        </form>
+
+        </div>
       </div>
-      <!-- Login Meta -->
-      <div class="login-meta-data text-center"><a class="stretched-link forgot-password d-block mt-3 mb-1" href="page-forget-password.html">Forgot Password?</a>
-        <p class="mb-0">Didn't have an account? <a class="stretched-link" href="page-register.html">Register Now</a></p>
+    </div>
+<!--    &lt;!&ndash; Back Button &ndash;&gt;-->
+<!--    <div class="login-back-button">-->
+<!--      <div class="row">-->
+<!--        <div class="">-->
+<!--          <router-link :to="`/${urlBack}`">-->
+<!--            <svg class="bi bi-arrow-left-short" width="32" height="32" viewBox="0 0 16 16" fill="currentColor"-->
+<!--                 xmlns="http://www.w3.org/2000/svg">-->
+<!--              <path fill-rule="evenodd"-->
+<!--                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"></path>-->
+<!--            </svg>-->
+<!--          </router-link>-->
+<!--        </div>-->
+<!--        <div class="">-->
+<!--          <a href="">REGISTRATE</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+    <!-- Login Wrapper Area -->
+    <div class="login-wrapper d-flex align-items-center justify-content-center">
+      <div class="custom-container">
+        <div class="text-center px-4"><img class="login-intro-img" src="assets/img/logo-pm.png" alt=""></div>
+        <!-- Register Form -->
+        <div class="register-form mt-4">
+          <h6 class="mb-3 text-center text-title">Ingresa tu correo para validar tu identidad</h6>
+          <form action="page-home.html">
+            <div class="form-group">
+              <input v-model="form.email" class="form-control" type="email" placeholder="Correo electrónico">
+            </div>
+            <!--          <div class="form-group position-relative">-->
+            <!--            <input class="form-control" id="psw-input" type="password" placeholder="Enter Password">-->
+            <!--            <div class="position-absolute" id="password-visibility"><i class="bi bi-eye"></i><i class="bi bi-eye-slash"></i></div>-->
+            <!--          </div>-->
+            <div class="px-5">
+              <button class="btn btn-primary w-100" type="submit" @click.prevent="onSubmit">INGRESAR</button>
+            </div>
+
+          </form>
+        </div>
+        <!-- Login Meta -->
+        <!--      <div class="login-meta-data text-center"><a class="stretched-link forgot-password d-block mt-3 mb-1" href="page-forget-password.html">Forgot Password?</a>-->
+        <!--        <p class="mb-0">Didn't have an account? <a class="stretched-link" href="page-register.html">Register Now</a></p>-->
+        <!--      </div>-->
       </div>
     </div>
   </div>
@@ -29,8 +75,8 @@
 export default {
   name: "Login",
   props: {
-    webAppPath:{
-      type:String
+    webAppPath: {
+      type: String
     },
   },
   data() {
@@ -42,17 +88,18 @@ export default {
         password: "",
       },
       eventId: 0,
-      pswd:''
+      urlBack: '',
+      pswd: ''
     };
   },
 
-  methods:{
+  methods: {
     onSubmit() {
-      window.axios.get(`showEvent/${this.eventId}`).then(response =>{
+      window.axios.get(`showEvent/${this.eventId}`).then(response => {
         this.pswd = response.data[0].password.trim()
         let data = {
-          email:this.form.email,
-          password:this.pswd,
+          email: this.form.email,
+          password: this.pswd,
           eventId: this.eventId,
         };
         window.axios.post("auth/basic", data)
@@ -69,7 +116,7 @@ export default {
                   "Authorization"
                   ] = `Bearer ${user.token}`;
               let dataUserQr = JSON.stringify(user)
-              this.$router.push({ name: "Home", params:{inSession:true,dataUser:dataUserQr}});
+              this.$router.push({name: "Home", params: {inSession: true, dataUser: dataUserQr}});
               // this.$router.push({ name: "indexWA", params:{inSession:true,dataUser:dataUserQr}});
             })
             .catch((error) => {
@@ -96,7 +143,7 @@ export default {
                         confirmButtonText: this.$t("pages.Auth.Login.signUp"),
                         showCloseButton: true,
                         preConfirm: () => {
-                          return { event: this.event };
+                          return {event: this.event};
                         },
                       })
                       .then((result) => {
@@ -135,11 +182,24 @@ export default {
   },
 
   mounted() {
+    this.urlBack = localStorage.getItem("webAppPath")
     this.eventId = localStorage.getItem("eventId")
   },
 }
 </script>
 
 <style scoped>
-
+.text-title{
+  color: #000000;
+  font-size: 0.8rem;
+}
+.header-content svg{
+  color: #AA47BC !important;
+}
+.text-register{
+  color: #AA47BC !important;
+}
+.header-area{
+  border: none !important;
+}
 </style>
