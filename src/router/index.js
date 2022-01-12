@@ -3,12 +3,21 @@ import isAuthenticatedGuard from "../auth-guard";
 const routes = [
 
   {
+    meta: {
+      title: 'Login',
+      requiresAuth: false,
+    },
+    beforeEnter: [isAuthenticatedGuard],
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/login/Login.vue')
   },
 
   {
+    meta: {
+      title: 'Inicio',
+      requiresAuth: true,
+    },
     beforeEnter: [isAuthenticatedGuard],
     path: '/',
     name: 'Home',
@@ -16,6 +25,10 @@ const routes = [
   },
 
   {
+    meta: {
+      title: 'Qr',
+      requiresAuth: true,
+    },
     beforeEnter: [isAuthenticatedGuard],
     path: '/qr',
     name: 'Qr',
@@ -23,6 +36,10 @@ const routes = [
   },
 
   {
+    meta: {
+      title: 'Networking',
+      requiresAuth: true,
+    },
     beforeEnter: [isAuthenticatedGuard],
     path: '/networking',
     name: 'Networking',
@@ -30,6 +47,10 @@ const routes = [
   },
 
   {
+    meta: {
+      title: 'About',
+      requiresAuth: true,
+    },
     beforeEnter: [isAuthenticatedGuard],
     path: '/about',
     name: 'About',
@@ -39,6 +60,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    meta: {
+      title: 'Event Live',
+      requiresAuth: true,
+    },
     beforeEnter: [isAuthenticatedGuard],
     path: '/event-live',
     name: 'eventLive',
@@ -46,6 +71,11 @@ const routes = [
   },
 
   {
+    meta: {
+      title: 'Landing',
+      requiresAuth: false,
+    },
+    beforeEnter: [isAuthenticatedGuard],
     path:"/:webAppPath?",
     name: 'Landing',
     props: true,
