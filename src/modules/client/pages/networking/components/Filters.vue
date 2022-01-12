@@ -17,7 +17,7 @@
       <div class="card">
         <div class="card-body">
           <div class="direction-rtl">
-            <span @click="selectedFilter(country)" class="m-1 badge rounded-pill bg-light text-black mb-2" v-for="country in countries" :key="country.id">{{ country.name }}</span>
+            <span @click="selectedFilter(country)" class="m-1 badge rounded-pill bg-light text-black mb-2" v-bind:class="{ 'selected' : selectedCountry(country) }" v-for="country in countries" :key="country.id">{{ country.name }}</span>
           </div>
         </div>
       </div>
@@ -48,6 +48,9 @@ export default {
         this.countriesSelected.push(country)
       }
     },
+    selectedCountry(country){
+      return this.countriesSelected.find(c => c.id === country.id)
+    }
   }
 }
 </script>
