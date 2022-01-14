@@ -2,7 +2,7 @@
   <div class="container-fluid content-header-welcome ps-0">
     <div class="pb-2 container">
       <p class="text-welcome pt-1">BIENVENIDO</p>
-      <h3 class="text-user-welcome">Rodrigo Rodriguez</h3>
+      <h3 class="text-user-welcome">{{ dataUser }}</h3>
     </div>
   </div>
 
@@ -10,7 +10,25 @@
 
 <script>
 export default {
-  name: "Headerwelcome"
+  name: "Headerwelcome",
+  /* props:{
+    nameUser: {
+      type: String,
+      default: 'Hola..',
+    },
+    prueba: {
+      type: String,
+      default: 'P',
+    },
+  }, */
+  data(){
+    return {
+      dataUser: '',
+    }
+  },
+  mounted() {
+    this.dataUser = localStorage.getItem("_current_user_name") + ' ' + localStorage.getItem("_current_user_lastname");
+  },
 }
 </script>
 

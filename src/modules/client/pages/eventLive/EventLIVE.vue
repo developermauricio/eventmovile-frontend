@@ -4,7 +4,7 @@
   <Tabs/>
   <FloatButtonFile/>
   <FloatButtonQuestion/>
-  <RateActivity/>
+  <!-- <RateActivity/> -->
 </template>
 
 <script>
@@ -18,7 +18,7 @@ export default {
     Tabs: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Tabs')),
     FloatButtonFile: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonFile')),    
     FloatButtonQuestion: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonQuestion')),    
-    RateActivity: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/RateActivity')),    
+    //RateActivity: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/RateActivity')),    
   },
 
   mounted() {

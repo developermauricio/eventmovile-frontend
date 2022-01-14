@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Headerhome/>
+    <!-- <Headerhome :nameUser="nameUser" :prueba="prueba"/> -->
+    <Headerhome />
     <Headerwelcome/>
     <Bannerprincipal/>
     <Ticketinfo/>
@@ -21,6 +22,12 @@ import {defineAsyncComponent} from "vue";
 
 export default {
   name: "Home",
+  props:{
+      webAppPath: {
+        type: String,
+        default:''
+      },
+  },  
   components: {
     Headerhome: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Headerhome')),
     Ticketinfo: defineAsyncComponent(() => import(/* webpackChunkName: "Ticketinfo"*/ '@/modules/client/pages/home/components/TicketIinfo')),
@@ -33,10 +40,28 @@ export default {
     Evaluateevent: defineAsyncComponent(() => import(/* webpackChunkName: "Evaluateevent"*/ '@/modules/client/pages/home/components/Evaluateevent')),
     Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton'))
   },
-
-  mounted() {
-
-  }
+  data(){
+    return {
+      dataUser: null,
+      nameUser: 'Hola.. bebe..',
+      prueba: 'Prueba...',
+    }
+  },
+  /* computed: {
+    nameUser() {
+      return this.dataUser.name + ' ' + this.dataUser.lastname || 'bebe...'
+    }
+  }, */
+  created() {
+    /* const dataUserString = this.$route.params.dataUser
+    dataUserString ? this.dataUser = Object.assign({}, JSON.parse(dataUserString)) : ''
+    console.log('datos user: ', this.dataUser);
+    setTimeout(() => { 
+      this.nameUser = this.dataUser.name + ' ' + this.dataUser.lastname
+      console.log('timer') 
+    }, 1000); */
+  },
+  mounted() { }
 }
 </script>
 
