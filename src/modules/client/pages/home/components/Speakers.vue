@@ -106,6 +106,27 @@
 <script>
 export default {
   name: "Speakers",
+  data() {
+    return {
+      eventID: 0,
+      listSpeakers: [],
+    }
+  },
+  methods: {
+    getSpeakersEvent() {
+      window.axios.get(`getSpeakers/${this.eventID}`)
+        .then( response => {
+          console.log('list speakers: ', response.data.data)
+          this.listSpeakers = response.data.data
+        }).catch( error => {
+          console.log('error... ', error)
+        })
+    },
+  },
+  created() {
+    this.eventId = localStorage.getItem("eventId")
+    this.getSpeakersEvent()
+  }
 }
 </script>
 

@@ -1,17 +1,20 @@
 <template>
   <div>
-
     <!-- Header Area -->
     <div class="header-area header-home" id="headerArea">
       <div class="container">
-        <div
-            class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
+        <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
           <!-- Logo Wrapper -->
           <div class="logo-wrapper"><a href="page-home.html"><img :src="styles.wa_banner_one ? styles.wa_banner_one : ''" alt=""></a></div>
+          <div class="logo-wrapper">
+            <a href="#">
+              <img src="assets/img/logo-pm.png" alt="logo">
+            </a>
+          </div>
         </div>
-
       </div>
     </div>
+
     <div class="container">
       <div class="img-ticket-container">
         <!--      <div class="ticket">-->
@@ -19,64 +22,57 @@
         <img class="p-2" :src="styles.wa_banner_one ? styles.wa_banner_one : 'assets/img/img-generic.png'" alt="">
         <div class="pt-4">
           <!--=====================================
-          CALENDAR
-        ======================================-->
+                      CALENDAR
+          ======================================-->
           <div class="d-flex">
-            <!-- Thumbnail -->
             <div class="chat-user-thumbnail me-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                   class="bi bi-calendar-week icon-qr" viewBox="0 0 16 16">
-                <path
-                    d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-                <path
-                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-calendar-week icon-qr" viewBox="0 0 16 16">
+                <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
               </svg>
             </div>
             <!-- Info -->
             <div class="chat-user-info">
-              <h6 class="text-truncate mb-0 text-title">Sáb, 10 de octubre, 2021</h6>
+              <!-- <h6 class="text-truncate mb-0 text-title"> Sáb, 10 de octubre, 2021</h6> -->
+              <h6 class="text-truncate mb-0 text-title">{{ startDate }}</h6>
               <div class="last-chat">
-                <p class="mb-0 text-truncate text-subtitle">00:00 am</p>
+                <!-- <p class="mb-0 text-truncate text-subtitle">00:00 am</p> -->
+                <p class="mb-0 text-truncate text-subtitle">{{ startDateHour }}</p>
               </div>
             </div>
           </div>
           <!--=====================================
-          UBICACIÓN
-        ======================================-->
+                    UBICACIÓN
+          ======================================-->
           <div class="d-flex pt-3">
-            <!-- Thumbnail -->
             <div class="chat-user-thumbnail me-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                   class="bi bi-geo-alt-fill icon-qr" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-geo-alt-fill icon-qr" viewBox="0 0 16 16">
                 <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
               </svg>
             </div>
             <!-- Info -->
             <div class="chat-user-info">
-              <h6 class="text-truncate mb-0 text-title">Corferias</h6>
+              <h6 class="text-truncate mb-0 text-title">{{ event.location ?  event.location : 'Por confirmar' }}</h6>
+              <!-- <h6 class="text-truncate mb-0 text-title">Corferias</h6> -->
               <div class="last-chat">
-                <p class="mb-0 text-truncate text-subtitle">Carrera 37 No 24 - 67 Bogotá </p>
+                <p class="mb-0 text-truncate text-subtitle">{{ event.location ?  event.location : 'Por confirmar' }}</p>
+                <!-- <p class="mb-0 text-truncate text-subtitle">Carrera 37 No 24 - 67 Bogotá </p> -->
               </div>
             </div>
           </div>
           <!--=====================================
-          INFORMACIÓN DEL EVENTO
-        ======================================-->
+                  INFORMACIÓN DEL EVENTO
+          ======================================-->
           <div class="info-event pt-4">
             <h3 class="text-info">Acerca del Evento</h3>
-            <p>
-              {{ event.description }}
-            </p>
+            <p> {{ event.description }} </p>
           </div>
         </div>
       </div>
     </div>
 
-<!--      </div>-->
-<!--    </div>-->
-
     <!--=====================================
-        FOOTER
+             FOOTER
     ======================================-->
     <div class="footer-nav-area" id="footerNav">
       <div class="container px-0">
@@ -85,7 +81,7 @@
             <li>
               <router-link to="/login">INICIA SESIÓN</router-link></li>
             <li>
-              <a class="btn m-1 btn-primary" href="settings.html">REGISTRATE</a>
+              <a class="btn m-1 btn-primary" href="#">REGISTRATE</a>
             </li>
           </ul>
         </div>
@@ -95,9 +91,15 @@
 </template>
 
 <script>
+
 export default {
   name: "Landing",
-
+  props: {
+    webAppPath: {
+      type: String,
+      default: ''
+    },
+  },
   data() {
     return {
       event: {},
@@ -107,27 +109,17 @@ export default {
       onRegister: false,
       styles: [],
       // uriImg: process.env.VUE_APP_API_URL_FILES,
-      contPswd: '0',
+    }
+  },  
+  computed: {
+    startDate() {
+      return this.$dayjs(this.event.start_date).format(`ddd DD MMMM, YYYY`);
+    },
+    startDateHour() {
+      return this.$dayjs(this.event.start_date).format('HH:mm a');
     }
   },
-
-  props: {
-    webAppPath: {
-      type: String,
-      default: ''
-    },
-    inSession: {
-      type: Boolean,
-      default: false
-    },
-    dataUser: {
-      type: String,
-      default: 'data user'
-    }
-  },
-
   mounted() {
-
     if (this.webAppPath !== '') {
       localStorage.setItem('webAppPath', this.webAppPath)
     }
@@ -139,25 +131,26 @@ export default {
     }
     // setTimeout(() => this.validNotifications(), 5000);
   },
-
   methods: {
     validWebApp(path_web_app) {
       let data = new FormData
       data.append('path_wep_app', path_web_app)
-      window.axios.post('validPathEvent', data).then(res => {
-        this.eventId = res.data[0].id
-        localStorage.setItem('eventId', this.eventId)
-        //cargamos los styles
-        // this.getStyles(res.data[0].id)
-        //traemos la info del evento
-        this.getEvent()
-      }).catch(err => {
-        // this.$swal("No existe evento asociado a este dominio")
-        console.log(err)
-        this.$router.push({name: "notFoundPage"})
-      })
-    },
 
+      window.axios.post('validPathEvent', data)
+        .then(res => {
+          this.eventId = res.data[0].id
+          localStorage.setItem('eventId', this.eventId)
+          console.log('data:.. ', res.data)
+          //cargamos los styles
+          // this.getStyles(res.data[0].id)
+          //traemos la info del evento
+          this.getEvent()
+        }).catch(err => {
+          // this.$swal("No existe evento asociado a este dominio")
+          console.log(err)
+          this.$router.push({name: "notFoundPage"})
+        })
+    },
     getEvent() {
       window.axios.get(`showEvent/${this.eventId}`).then(response => {
         this.event = response.data[0]
@@ -166,6 +159,11 @@ export default {
         console.log('CONTPSWD ', this.contPswd)
         console.log('event ', this.styles)
       })
+      window.axios.get(`showEvent/${this.eventId}`)
+        .then(response => {
+          console.log('data:.. ', response.data)
+          this.event = response.data[0]
+        })
     },
   }
 }
