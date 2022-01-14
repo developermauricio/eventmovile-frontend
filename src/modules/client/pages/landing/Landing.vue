@@ -7,7 +7,7 @@
         <div
             class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
           <!-- Logo Wrapper -->
-          <div class="logo-wrapper"><a href="page-home.html"><img src="assets/img/logo-pm.png" alt=""></a></div>
+          <div class="logo-wrapper"><a href="page-home.html"><img :src="styles.wa_banner_one ? styles.wa_banner_one : ''" alt=""></a></div>
         </div>
 
       </div>
@@ -16,7 +16,7 @@
       <div class="img-ticket-container">
         <!--      <div class="ticket">-->
         <!--        <div class="ticket__content">-->
-        <img src="/assets/img/principal-banner.png" alt="">
+        <img class="p-2" :src="styles.wa_banner_one ? styles.wa_banner_one : 'assets/img/img-generic.png'" alt="">
         <div class="pt-4">
           <!--=====================================
           CALENDAR
@@ -101,6 +101,7 @@ export default {
   data() {
     return {
       event: {},
+      syles: null,
       eventId: 0,
       onLogin: false,
       onRegister: false,
@@ -161,8 +162,9 @@ export default {
       window.axios.get(`showEvent/${this.eventId}`).then(response => {
         this.event = response.data[0]
         this.contPswd = response.data[0].password.trim()
+        this.styles = this.event.style
         console.log('CONTPSWD ', this.contPswd)
-        console.log('event ', this.event)
+        console.log('event ', this.styles)
       })
     },
   }
