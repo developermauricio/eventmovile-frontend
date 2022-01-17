@@ -83,6 +83,30 @@
 <script>
 export default {
   name: "Schedule",
+  data() {
+    return {
+      days:[],
+      streamingList:[],
+      event_id:0,
+      user_id:0,
+    }
+  },
+  methods: {
+    getGeneralSchedule(){
+      window.axios.get(`showSchedule/${this.event_id}`)
+        .then( response => {
+					console.log('data showSchedule', response.data)
+          this.days = response.data
+				}).catch( error => {
+					console.log('error data showSchedule', error)
+				})
+    },
+  },
+  created() {
+    this.event_id = localStorage.getItem('eventId')
+    this.user_id = localStorage.getItem('_current_user_id')
+    this.getGeneralSchedule()
+  },
   mounted() {
     if (document.querySelectorAll(".slide-schedule").length > 0) {
       window.tns({
