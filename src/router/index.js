@@ -102,6 +102,16 @@ const routes = [
   },
   {
     meta: {
+      title: 'Speakers',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/speakers',
+    name: 'ListSpeakers',
+    component: () => import('../modules/client/pages/speakers/ListSpeakers')
+  },
+  {
+    meta: {
       title: 'Event Live',
       requiresAuth: true,
     },
