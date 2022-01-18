@@ -26,6 +26,18 @@ const routes = [
 
   {
     meta: {
+      title: 'Agenda',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/schedule',
+    name: 'Schedule',
+    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/schedule/Schedule.vue')
+  },
+
+
+  {
+    meta: {
       title: 'Qr',
       requiresAuth: true,
     },
@@ -43,9 +55,38 @@ const routes = [
     beforeEnter: [isAuthenticatedGuard],
     path: '/networking',
     name: 'Networking',
-    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/networking/Networking.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/networking/Networking.vue'),
   },
-
+  {
+    meta: {
+      title: 'Contacts',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/networking-contacts',
+    name: 'Contacts',
+    component: () => import(/* webpackChunkName: "contact" */ '../modules/client/pages/networking/Contacts.vue'),
+  },
+  {
+    meta: {
+      title: 'Requestreceived',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/networking-request-received',
+    name: 'Requestreceived',
+    component: () => import(/* webpackChunkName: "requestreceived" */ '../modules/client/pages/networking/Requetsreceived.vue'),
+  },
+  {
+    meta: {
+      title: 'Requestsend',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/networking-request-send',
+    name: 'Requestsend',
+    component: () => import(/* webpackChunkName: "requestsend" */ '../modules/client/pages/networking/Requestsend.vue'),
+  },
   {
     meta: {
       title: 'About',
@@ -78,6 +119,17 @@ const routes = [
     path: '/event-live',
     name: 'eventLive',
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/eventLive/EventLIVE')
+  },
+
+  {
+    meta: {
+      title: 'Profile',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/profile',
+    name: 'Profile',
+    component: () => import(/* webpackChunkName: "profile" */ '../modules/client/pages/profile/Profile.vue'),
   },
 
   {
