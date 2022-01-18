@@ -1,6 +1,6 @@
 <template>
   <Header/>
-  <Participants/>
+  <Listrequestsend/>
   <div id="nav">
     <Navbutton/>
   </div>
@@ -10,11 +10,11 @@
 import {defineAsyncComponent} from "vue";
 
 export default {
-  name: "Networking",
-  components:{
+  name: "Requestsend",
+  components: {
     Navbutton: defineAsyncComponent(() => import(/* webpackChunkName: "Navbutton"*/ '@/modules/client/shared/components/Navbutton')),
     Header: defineAsyncComponent(() => import(/* webpackChunkName: "Header"*/ '@/modules/client/pages/networking/components/Header')),
-    Participants: defineAsyncComponent(() => import(/* webpackChunkName: "Participants"*/ '@/modules/client/pages/networking/components/Participants')),
+    Listrequestsend: defineAsyncComponent(() => import(/* webpackChunkName: "Listrequestsend"*/ '@/modules/client/pages/networking/components/Listrequestsend')),
   }
 }
 </script>

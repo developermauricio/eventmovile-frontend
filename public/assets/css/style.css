@@ -190,7 +190,9 @@ caption {
   color: #1f0757;
   background-color: #ffffff;
 }
-
+.icon-back{
+  color: #00000094 !important;
+}
 .form-select:disabled {
   color: #8480ae;
   background-color: #f1f2fb;
@@ -375,8 +377,8 @@ caption {
 .btn-check:focus + .btn-primary,
 .btn-primary:focus {
   color: #ffffff;
-  background-color: #025ce2;
-  border-color: #0257d5;
+  background-color: rgba(170, 71, 188, 0.7);
+  border-color: rgba(170, 71, 188, 0.7);
 }
 
 .btn-check:checked + .btn-primary,

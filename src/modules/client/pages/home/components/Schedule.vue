@@ -1,9 +1,9 @@
 <template>
   <div class="pt-4 align-items-end container">
-    <a href="">
+    <router-link to="/schedule">
       <p class="float-end mt-1 text-more"><i class="bi bi-plus-lg pe-3"></i>VER TODA</p>
       <h3 class="text-schedule">Agenda</h3>
-    </a>
+    </router-link>
   </div>
 
   <!-- Chat User List -->

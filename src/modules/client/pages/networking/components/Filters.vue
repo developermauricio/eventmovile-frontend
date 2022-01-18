@@ -46,6 +46,7 @@ export default {
       let exists = this.countriesSelected.some((item) => {return item.id === country.id})
       if (!exists) {
         this.countriesSelected.push(country)
+        this.$emit('dataFilter', this.countriesSelected)
       }
     },
     selectedCountry(country){

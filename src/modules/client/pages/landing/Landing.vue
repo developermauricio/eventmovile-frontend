@@ -6,11 +6,6 @@
         <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
           <!-- Logo Wrapper -->
           <div class="logo-wrapper"><a href="page-home.html"><img :src="styles.wa_banner_one ? styles.wa_banner_one : ''" alt=""></a></div>
-          <div class="logo-wrapper">
-            <a href="#">
-              <img src="assets/img/logo-pm.png" alt="logo">
-            </a>
-          </div>
         </div>
       </div>
     </div>
