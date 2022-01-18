@@ -25,8 +25,7 @@
                  LIST SPEAKERS
               ======================================-->
               <div v-for="speaker in getSpeakers" :key="speaker.speaker_id" class="col-6 mb-3">
-                <div @click="clickSpeaker(speaker)" class="card" :style="{'background-color': speaker.color}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
-                <!-- <div @click="clickSpeaker(speaker)" class="card" :style="{'background-color': speaker.color}"> -->
+                <div @click="clickSpeaker(speaker)" class="card" :style="{'background-color': speaker.color}">
                   <div class="card-body text-center text-info-speaker">
                     <img class="mb-3 img-thumbnail" :src="urlBaseFile + speaker.speaker_photo" alt="Img Speaker">
                     <p class="mb-1 text-truncate">{{ speaker.speaker_description }}</p>
@@ -43,7 +42,7 @@
   <!--=====================================
    MODAL INFO SPEAKER
   ======================================-->
-  <InfoSpeaker :show="openModal" :speaker="speakerSelect" />  
+  <InfoSpeaker ref="modalInfoSpeaker"/>  
 </template>
 
 <script>
@@ -60,8 +59,6 @@ export default {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
       listSpeakers: [],
       listColorSpeakers: ['#d4c8eb', '#ce93d8', '#9b7ed1', '#c8e6c9'],
-      speakerSelect: 'hola',
-      openModal: false,
     }
   },
   methods: {
@@ -74,18 +71,12 @@ export default {
         })
     },
     clickSpeaker( speaker ) {
-      console.log('speaker: ', speaker);
-      console.log('openModal: ', this.openModal);
-      this.openModal = !this.openModal
-      console.log('openModal: ', this.openModal);
-    },
-    closeModalSpeaker() {
-      this.openModal = !this.openModal
+      this.$refs.modalInfoSpeaker.setInfoSpeaker( speaker )
     },
   },
   computed: {
     getSpeakers() {
-      let speakers = this.listSpeakers.slice(0, 2) //TODO cambiar de 2 a 4
+      let speakers = this.listSpeakers.slice(0, 4) 
       for (let index = 0; index < speakers.length; index++) {
         speakers[index].color = this.listColorSpeakers[index]
       }

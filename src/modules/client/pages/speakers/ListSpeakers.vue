@@ -22,7 +22,7 @@
                  LIST SPEAKERS
               ======================================-->
               <div v-for="speaker in getSpeakers" :key="speaker.speaker_id" class="col-6 mb-3">
-                <div class="card" :style="{'background-color': speaker.color}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                <div @click="clickSpeaker(speaker)" class="card" :style="{'background-color': speaker.color}">
                   <div class="card-body text-center text-info-speaker">
                     <img class="mb-3 img-thumbnail" :src="urlBaseFile + speaker.speaker_photo" alt="Img Speaker">
                     <p class="mb-1 text-truncate">{{ speaker.speaker_description }}</p>
@@ -39,11 +39,11 @@
   <!--=====================================
    MODAL INFO SPEAKER
   ======================================-->
-  <InfoSpeaker />  
+  <InfoSpeaker ref="modalInfoSpeaker"/>  
 </template>
 
 <script>
-import {defineAsyncComponent} from "vue";
+import { defineAsyncComponent } from "vue";
 
 export default {
   name: "ListSpeakers",
@@ -66,6 +66,9 @@ export default {
         }).catch( error => {
           console.log('error... ', error)
         })
+    },
+    clickSpeaker( speaker ) {
+      this.$refs.modalInfoSpeaker.setInfoSpeaker( speaker )
     },
   },
   computed: {

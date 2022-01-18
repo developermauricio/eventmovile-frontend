@@ -35,7 +35,7 @@ export default {
     Headerwelcome: defineAsyncComponent(() => import(/* webpackChunkName: "Headerwelcome"*/ '@/modules/client/pages/home/components/Headerwelcome')),
     Bannerprincipal: defineAsyncComponent(() => import(/* webpackChunkName: "Bannerprincipal"*/ '@/modules/client/pages/home/components/Bannerprincipal')),
     Schedule: defineAsyncComponent(() => import(/* webpackChunkName: "Schedule"*/ '@/modules/client/pages/home/components/Schedule')),
-    Speakers: defineAsyncComponent(() => import(/* webpackChunkName: "Speakers"*/ '@/modules/client/pages/speakers/SpeakersHome')),
+    Speakers: defineAsyncComponent(() => import('@/modules/client/pages/speakers/SpeakersHome')),
     Photosevent: defineAsyncComponent(() => import(/* webpackChunkName: "Photosevent"*/ '@/modules/client/pages/home/components/Photosevent')),
     Evaluateevent: defineAsyncComponent(() => import(/* webpackChunkName: "Evaluateevent"*/ '@/modules/client/pages/home/components/Evaluateevent')),
     Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton'))
@@ -53,13 +53,9 @@ export default {
     }
   }, */
   created() {
-    /* const dataUserString = this.$route.params.dataUser
+    const dataUserString = this.$route.params.dataUser
     dataUserString ? this.dataUser = Object.assign({}, JSON.parse(dataUserString)) : ''
-    console.log('datos user: ', this.dataUser);
-    setTimeout(() => { 
-      this.nameUser = this.dataUser.name + ' ' + this.dataUser.lastname
-      console.log('timer') 
-    }, 1000); */
+    console.log('datos user: ', this.dataUser);    
   },
   mounted() { }
 }

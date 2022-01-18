@@ -1,56 +1,64 @@
 <template>
-    <div class="offcanvas offcanvas-bottom modal-canvas-info-speaker" id="offcanvasBottom" tabindex="-1" aria-labelledby="offcanvasBottomLabel">
-    <!-- <div :class="{'show': showModal}" class="offcanvas offcanvas-bottom modal-canvas-info-speaker" :style="{'visibility' : showModal ? 'visible' : 'hidden'}" id="" > -->
-        <!-- Close Button -->
-        <button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        <!-- <button @click="closeModal()" class="btn-close text-reset" type="button"></button> -->
-        <!-- Offcanvas Body -->
-        <div class="offcanvas-body p-4">
-        <div class="row">
-            <div class="col-12 align-items-center text-center">
-            <img class="img-circle" src="assets/img/person-1.png" width="90" alt="">
-            <h6 class="mt-2 m-0">Robert Fox</h6>
-            <p class="m-0">Irlanda</p>
-            </div>
+  <div :class="{'show': showModal}" class="offcanvas offcanvas-bottom modal-canvas-info-speaker" :style="{'visibility' : showModal ? 'visible' : 'hidden'}" id="" >
+    <!-- Close Button -->
+    <button @click="closeModal()" class="btn-close text-reset" type="button"></button>
+    <!-- Offcanvas Body -->
+    <div class="offcanvas-body p-4">
+      <div class="row">
+        <div class="col-12 align-items-center text-center">
+          <img class="img-circle" :src="photoSpeaker" width="130" alt="photo speaker">
+          <h6 class="mt-2 m-0">{{ speaker.speaker_name || '' }}</h6>
+          <p class="m-0">Irlanda</p>
         </div>
-        <div class="container">
-            <div class="row mt-2">
-            <div class="col-12 text-description-speaker">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At beatae corporis dolorem fuga fugiat hic ipsa magni, officia omnis optio porro provident quae quas quisquam sed, tempora ullam vel voluptas?</p>
-            </div>
-            </div>
+      </div>
+      <div class="container">
+        <div class="row mt-2">
+          <div class="col-12 text-description-speaker">
+              <p>{{ speaker.speaker_description || '' }}</p>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
+  </div>
+
+  <div @click="closeModal()" :class="{'show': showModal, 'hidd': showModal}" class="offcanvas-backdrop fade" style="display: none"></div>
 </template>
 
 <script>
 export default {
   name: "InfoSpeaker",
-  props: ['show', 'speaker'],
   data() {
     return {
-        showModal: false,
+      showModal: false,
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      speaker: {},
     }
   },
-  methods: {
+  computed: {
+    photoSpeaker() {
+      return this.speaker.speaker_photo ? this.urlBaseFile + this.speaker.speaker_photo : 'assets/img/img-generic.png'
+    }
+  },
+  methods: {    
+    setInfoSpeaker( data ) {
+      this.speaker = data
+      this.showModal = !this.showModal;
+    },
     closeModal() {
-        this.showModal = !this.showModal;
-        //this.$emit('closeModalSpeaker');
-    }
+      this.showModal = !this.showModal;
+    },
   },
-  created() {
-
-  },
-  mounted() {
-      this.showModal = this.show
-      console.log('values: ', this.show, ' otro: ', this.speaker, ' sm: ', this.showModal);
-  },
+  created() { },
+  mounted() { },
 }
 </script>
 
 <style scoped>
-.marg-top {
-  margin-top: 50px;
+.offcanvas-bottom {
+  height: 45vh !important;
+  border-radius: 30px 30px 0 0;
+}
+.hidd {
+  display: block !important;
 }
 </style>
