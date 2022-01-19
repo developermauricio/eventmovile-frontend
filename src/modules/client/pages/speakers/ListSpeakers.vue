@@ -2,17 +2,18 @@
   <!--=====================================
       HEADER TITLE
   ======================================-->
-  <div class="pt-4 align-items-end container">
-    Lista de speakes
-  </div>
+  <HeaderSpeaker @filterSpeaker="filterSpeaker" @searchSpeaker="searchSpeaker"/>
+  <div style="height: 50px;"></div>
+
+  <SearchSpeaker ref="fieldSearch" />
   <!--=====================================
        SECTION SPEAKER
   ======================================-->
-  <div class="page-content-wrapper py-3 m-0">
+  <div class="page-content-wrapper m-0">
     <div class="container pe-0 ps-0">
       <div class="card">
         <div class="card-body p-3">
-          <div class="container">
+          <div class="container py-3">
             <div v-if="listSpeakers.length == 0">
               No hay Speakers disponibles para este evento
             </div>
@@ -40,6 +41,7 @@
    MODAL INFO SPEAKER
   ======================================-->
   <InfoSpeaker ref="modalInfoSpeaker"/>  
+  <FilterSpeaker ref="modalFilterSpeaker" />
 </template>
 
 <script>
@@ -48,7 +50,10 @@ import { defineAsyncComponent } from "vue";
 export default {
   name: "ListSpeakers",
   components: {
+    HeaderSpeaker: defineAsyncComponent(() => import('@/modules/client/pages/speakers/components/HeaderSpeaker')),
+    SearchSpeaker: defineAsyncComponent(() => import('@/modules/client/pages/speakers/components/SearchSpeaker')),
     InfoSpeaker: defineAsyncComponent(() => import('@/modules/client/pages/speakers/InfoSpeaker')),
+    FilterSpeaker: defineAsyncComponent(() => import('@/modules/client/pages/speakers/components/FilterSpeaker')),
   },
   data() {
     return {
@@ -70,6 +75,12 @@ export default {
     clickSpeaker( speaker ) {
       this.$refs.modalInfoSpeaker.setInfoSpeaker( speaker )
     },
+    filterSpeaker() {
+      this.$refs.modalFilterSpeaker.showFilterSpeaker()
+    },
+    searchSpeaker() {
+      this.$refs.fieldSearch.showSearchSpeaker()
+    }
   },
   computed: {
     getSpeakers() {
@@ -93,7 +104,7 @@ export default {
 <style scoped>
 .text-more {
   font-size: 1rem;
-  color: #AA47BC;
+  color: #AA47BC;  
 }
 
 .text-speaker {
