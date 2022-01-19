@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="pt-3">
-                  <h6 class="text-truncate mb-0">Nombre Actividad</h6>
+                  <h6 class="text-truncate mb-0">Nombre Actividad </h6>
                   <p>En vivo ahora</p>
                 </div>
 
