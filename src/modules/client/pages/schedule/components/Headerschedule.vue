@@ -17,12 +17,15 @@
             </svg>
           </div>
         </div>
+        <div class="page-heading text-center">
+          <h6 class="mb-0 position-relative text-center fw-bold">Agenda</h6>
+        </div>
         <!-- Logo Wrapper -->
-        <div class="logo-wrapper"><a href="page-home.html"><img src="" alt=""></a></div>
+<!--        <div class="logo-wrapper"><a href="page-home.html"><img src="" alt=""></a></div>-->
         <!-- Navbar Toggler -->
         <div class="chat-user--info d-flex align-items-center">
-          <router-link to="/networking-request-send">
-            <div class="setting-wrapper me-4">
+            <div class="setting-wrapper me-4" data-bs-toggle="offcanvas" data-bs-target="#modalSearchScheedule"
+                 aria-controls="modalSearchScheedule">
               <div class="setting-trigger-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
                      viewBox="0 0 16 16">
@@ -31,7 +34,6 @@
                 </svg>
               </div>
             </div>
-          </router-link>
         </div>
 
       </div>
@@ -39,41 +41,44 @@
     </div>
   </div>
   <div class="container-fluid content-header-history">
-    <div class="chat-user-status-slides-wrapper">
-      <div class="tns-outer" id="tns1-ow">
-        <div id="tns1-mw" class="tns-ovh">
-          <div class="tns-inner" id="tns1-iw">
-            <div class="chat-user-status-slides mb-2  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal" id="tns1" style="transform: translate3d(-68%, 0px, 0px);">
-              <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
-                <div class="user-status-slide offline">
-                  <a href="#">
-                    <img src="assets/img/bg-img/user2.png" alt="">
-                    <div class="active-status"></div>
-                    <p class="mb-0 mt-2 text-truncate">Wade warren</p>
-                  </a>
+    <div class="container">
+      <div class="chat-user-status-slides-wrapper">
+        <div class="tns-outer" id="tns1-ow">
+          <div id="tns1-mw" class="tns-ovh">
+            <div class="tns-inner" id="tns1-iw">
+              <div class="chat-user-status-slides mb-2  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal"
+                   id="tns1" style="transform: translate3d(-68%, 0px, 0px);">
+                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
+                  <div class="user-status-slide offline">
+                    <a href="#">
+                      <img src="assets/img/bg-img/user2.png" alt="">
+<!--                      <div class="active-status"></div>-->
+                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
 
-              <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
-                <div class="user-status-slide offline">
-                  <a href="#">
-                    <img src="assets/img/bg-img/user2.png" alt="">
-                    <div class="active-status"></div>
-                    <p class="mb-0 mt-2 text-truncate">Wade warren</p>
-                  </a>
+                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
+                  <div class="user-status-slide offline">
+                    <a href="#">
+                      <img src="assets/img/bg-img/user2.png" alt="">
+<!--                      <div class="active-status"></div>-->
+                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
 
-              <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
-                <div class="user-status-slide offline">
-                  <a href="#">
-                    <img src="assets/img/bg-img/user2.png" alt="">
-                    <div class="active-status"></div>
-                    <p class="mb-0 mt-2 text-truncate">Wade warren</p>
-                  </a>
+                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
+                  <div class="user-status-slide offline">
+                    <a href="#">
+                      <img src="assets/img/bg-img/user2.png" alt="">
+<!--                      <div class="active-status"></div>-->
+                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
 
+              </div>
             </div>
           </div>
         </div>
@@ -143,7 +148,8 @@ export default {
 .chat-user-status-slides .user-status-slide a img {
   width: 5rem !important;
 }
-.chat-user-status-slides .user-status-slide a{
+
+.chat-user-status-slides .user-status-slide a {
   padding: 0.5rem -0.75rem 0.375rem !important
 }
 </style>

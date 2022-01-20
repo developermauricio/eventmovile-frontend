@@ -1,5 +1,9 @@
 <template>
-<Headerschedule />
+  <Headerschedule/>
+  <Tabinfo/>
+  <div id="nav">
+    <Navbar/>
+  </div>
 </template>
 
 <script>
@@ -9,6 +13,9 @@ export default {
   name: "Schedule",
   components: {
     Headerschedule: defineAsyncComponent(() => import(/* webpackChunkName: "Headerschedule"*/ '@/modules/client/pages/schedule/components/Headerschedule')),
+    Tabinfo: defineAsyncComponent(() => import(/* webpackChunkName: "Tabinfo"*/ '@/modules/client/pages/schedule/components/Tabsinfo')),
+    Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton'))
+
   }
 }
 </script>
