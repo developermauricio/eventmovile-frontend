@@ -11,16 +11,6 @@
 <script>
 export default {
   name: "Headerwelcome",
-  /* props:{
-    nameUser: {
-      type: String,
-      default: 'Hola..',
-    },
-    prueba: {
-      type: String,
-      default: 'P',
-    },
-  }, */
   data(){
     return {
       dataUser: '',
@@ -45,6 +35,5 @@ export default {
   background-color: #ffffff !important;
   position: relative;
   padding-top: 3.5rem;
-  /*z-index: 9999999999;*/
 }
 </style>

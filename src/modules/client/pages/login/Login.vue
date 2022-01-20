@@ -1,15 +1,16 @@
 <template>
   <div>
     <!-- Header Area -->
-    <div class="header-area header-home" id="headerArea">
+    <div class="header-area header-home" id="">
       <div class="container">
         <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
           <!-- Logo Wrapper -->
-          <router-link :to="`/${urlBack}`">
+          <router-link v-if="eventId" :to="`/${urlBack}`">
             <svg class="bi bi-arrow-left-short" width="32" height="32" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"></path>
             </svg>
           </router-link>
+          <div v-else style="opacity:0">Go back</div>
           <!-- Navbar Toggler -->
           <div class="chat-user--info d-flex align-items-center">
             <div class="user-thumbnail-name  ms-4">
@@ -24,7 +25,7 @@
     <div class="login-wrapper d-flex align-items-center justify-content-center">
       <div class="custom-container">
         <div class="text-center px-4">
-          <img class="login-intro-img" src="assets/img/logo-pm.png" alt="">
+          <img class="login-intro-img" :src="this.styles.home_img_logo ? this.urlBaseFile + this.styles.home_img_logo : 'assets/img/img-generic.png'" width="180" alt="Logo evento">
         </div>
         <!-- Register Form -->
         <div class="register-form mt-4">
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+
 export default {
   name: "Login",
   props: {
@@ -60,19 +62,18 @@ export default {
   },
   data() {
     return {
-      uriImg: process.env.VUE_APP_API_URL_FILES,
-      styles: [],
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      styles: {},
       form: {
         email: "",
         password: "",
       },
       errorEmail: '',
-      eventId: 0,
+      eventId: null,
       urlBack: '',
       event: {},
     };
   },
-
   methods: {
     getEvent() {
       window.axios.get(`showEvent/${this.eventId}`)
@@ -94,7 +95,6 @@ export default {
         alert('Es requerida la información del evento en la url.')
         return;
       }
-
 
       if ( this.form.email === '' ) {
         this.errorEmail = 'Por favor ingrese el correo electrónico'
@@ -128,13 +128,21 @@ export default {
         });
       
     },
+    getStyleLocalStorage(){
+      let styleEvent = localStorage.getItem('style-event')
+      this.styles = JSON.parse(styleEvent)
+      console.log("this.styles:", this.styles)
+    }, 
   },
 
   created() {
     this.urlBack = localStorage.getItem("webAppPath") || ''
-    this.eventId = localStorage.getItem("eventId")
+    this.eventId = localStorage.getItem("eventId") || ''
 
-    if ( this.eventId ) this.getEvent()
+    if ( this.eventId ) {
+      this.getEvent()
+      this.getStyleLocalStorage()
+    }
   },
 
   mounted() { },

@@ -5,16 +5,18 @@
       <div class="container">
         <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
           <!-- Logo Wrapper -->
-          <div class="logo-wrapper"><a href="page-home.html"><img :src="styles.wa_banner_one ? styles.wa_banner_one : ''" alt=""></a></div>
+          <div class="logo-wrapper">
+            <a href="#">
+              <img :src="getLogo" alt="Logo evento">
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" ref="containerLoarder">
       <div class="img-ticket-container">
-        <!--      <div class="ticket">-->
-        <!--        <div class="ticket__content">-->
-        <img class="p-2" :src="styles.wa_banner_one ? styles.wa_banner_one : 'assets/img/img-generic.png'" alt="">
+        <img class="p-2" :src="getBanner" alt="">
         <div class="pt-4">
           <!--=====================================
                       CALENDAR
@@ -28,10 +30,8 @@
             </div>
             <!-- Info -->
             <div class="chat-user-info">
-              <!-- <h6 class="text-truncate mb-0 text-title"> Sáb, 10 de octubre, 2021</h6> -->
               <h6 class="text-truncate mb-0 text-title">{{ startDate }}</h6>
               <div class="last-chat">
-                <!-- <p class="mb-0 text-truncate text-subtitle">00:00 am</p> -->
                 <p class="mb-0 text-truncate text-subtitle">{{ startDateHour }}</p>
               </div>
             </div>
@@ -48,10 +48,8 @@
             <!-- Info -->
             <div class="chat-user-info">
               <h6 class="text-truncate mb-0 text-title">{{ event.location ?  event.location : 'Por confirmar' }}</h6>
-              <!-- <h6 class="text-truncate mb-0 text-title">Corferias</h6> -->
               <div class="last-chat">
                 <p class="mb-0 text-truncate text-subtitle">{{ event.location ?  event.location : 'Por confirmar' }}</p>
-                <!-- <p class="mb-0 text-truncate text-subtitle">Carrera 37 No 24 - 67 Bogotá </p> -->
               </div>
             </div>
           </div>
@@ -74,7 +72,8 @@
         <div class="footer-nav position-relative">
           <ul class="h-100 d-flex align-items-center justify-content-between ps-0">
             <li>
-              <router-link to="/login">INICIA SESIÓN</router-link></li>
+              <router-link to="/login">INICIA SESIÓN</router-link>
+            </li>
             <li>
               <a class="btn m-1 btn-primary" href="#">REGISTRATE</a>
             </li>
@@ -98,15 +97,29 @@ export default {
   data() {
     return {
       event: {},
-      syles: null,
-      eventId: 0,
       onLogin: false,
       onRegister: false,
-      styles: [],
-      // uriImg: process.env.VUE_APP_API_URL_FILES,
+      styles: null,
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      fullPage: false,
+      loader: null,
     }
   },  
   computed: {
+    getLogo() {
+      if ( this.styles ) {
+        return this.styles.home_img_logo ? this.urlBaseFile + this.styles.home_img_logo : 'assets/img/img-generic.png'
+      } else {
+        return 'assets/img/img-generic.png'
+      }
+    },
+    getBanner() {
+      if ( this.styles ) {
+        return this.styles.wa_banner_one ? this.urlBaseFile + this.styles.wa_banner_one : 'assets/img/img-generic.png'
+      } else { 
+        return 'assets/img/img-generic.png'
+      }
+    },
     startDate() {
       return this.$dayjs(this.event.start_date).format(`ddd DD MMMM, YYYY`);
     },
@@ -115,51 +128,66 @@ export default {
     }
   },
   mounted() {
-    if (this.webAppPath !== '') {
+    if ( this.webAppPath ) {
       localStorage.setItem('webAppPath', this.webAppPath)
-    }
-    let validPath = localStorage.getItem('webAppPath')
-    if (validPath !== '') {
-      this.validWebApp(validPath)
-    } else {
       this.validWebApp(this.webAppPath)
-    }
-    // setTimeout(() => this.validNotifications(), 5000);
+    } 
   },
   methods: {
     validWebApp(path_web_app) {
+      this.loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
       let data = new FormData
       data.append('path_wep_app', path_web_app)
 
       window.axios.post('validPathEvent', data)
-        .then(res => {
-          this.eventId = res.data[0].id
-          localStorage.setItem('eventId', this.eventId)
-          console.log('data:.. ', res.data)
-          //cargamos los styles
-          // this.getStyles(res.data[0].id)
-          //traemos la info del evento
-          this.getEvent()
+        .then( response => {
+          //console.log('data validPathEvent:.. ', response.data)
+          let eventId = response.data[0].id
+          localStorage.setItem('eventId', eventId)
+          /***  cargamos los styles  ***/
+          this.getStyles( eventId )
+          /***  traemos la info del evento  ***/
+          this.getEvent( eventId )
         }).catch(err => {
           // this.$swal("No existe evento asociado a este dominio")
           console.log(err)
           this.$router.push({name: "notFoundPage"})
         })
     },
-    getEvent() {
-      window.axios.get(`showEvent/${this.eventId}`).then(response => {
-        this.event = response.data[0]
-        this.contPswd = response.data[0].password.trim()
-        this.styles = this.event.style
-        console.log('CONTPSWD ', this.contPswd)
-        console.log('event ', this.styles)
-      })
-      window.axios.get(`showEvent/${this.eventId}`)
-        .then(response => {
-          console.log('data:.. ', response.data)
+    getEvent( eventId ) {      
+      window.axios.get(`showEvent/${eventId}`)
+        .then( response => {
+          //console.log('data showEvent:.. ', response.data)
+          this.loader.hide()
           this.event = response.data[0]
+        }).catch( err => {
+          this.loader.hide()
+          console.log(err)
         })
     },
+    getStyles( eventId ){
+        let checkStyle = localStorage.getItem('style-event')
+
+        if ( checkStyle ) {
+          this.getStyleLocalStorage()
+        } else {
+          window.axios.get(`styleEvent/${eventId}`)
+            .then( response => {
+              //console.log('response this.styles: ',response.data );            
+              localStorage.setItem('style-event', JSON.stringify(response.data));
+              this.styles = response.data 
+            }) 
+        }
+    }, 
+    getStyleLocalStorage(){
+      let styleEvent = localStorage.getItem('style-event')
+      //console.log("localStorage ",styleEvent)
+      this.styles = JSON.parse(styleEvent)
+      //console.log("this.styles:",this.styles)
+    }, 
   }
 }
 </script>
