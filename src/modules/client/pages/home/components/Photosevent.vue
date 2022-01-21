@@ -3,16 +3,19 @@
       HEADER TITLE
   ======================================-->
   <div class="pt-4 align-items-end container mb-3">
-    <a href="">
+    <router-link to="/photos">
       <p class="float-end mt-1 text-more">VER TODAS</p>
       <h3 class="text-photos-event">Fotos del evento</h3>
-    </a>
+    </router-link>
   </div>
   <div class="container slide-photo-event">
     <div class="items-photo-event gallery-img">
-      <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png" alt=""></a>
-      <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png" alt=""></a>
-      <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png" alt=""></a>
+      <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png"
+                                                                         alt=""></a>
+      <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png"
+                                                                         alt=""></a>
+      <a href="assets/img/bg-img/19.png" class="ingle-gallery-item"><img class="rounded" src="assets/img/bg-img/19.png"
+                                                                         alt=""></a>
     </div>
 
   </div>
@@ -20,6 +23,7 @@
 
 <script>
 import baguetteBox from 'baguettebox.js';
+
 export default {
   name: "Photosevent",
 
@@ -45,16 +49,12 @@ export default {
       });
     }
 
-    if (document.querySelectorAll(".gallery-img").length > 0) {
-      window.addEventListener("load", function () {
-        baguetteBox.run(".gallery-img", {
-          captions: true,
-          fullScreen: false,
-          animation: "slideIn", // Also available 'fadeIn' or 'false' options
-          overlayBackgroundColor: "rgba(15,7,15,0.7)"
-        });
-      });
-    }
+    baguetteBox.run(".gallery-img", {
+      captions: true,
+      fullScreen: false,
+      animation: "slideIn", // Also available 'fadeIn' or 'false' options
+      overlayBackgroundColor: "rgba(15,7,15,0.7)"
+    });
   }
 }
 </script>
@@ -73,7 +73,7 @@ export default {
   color: #AA47BC !important;
 }
 
-.slide-photo-event #tns2-mw{
+.slide-photo-event #tns2-mw {
   overflow: inherit !important;
 }
 </style>

@@ -40,6 +40,17 @@
         </div>
       </div>
 
+      <router-link to="/resources">
+        <div class="partner-slide-card my-2">
+          <a class="content-a" href="#"><img src="assets/img/img-ticket.png" alt="">
+            <div class="content-info">
+              <img class="pb-2" src="assets/img/icon-resources.png" width="25" alt="">
+              <h3>Recursos</h3>
+              <p>Todo el contenido de apoyo disponible para descaga</p>
+            </div>
+          </a>
+        </div>
+      </router-link>
 
     </div>
     <div class="">
