@@ -120,6 +120,17 @@ const routes = [
     name: 'eventLive',
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/eventLive/EventLIVE')
   },
+  {
+    meta: {
+      title: 'Mapa',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path:"/mapa",
+    name: 'Map',
+    props: true,
+    component: () => import('../modules/client/pages/map/Map')
+  },
 
   {
     meta: {
@@ -130,6 +141,18 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: () => import(/* webpackChunkName: "profile" */ '../modules/client/pages/profile/Profile.vue'),
+  },
+
+  { //TODO: pendiente por revisar
+    meta: {
+      title: 'Not Found',
+      requiresAuth: false,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    //path: '/:catchAll(.*)',
+    path: '/error404',
+    name: 'Error404',
+    component: () => import('../modules/client/pages/Page404/NoFound'),
   },
 
   {
@@ -143,6 +166,7 @@ const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/landing/Landing.vue')
   },
+  
 ]
 
 const router = createRouter({

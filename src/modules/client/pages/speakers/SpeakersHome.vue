@@ -62,10 +62,11 @@ export default {
     }
   },
   methods: {
-    getSpeakersEvent() {
+    getSpeakersEvent() {      
       window.axios.get(`getSpeakers/${this.eventID}`)
         .then( response => {
           this.listSpeakers = response.data.data
+          localStorage.setItem("listSpeakers", JSON.stringify(this.listSpeakers));
         }).catch( error => {
           console.log('error... ', error)
         })
@@ -85,7 +86,9 @@ export default {
   },
   created() {
     this.eventID = localStorage.getItem("eventId")
-    this.getSpeakersEvent()
+    this.listSpeakers = JSON.parse( localStorage.getItem('listSpeakers') ) || []
+    
+    if ( this.listSpeakers.length === 0 ) this.getSpeakersEvent()
   }
 }
 </script>

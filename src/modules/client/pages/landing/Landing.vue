@@ -163,6 +163,7 @@ export default {
           //console.log('data showEvent:.. ', response.data)
           this.loader.hide()
           this.event = response.data[0]
+          localStorage.setItem("event", JSON.stringify(this.event));
         }).catch( err => {
           this.loader.hide()
           console.log(err)
@@ -204,6 +205,7 @@ export default {
 }
 .img-ticket-container img{
   width: 100% !important;
+  max-height: 200px;
 }
 .footer-nav {
   background-color: #ffffff !important;

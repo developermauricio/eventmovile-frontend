@@ -1,15 +1,19 @@
 /***  librerias externas  ***/
-import dayjs from 'dayjs'
-import 'dayjs/locale/es'
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
 import VueLoading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+/* import VeeValidate, {Validator} from 'vee-validate';
+import validatorEs from 'vee-validate/dist/locale/es'; */
 
 /***  Importaciones de la aplicación  ***/
-import App from './App.vue'
-import router from './router'
-import store from './store'
-require('./plugins')
-import { createApp } from 'vue'
+import App from './App.vue';
+import router from './router';
+import store from './store';
+require('./plugins');
+import { createApp } from 'vue';
 
 
 /*** config axiox ***/
@@ -22,11 +26,12 @@ axios.defaults.withCredentials = false
 
 const app = createApp(App)
     .use(VueLoading, { color: '#ac58bc' })
+    .use(VueSweetalert2)
     .use(store)
     .use(router);
 
 /*** config library dayjs ***/
 dayjs.locale('es');
-app.config.globalProperties.$dayjs = dayjs
+app.config.globalProperties.$dayjs = dayjs;
 
 app.mount('#app');

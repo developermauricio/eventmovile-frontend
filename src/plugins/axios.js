@@ -6,7 +6,7 @@ window.axios.defaults.headers.common['Content-Type'] = 'application/json'
 window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('_current_token')}`
 window.axios.defaults.withCredentials = false
 
-/* import Vue from 'vue'
+/* import * as Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 

@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     showSearchSpeaker() {
-        this.showSearch = true
+        this.showSearch = !this.showSearch
     },
     closeSearch() {
         this.showSearch = false

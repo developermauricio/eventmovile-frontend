@@ -12,6 +12,7 @@ export default createStore({
     state: {
         errors: {},
         form_errors: {},
+        title: 'Prueba store'
     },
     mutations: {
         SET_API_ERROR(state, payload) {

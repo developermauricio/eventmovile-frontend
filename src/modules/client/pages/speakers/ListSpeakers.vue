@@ -61,14 +61,23 @@ export default {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
       listSpeakers: [],
       listColorSpeakers: ['#d4c8eb', '#ce93d8', '#9b7ed1', '#c8e6c9'],
+      fullPage: false,
+      loader: null,
     }
   },
   methods: {
     getSpeakersEvent() {
+      this.loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
+
       window.axios.get(`getSpeakers/${this.eventID}`)
         .then( response => {
+          this.loader.hide()
           this.listSpeakers = response.data.data
         }).catch( error => {
+          this.loader.hide()
           console.log('error... ', error)
         })
     },
@@ -96,7 +105,9 @@ export default {
   },
   created() {
     this.eventID = localStorage.getItem("eventId")
-    this.getSpeakersEvent()
+    this.listSpeakers = JSON.parse( localStorage.getItem('listSpeakers') ) || []
+    
+    if ( this.listSpeakers.length === 0 )  this.getSpeakersEvent()
   }
 }
 </script>

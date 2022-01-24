@@ -1,13 +1,13 @@
 <template>
   <!-- Header Area -->
-  <div class="header-area header-home" id="headerArea">
+  <div class="header-area header-home">
     <div class="container">
       <!-- Header Content -->
       <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
         <!-- Logo Wrapper -->
         <div class="logo-wrapper">
           <router-link to="/">
-            <img :src="this.styles.home_img_logo ? this.urlBaseFile + this.styles.home_img_logo : 'assets/img/logo-pm.png'" alt="Logo event">
+            <img :src="eventStyles.home_img_logo ? urlBaseFile + eventStyles.home_img_logo : 'assets/img/logo-pm.png'" alt="Logo event">
           </router-link>
         </div>
         <!-- Navbar Toggler -->
@@ -45,13 +45,11 @@
           <!-- Imagen del usuario -->
           <router-link to="/profile">
             <div class="user-thumbnail-name  ms-4">
-              <img src="assets/img/bg-img/2.jpg" width="100" alt="">
+              <img :src="dataUser.pic ? urlBaseFile + dataUser.pic : 'assets/img/bg-img/2.jpg'" width="100" alt="Photo user">
             </div>
           </router-link>
         </div>
-
       </div>
-      <!-- # Header Five Layout End -->
     </div>
   </div>
 </template>
@@ -59,22 +57,27 @@
 <script>
 export default {
   name: "Headerhome",
+  props: {
+    dataUser: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
+    eventStyles: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
+  },
   data() {
     return {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
-      style: {},
     }
   },
-  methods: {
-    getStyleLocalStorage(){
-      let styleEvent = localStorage.getItem('style-event')
-      this.styles = JSON.parse(styleEvent)
-      console.log("this.styles:", this.styles)
-    }, 
-  },
-  created() {
-    this.getStyleLocalStorage()
-  },
+  //methods: { },
+  //created() { },
   mounted() {
     let settingButton, settingCard, settingOverlay, settingCardClose;
     settingButton = document.getElementById("settingTriggerBtn");

@@ -1,6 +1,6 @@
 <template>
   <!-- Ticket Slide -->
-  <div class="partner-logo-slide-wrapper container pe-0">
+  <div class="partner-logo-slide-wrapper container pe-0" style="margin-top: -40px;">
     <div class="partner-slide">
       <!-- Partner Slide Card -->
       <div>
@@ -30,13 +30,14 @@
 
       <div>
         <div class="partner-slide-card my-2">
-          <a class="content-a" href="#"><img src="assets/img/img-ticket.png" alt="">
+          <router-link :to="'/mapa'" class="content-a"> 
+            <img src="assets/img/img-ticket.png" alt="">
             <div class="content-info">
               <img class="pb-2" src="assets/img/icon-map.png" width="20" alt="">
               <h3>Mapa del Evento</h3>
               <p>Ubica todas nuestras zonas y actividades</p>
             </div>
-          </a>
+          </router-link>
         </div>
       </div>
 

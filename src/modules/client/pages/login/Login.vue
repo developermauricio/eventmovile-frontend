@@ -32,15 +32,11 @@
           <h6 class="mb-3 text-center text-title">Ingresa tu correo para validar tu identidad</h6>
           <form action="page-home.html">
             <div class="form-group">
-              <input v-model="form.email" class="form-control" type="email" placeholder="Correo electrónico" required>
+              <input v-model="form.email" @input="changeValue" class="form-control" type="email" placeholder="Correo electrónico" required>
               <div class="error-email">
                 {{ errorEmail }}
               </div>
             </div>
-            <!--          <div class="form-group position-relative">-->
-            <!--            <input class="form-control" id="psw-input" type="password" placeholder="Enter Password">-->
-            <!--            <div class="position-absolute" id="password-visibility"><i class="bi bi-eye"></i><i class="bi bi-eye-slash"></i></div>-->
-            <!--          </div>-->
             <div class="px-5">
               <button class="btn btn-primary w-100" type="submit" @click.prevent="onSubmit">INGRESAR</button>
             </div>
@@ -72,6 +68,9 @@ export default {
       eventId: null,
       urlBack: '',
       event: {},
+      validatorEmail: null,
+      fullPage: false,
+      loader: null,
     };
   },
   methods: {
@@ -81,13 +80,19 @@ export default {
           this.event = response.data[0]
         })
     },
+    changeValue() {
+      this.errorEmail = ''
+      this.validatedEmail()
+    },
+    validatedEmail() {
+      if ( this.form.email ) {        
+        this.errorEmail = this.validator.test(this.form.email) ? '' : 'El correo electrónico debe ser valido.'        
+      } else {
+        this.errorEmail = 'El correo electrónico es requerido.'
+      }
+    },
     setInfoLocalUser( user ) {
-      localStorage.setItem("_current_user_name", user.name);
-      localStorage.setItem("_current_user_company", user.company_id);
-      localStorage.setItem("_current_user_lastname", user.lastname);
-      localStorage.setItem("_current_user_id", user.id);
-      localStorage.setItem("_current_user_email", user.email);
-      localStorage.setItem("_current_model_id", user.model_id);
+      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("_current_token", user.token);
     },
     onSubmit() {
@@ -96,56 +101,72 @@ export default {
         return;
       }
 
-      if ( this.form.email === '' ) {
-        this.errorEmail = 'Por favor ingrese el correo electrónico'
-        return
-      }
-
-      // TODO falta validar el correo ingresado
-
+      this.validatedEmail()
+      
+      if ( this.errorEmail ) return;
+ 
       const dataLogin = {
         email: this.form.email,
         password: this.event.password.trim(),
         eventId: this.eventId,
       };
 
+      this.loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
       window.axios.post("auth/basic", dataLogin)
         .then( response => {
+          this.loader.hide()
           const user = response.data;
           this.setInfoLocalUser(user)
           window.axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
-          let dataUserQr = JSON.stringify(user)
+          let dataUserQr = JSON.stringify(user)          
           this.$router.push({name: "Home", params: {inSession: true, dataUser: dataUserQr}});
         })
         .catch( error => {
+          this.loader.hide()
           console.log('error login:  ', error)
           if (error.response.status == 401) {
             console.log('Usuario o contraseña incorrectos');
           }
           if ( error.response.status == 422 && typeof error.response.data.error.email !== "undefined" ) {
             console.log('El usuario no se encuentra registrado en el evento.');
+            this.$swal.fire({
+              title: 'Sin registro',
+              text: "El usuario ingresado no se encuentra registrado. ¿Desea registrase?",
+              icon: 'info',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Si',
+              cancelButtonText: 'No',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                console.log('ir a registro');
+              }
+            })
+            //TODO revisar para enviarlo a registrarse
           }
-        });
+        }); 
       
     },
     getStyleLocalStorage(){
       let styleEvent = localStorage.getItem('style-event')
       this.styles = JSON.parse(styleEvent)
-      console.log("this.styles:", this.styles)
     }, 
   },
-
   created() {
     this.urlBack = localStorage.getItem("webAppPath") || ''
     this.eventId = localStorage.getItem("eventId") || ''
+    this.validator = RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
 
     if ( this.eventId ) {
-      this.getEvent()
+      this.event = JSON.parse( localStorage.getItem('event') ) || {}
+      if ( !this.event ) this.getEvent()
       this.getStyleLocalStorage()
     }
   },
-
-  mounted() { },
 }
 </script>
 
