@@ -69,6 +69,16 @@ const routes = [
   },
   {
     meta: {
+      title: 'Photo',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/photos',
+    name: 'Photo',
+    component: () => import(/* webpackChunkName: "contact" */ '../modules/client/pages/photo/Photo.vue'),
+  },
+  {
+    meta: {
       title: 'Requestreceived',
       requiresAuth: true,
     },
@@ -89,16 +99,13 @@ const routes = [
   },
   {
     meta: {
-      title: 'About',
+      title: 'Resources',
       requiresAuth: true,
     },
     beforeEnter: [isAuthenticatedGuard],
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/resources',
+    name: 'Resources',
+    component: () => import(/* webpackChunkName: "requestsend" */ '../modules/client/pages/resources/Rosources.vue'),
   },
   {
     meta: {
