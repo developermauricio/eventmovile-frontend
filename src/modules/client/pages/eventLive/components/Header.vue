@@ -15,7 +15,7 @@
           
           <!-- Navbar Toggler -->
           <div class="">
-            <img width="35" class="img-circle img-user" src="/assets/img/avatars/perfil-men.jpg" alt="">
+            <img width="35" class="img-circle img-user" src="/assets/img/avatars/photo-user.png" alt="">
           </div>
         </div>
       </div>

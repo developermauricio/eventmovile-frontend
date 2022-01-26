@@ -158,7 +158,8 @@ export default {
       this.URLactualBool = true
     } else {
       this.titleHeader = 'Explorar'
-      this.URLactualBool = false
+      //this.URLactualBool = false
+      this.URLactualBool = true
     }
   }
 }

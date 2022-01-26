@@ -6,7 +6,7 @@
                     <span class="input-group-text">
                         <i class="bi bi-search"></i>
                     </span>
-                    <input class="form-control" type="search" placeholder="Buscar..." aria-describedby="searchbox">
+                    <input v-model="inputSearch" @input="inputActionSearch" class="form-control" type="search" placeholder="Buscar..." aria-describedby="searchbox">
                     <span class="style-close-search">
                         <button @click="closeSearch()" class="btn-close text-reset" type="button"></button>
                     </span>
@@ -22,6 +22,7 @@ export default {
   data() {
     return {
         showSearch: false,
+        inputSearch: '',
     }
   },
   methods: {
@@ -30,6 +31,9 @@ export default {
     },
     closeSearch() {
         this.showSearch = false
+    },
+    inputActionSearch() {
+        this.$emit('actionSearch', this.inputSearch)
     }
   },
 }

@@ -1,21 +1,21 @@
 <template>
   <div class="card user-data-card">
     <div class="card-body">
-      <form action="#">
+      <div>
         <div class="form-group mb-3">
           <label class="form-label">Nombre</label>
-          <p>{{ dataUser }}</p>
+          <p>{{ fullName }}</p>
         </div>
         <div class="form-group mb-3">
           <label class="form-label">Correo electrónico</label>
-          <p>silviotista93@gmail.com</p>
+          <p>{{ dataUser.email ? dataUser.email : 'Por definir' }}</p>
         </div>
         <div class="form-group mb-3">
           <label class="form-label">Empresa</label>
-          <p>Creategicalatina</p>
+          <p>{{ dataUser.company ? dataUser.company : 'Por definir' }}</p>
         </div>
         <button @click="loggout" class="btn btn-danger w-100" type="submit">Cerrar sesión</button>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -23,20 +23,30 @@
 <script>
 export default {
   name: "Infoprofile",
-  data(){
-    return {
-      dataUser: '',
-    }
+  props: {
+    dataUser: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
   },
+  data() {
+    return {
+      fullName: '',
+    }
+  },  
   methods:{
     loggout(){
       localStorage.clear()
       this.$router.push('Login')
     }
   },
-  mounted() {
-    this.dataUser = localStorage.getItem("_current_user_name") + ' ' + localStorage.getItem("_current_user_lastname");
+  created() {
+    console.log('user: ', this.dataUser)
+    this.fullName = this.dataUser.name + ' ' + this.dataUser.lastname
   },
+  mounted() { },
 }
 </script>
 

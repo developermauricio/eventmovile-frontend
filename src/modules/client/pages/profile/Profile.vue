@@ -1,8 +1,8 @@
 <template>
-  <Headerhome/>
+  <Headerhome :dataUser="dataUser" :eventStyles="eventStyles"/>
   <div class="container mb-4">
-    <Headerprofile/>
-    <Infoprofile/>
+    <Headerprofile :dataUser="dataUser"/>
+    <Infoprofile :dataUser="dataUser"/>
   </div>
   <div id="nav">
     <Navbar/>
@@ -19,7 +19,17 @@ export default {
     Headerprofile: defineAsyncComponent(() => import(/* webpackChunkName: "Headerprofile"*/ '@/modules/client/pages/profile/components/Headerprofile')),
     Infoprofile: defineAsyncComponent(() => import(/* webpackChunkName: "Infoprofile"*/ '@/modules/client/pages/profile/components/Infoprofile')),
     Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton'))
-  }
+  },
+  data(){
+    return {
+      dataUser: {},
+      eventStyles: {},
+    }
+  },
+  created() {
+    this.dataUser = JSON.parse( localStorage.getItem('user') ) || {}
+    this.eventStyles = JSON.parse( localStorage.getItem('style-event') ) || {}    
+  },
 }
 </script>
 

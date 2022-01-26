@@ -5,7 +5,7 @@
   <HeaderSpeaker @filterSpeaker="filterSpeaker" @searchSpeaker="searchSpeaker"/>
   <div style="height: 50px;"></div>
 
-  <SearchSpeaker ref="fieldSearch" />
+  <SearchSpeaker ref="fieldSearch" @actionSearch="actionSearch" />
   <!--=====================================
        SECTION SPEAKER
   ======================================-->
@@ -59,6 +59,7 @@ export default {
     return {
       eventID: 0,
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      listSpeakersOriginal: [],
       listSpeakers: [],
       listColorSpeakers: ['#d4c8eb', '#ce93d8', '#9b7ed1', '#c8e6c9'],
       fullPage: false,
@@ -75,7 +76,8 @@ export default {
       window.axios.get(`getSpeakers/${this.eventID}`)
         .then( response => {
           this.loader.hide()
-          this.listSpeakers = response.data.data
+          this.listSpeakersOriginal = response.data.data
+          this.listSpeakers = this.listSpeakersOriginal.slice();
         }).catch( error => {
           this.loader.hide()
           console.log('error... ', error)
@@ -89,6 +91,26 @@ export default {
     },
     searchSpeaker() {
       this.$refs.fieldSearch.showSearchSpeaker()
+    },
+    actionSearch( search ) {
+      if ( search ) {
+        let speakerTemp = []
+
+        this.listSpeakersOriginal.map( speaker => {
+          if ( speaker.speaker_name.toLowerCase().includes( search.trim() ) ){ 
+            speakerTemp.push(speaker)    
+          }
+        })
+
+        if ( speakerTemp.length > 0 ) {
+          this.listSpeakers = speakerTemp.slice();
+        } else {
+          this.listSpeakers = this.listSpeakersOriginal.slice();
+        }
+
+      } else {
+        this.listSpeakers = this.listSpeakersOriginal.slice();
+      }
     }
   },
   computed: {
@@ -105,7 +127,8 @@ export default {
   },
   created() {
     this.eventID = localStorage.getItem("eventId")
-    this.listSpeakers = JSON.parse( localStorage.getItem('listSpeakers') ) || []
+    this.listSpeakersOriginal = JSON.parse( localStorage.getItem('listSpeakers') ) || []
+    this.listSpeakers = this.listSpeakersOriginal.slice();
     
     if ( this.listSpeakers.length === 0 )  this.getSpeakersEvent()
   }

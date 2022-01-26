@@ -45,7 +45,7 @@
           <!-- Imagen del usuario -->
           <router-link to="/profile">
             <div class="user-thumbnail-name  ms-4">
-              <img :src="dataUser.pic ? urlBaseFile + dataUser.pic : 'assets/img/bg-img/2.jpg'" width="100" alt="Photo user">
+              <img :src="dataUser.pic ? urlBaseFile + dataUser.pic : '/assets/img/avatars/photo-user.png'" width="100" alt="Photo user">
             </div>
           </router-link>
         </div>

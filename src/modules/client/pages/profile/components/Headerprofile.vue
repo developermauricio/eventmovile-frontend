@@ -3,13 +3,13 @@
     <div class="card user-info-card mb-3">
       <div class="card-body d-flex align-items-center">
         <div class="user-profile me-3">
-          <img src="assets/img/bg-img/2.jpg" alt="">
+          <img :src="dataUser.pic ? urlBaseFile + dataUser.pic : '/assets/img/avatars/photo-user.png'" width="60" alt="Photo user">
         </div>
         <div class="user-info">
           <div class="d-flex align-items-center">
-            <h5 class="mb-1">{{ dataUser }}</h5>
+            <h6 class="mb-1">{{ fullName }}</h6>
           </div>
-          <p class="mb-0">Creategicalatina</p>
+          <p class="mb-0">{{ dataUser.user_type ? dataUser.user_type : 'Por definir' }}</p>
         </div>
       </div>
     </div>
@@ -19,19 +19,32 @@
 <script>
 export default {
   name: "Headerprofile",
-  data(){
+  props: {
+    dataUser: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
+  },
+  data() {
     return {
-      dataUser: '',
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      fullName: '',
     }
   },
-  mounted() {
-    this.dataUser = localStorage.getItem("_current_user_name") + ' ' + localStorage.getItem("_current_user_lastname");
-  },
+  created() {
+    this.fullName = this.dataUser.name + ' ' + this.dataUser.lastname
+  }
 }
 </script>
 
 <style scoped>
 .container-profile {
   margin-top: 4rem !important;
+}
+.user-profile {
+  width: 60px;
+  height: 60px;
 }
 </style>

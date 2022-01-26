@@ -48,7 +48,6 @@ export default {
   },
   created() {
     this.eventId = localStorage.getItem("eventId") || ''
-    console.log('eventId:  ', this.eventId)
 
     if ( this.eventId ) this.getMap()
   }

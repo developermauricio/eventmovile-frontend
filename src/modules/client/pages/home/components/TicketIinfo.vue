@@ -5,13 +5,14 @@
       <!-- Partner Slide Card -->
       <div>
         <div class="partner-slide-card my-2">
-          <a class="content-a" href="#"><img src="assets/img/img-ticket.png" alt="">
+          <router-link to="/networking" class="content-a">
+            <img src="assets/img/img-ticket.png" alt="">
             <div class="content-info">
               <img class="pb-1" src="assets/img/icon-streaming-1.png" width="30" alt="">
               <h3>Streaming</h3>
               <p>Encuentra aquí todas las transmisiones</p>
             </div>
-          </a>
+          </router-link>
         </div>
       </div>
 
@@ -30,7 +31,7 @@
 
       <div>
         <div class="partner-slide-card my-2">
-          <router-link :to="'/mapa'" class="content-a"> 
+          <router-link to="/mapa" class="content-a"> 
             <img src="assets/img/img-ticket.png" alt="">
             <div class="content-info">
               <img class="pb-2" src="assets/img/icon-map.png" width="20" alt="">
@@ -41,18 +42,18 @@
         </div>
       </div>
 
-      <router-link to="/resources">
+      <div>
         <div class="partner-slide-card my-2">
-          <a class="content-a" href="#"><img src="assets/img/img-ticket.png" alt="">
+          <router-link to="/resources" class="content-a"> 
+            <img src="assets/img/img-ticket.png" alt="">
             <div class="content-info">
               <img class="pb-2" src="assets/img/icon-resources.png" width="25" alt="">
               <h3>Recursos</h3>
               <p>Todo el contenido de apoyo disponible para descaga</p>
             </div>
-          </a>
+          </router-link>
         </div>
-      </router-link>
-
+      </div>
     </div>
     <div class="">
       <nav aria-label="Page navigation example">
