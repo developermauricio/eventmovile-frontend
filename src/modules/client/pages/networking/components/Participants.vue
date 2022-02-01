@@ -13,12 +13,10 @@
               <li v-for="user in listUserChat" :key="user.user_id" class="p-3">
                 <div @click="clickUserChat(user)" class="d-flex">
                   <!-- Thumbnail -->
-                  <!-- <div  data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottomProfileNetworking" aria-controls="offcanvasBottomProfileNetworking" class="chat-user-thumbnail me-3 shadow"> -->
                   <div class="chat-user-thumbnail me-3 shadow">
-                    <img class="img-circle" src="/assets/img/avatars/photo-user.png" alt="Photo user">
+                    <img class="img-circle" :src="user.picture ? user.picture : '/assets/img/avatars/photo-user.png'" alt="Photo user">
                   </div>
                   <!-- Info -->
-                  <!-- <div class="chat-user-info" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottomProfileNetworking" aria-controls="offcanvasBottomProfileNetworking"> -->
                   <div class="chat-user-info">
                     <h6 class="text-truncate mb-0">{{ user.name + ' ' + user.lastname }}</h6>
                     <div class="last-chat">
@@ -70,13 +68,33 @@ export default {
     },
     connectToChat( user ) {
       console.log('aqui se puede conectar al chat... info user: ', user)
+    },
+    getListsUserEvent() {
+      this.loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
+      let eventID = localStorage.getItem("eventId") || 0
+
+      window.axios.get(`usersForEvent/${eventID}`)
+        .then( response => {
+          this.listUserChat = response.data.data
+          localStorage.setItem("listUserChat", JSON.stringify(this.listUserChat));
+          this.loader.hide()
+        }).catch( error => {
+          this.loader.hide()
+          console.log('error... ', error)
+        })
     }
   },
-  created() {
+  created() { },
+  mounted() { 
     this.listUserChat = JSON.parse( localStorage.getItem('listUserChat') ) || []
-    console.log('list... ', this.listUserChat)
-  },
-  mounted() { }
+
+    if ( this.listUserChat.length === 0 ) {
+      this.getListsUserEvent()
+    }
+  }
 }
 </script>
 
@@ -86,5 +104,8 @@ export default {
 }
 .last-chat p{
   color: #00000094 !important;
+}
+.chat-user-info {
+  width: calc(100% - 40px);
 }
 </style>

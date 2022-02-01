@@ -33,9 +33,9 @@ export default {
 
       window.axios.get(`usersForEvent/${this.eventID}`)
         .then( response => {
-          this.loader.hide()
           this.listUserChat = response.data.data
           localStorage.setItem("listUserChat", JSON.stringify(this.listUserChat));
+          this.loader.hide()
         }).catch( error => {
           this.loader.hide()
           console.log('error... ', error)
@@ -46,7 +46,9 @@ export default {
     this.eventID = localStorage.getItem("eventId")
     this.listUserChat = JSON.parse( localStorage.getItem('listUserChat') ) || []
 
-    if ( this.listUserChat.length === 0 ) this.getListsUserEvent()
+    if ( this.listUserChat.length === 0 ) {
+      this.getListsUserEvent()
+    }
   }
 }
 </script>

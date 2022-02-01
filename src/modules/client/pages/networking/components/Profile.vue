@@ -71,9 +71,11 @@ export default {
 .modal-canvas-info-user {
   height: 45vh;
   border-radius: 30px 30px 0 0;
+  z-index: 1048;
 }
 .hidd {
   display: block !important;
+  z-index: 1046;
 }
 .btn-light{
   width: 100% !important;
