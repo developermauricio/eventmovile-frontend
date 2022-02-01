@@ -43,7 +43,6 @@ export default {
     }
   },
   created() {
-    console.log('user: ', this.dataUser)
     this.fullName = this.dataUser.name + ' ' + this.dataUser.lastname
   },
   mounted() { },

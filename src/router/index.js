@@ -138,6 +138,17 @@ const routes = [
     props: true,
     component: () => import('../modules/client/pages/map/Map')
   },
+  {
+    meta: {
+      title: 'Certificados',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path:"/certificados",
+    name: 'Certificate',
+    props: true,
+    component: () => import('../modules/client/pages/certificates/Certificate')
+  },
 
   {
     meta: {

@@ -127,9 +127,7 @@ export default {
     this.event = JSON.parse( localStorage.getItem('event') ) || {}
     this.user = JSON.parse( localStorage.getItem('user') ) || {}
     this.fullName = this.user.name + ' ' + this.user.lastname
-    console.log('info event: ', this.event)
-    console.log('info user: ', this.user)
-    /* Solo información relevante para el codigo QR */
+    /*****  Solo información relevante para el codigo QR *****/
     let infoUser = {
       id: this.user.id,
       email: this.user.email,

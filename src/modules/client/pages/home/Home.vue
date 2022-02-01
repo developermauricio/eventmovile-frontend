@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <Headerhome :nameUser="nameUser" :prueba="prueba"/> -->
     <Headerhome :dataUser="dataUser" :eventStyles="eventStyles"/>
     <Headerwelcome :userName="userName"/>
     <Bannerprincipal :eventStyles="eventStyles"/>
