@@ -89,8 +89,10 @@ export default {
     };
   },
   mounted() {
+    const eventID = localStorage.getItem("eventId") || 0;
+
     window.axios
-      .get("/networking-wa/chats-user")
+      .get("/networking-wa/chats-user?event=" + eventID)
       .then((resp) => {
         this.chats = resp.data;
       })
@@ -112,7 +114,7 @@ export default {
       window.localStorage.setItem("chat", JSON.stringify(data));
       setTimeout(() => {
         this.$router.push({ name: "Chat" });
-      }, 200)
+      }, 200);
     },
   },
 };
