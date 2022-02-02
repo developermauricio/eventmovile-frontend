@@ -1,4 +1,4 @@
-import { isLoggedIn } from './utils/utilities'
+import { isLoggedIn } from './utils/utilities';
 
 const isAuthenticatedGuard = async(to, from, next) =>{
     return new Promise(() =>{

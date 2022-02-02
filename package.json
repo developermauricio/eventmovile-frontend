@@ -13,6 +13,7 @@
     "baguettebox.js": "^1.11.1",
     "core-js": "^3.6.5",
     "dayjs": "^1.10.7",
+    "mqtt": "^4.3.4",
     "v-autocomplete": "^1.8.2",
     "vee-validate": "^4.5.7",
     "vue": "^3.0.0",

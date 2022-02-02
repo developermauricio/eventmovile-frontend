@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import isAuthenticatedGuard from "../auth-guard";
 const routes = [
 
@@ -11,6 +11,19 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/login/Login.vue')
+  },
+
+  {
+    meta: {
+      title: 'Chat',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/chat',
+    name: 'Chat',
+    component: () => import(
+      /* webpackChunkName: "ChatNetworking" */ '../modules/client/pages/networking/ChatNetworking.vue'
+    )
   },
 
   {
@@ -133,7 +146,7 @@ const routes = [
       requiresAuth: true,
     },
     beforeEnter: [isAuthenticatedGuard],
-    path:"/mapa",
+    path: "/mapa",
     name: 'Map',
     props: true,
     component: () => import('../modules/client/pages/map/Map')
@@ -144,7 +157,7 @@ const routes = [
       requiresAuth: true,
     },
     beforeEnter: [isAuthenticatedGuard],
-    path:"/certificados",
+    path: "/certificados",
     name: 'Certificate',
     props: true,
     component: () => import('../modules/client/pages/certificates/Certificate')
@@ -179,12 +192,12 @@ const routes = [
       requiresAuth: false,
     },
     beforeEnter: [isAuthenticatedGuard],
-    path:"/:webAppPath?",
+    path: "/:webAppPath?",
     name: 'Landing',
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/landing/Landing.vue')
   },
-  
+
 ]
 
 const router = createRouter({
