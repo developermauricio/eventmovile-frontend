@@ -101,6 +101,7 @@
 <script>
 import "vuesax/dist/vuesax.css";
 import { defineAsyncComponent } from "vue";
+import { createNotification } from "@/plugins/notification.js";
 
 export default {
   name: "Participants",
@@ -120,27 +121,39 @@ export default {
       this.$refs.modalInfoUserChat.setInfoUserChat(user);
     },
     sendRequest(user) {
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
       const data = {
         guest: user.user_id,
+        event: this.eventID
       };
       window.axios
         .post("/networking-wa/send-solicitud", data)
         .then((user) => {
+          loader.hide();
           user.sendRequest = true;
           localStorage.setItem(
             "listUserChat",
             JSON.stringify(this.listUserChat)
           );
-          console.log(user);
+
+          createNotification(
+            data.guest,
+            "Nueva Solicitud",
+            "Has recibido una nueva solicitud",
+            "nw_new_request"
+          );
         })
         .catch((err) => {
+          loader.hide();
           console.log(err);
         });
       console.log("aqui se puede conectar al chat... info user: ", user);
     },
     cancelRequest(user) {
       console.log("cancelar la solicitud...", user);
-
       this.$swal
         .fire({
           title: "Cancelar solicitud",
@@ -163,7 +176,7 @@ export default {
         });
     },
     getListsUserEvent() {
-      this.loader = this.$loading.show({
+      const loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.containerLoarder,
         canCancel: false,
       });
@@ -177,14 +190,14 @@ export default {
             "listUserChat",
             JSON.stringify(this.listUserChat)
           );
-          this.loader.hide();
+          loader.hide();
         })
         .catch((error) => {
-          this.loader.hide();
+          loader.hide();
           console.log("error... ", error);
         })
         .catch((error) => {
-          this.loader.hide();
+          loader.hide();
           console.log("error... ", error);
         });
     },

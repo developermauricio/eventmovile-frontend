@@ -3,6 +3,7 @@
     <div class="container mb-5">
       <div class="card w-100">
         <div class="card-body">
+          <p class="text-center" v-if="chats.length < 1">Sin Contactos</p>
           <ul class="ps-0 chat-user-list">
             <!-- Single Chat User -->
             <li class="p-3" v-for="chat in chats" :key="chat.id">
@@ -90,13 +91,18 @@ export default {
   },
   mounted() {
     const eventID = localStorage.getItem("eventId") || 0;
-
+    const loader = this.$loading.show({
+      container: this.fullPage ? null : this.$refs.containerLoarder,
+      canCancel: false,
+    });
     window.axios
       .get("/networking-wa/chats-user?event=" + eventID)
       .then((resp) => {
+        loader.hide();
         this.chats = resp.data;
       })
       .catch((err) => {
+        loader.hide();
         console.log(err);
       });
   },
