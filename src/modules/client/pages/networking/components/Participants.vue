@@ -183,10 +183,6 @@ export default {
           this.loader.hide();
           console.log("error... ", error);
         })
-        .catch((error) => {
-          this.loader.hide();
-          console.log("error... ", error);
-        });
     },
   },
   created() {},

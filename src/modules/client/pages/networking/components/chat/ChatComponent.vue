@@ -1,46 +1,7 @@
 <template>
   <!-- Video Calling Popup -->
-  <div class="video-calling-popup-wrap" id="videoCallingPopup">
-    <div
-      class="video-calling-popup-body bg-overlay"
-      style="background-image: url('img/bg-img/2.jpg')"
-    >
-      <!-- User Thumbnail -->
-      <div class="user-thumbnail mb-3">
-        <img src="img/bg-img/2.jpg" alt="" />
-      </div>
-      <!-- Video Icon -->
-      <div class="video-icon d-block mb-1">
-        <svg
-          class="bi bi-camera-video text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          width="42"
-          height="42"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5zm11.5 5.175l3.5 1.556V4.269l-3.5 1.556v4.35zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H2z"
-          ></path>
-        </svg>
-      </div>
-      <h6 class="mb-5 text-white">Affan is video calling...</h6>
-      <!-- Button Group -->
-      <div class="button-group">
-        <a
-          class="btn btn-lg btn-danger btn-round me-3"
-          id="videoCallDecline"
-          href="#"
-          >Decline</a
-        ><a
-          class="btn btn-lg btn-success btn-round ms-3"
-          href="page-video-call.html"
-          >Accept</a
-        >
-      </div>
-    </div>
-  </div>
+  <popup-video-calling ref="videoCall"/>
+
   <!-- Calling Popup -->
   <div class="calling-popup-wrap" id="callingPopup">
     <div class="calling-popup-body bg-primary">
@@ -76,7 +37,7 @@
     </div>
   </div>
 
-  <chat-header :chat-info="chatInfo" />
+  <chat-header :chat-info="chatInfo" @openCallVideo="openPopupVideoCall"/>
   <chat-body :messages="messages" :user="user" :users="users" />
   <chat-footer :user="user" :chatKey="chatKey" :chatId="chatInfo.id" />
 </template>
@@ -85,6 +46,7 @@ import { subscriberMQTT } from "@/plugins/mqtt";
 import ChatHeader from "./ChatHeader.vue";
 import ChatBody from "./ChatBody.vue";
 import ChatFooter from "./ChatFooter.vue";
+import PopupVideoCalling from "./PopupVideoCalling.vue";
 
 export default {
   name: "ChatComponent",
@@ -114,6 +76,7 @@ export default {
     ChatHeader,
     ChatBody,
     ChatFooter,
+    PopupVideoCalling,
   },
   methods: {
     addMessageBottom(message) {
@@ -187,6 +150,10 @@ export default {
           success();
         });
     },
+    openPopupVideoCall() {
+      this.$refs.videoCall.openPopupVideoCall()
+    }
+
   },
   mounted() {
     window.axios

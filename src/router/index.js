@@ -162,6 +162,18 @@ const routes = [
     props: true,
     component: () => import('../modules/client/pages/certificates/Certificate')
   },
+  
+  {
+    meta: {
+      title: 'Videollamada',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: "/video-call",
+    name: 'VideoCall',
+    props: true,
+    component: () => import('../modules/client/pages/agora/VideoCall')
+  },
 
   {
     meta: {
