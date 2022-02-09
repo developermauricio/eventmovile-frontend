@@ -167,7 +167,7 @@ export default {
     this.loadNotifications();
     subscribeNotifications((data) => {
       this.$toast.info(data.t, {
-        position: "top-right",
+        position: "bottom-right",
         duration: 2027,
         max: 2,
       });

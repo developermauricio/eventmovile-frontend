@@ -29,9 +29,11 @@
 </template>
 
 <script>
-import NotificationComponent from './NotificationComponent.vue';
+import { defineAsyncComponent } from '@vue/runtime-core';
 export default {
-  components: { NotificationComponent },
+  components: { 
+    NotificationComponent: defineAsyncComponent(() => import(/* webpackChunkName: "Notification"*/ '@/modules/client/shared/components/NotificationComponent')),
+   },
   name: "Headerhome",
   props: {
     dataUser: {
