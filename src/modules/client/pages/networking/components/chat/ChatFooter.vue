@@ -125,7 +125,6 @@ export default {
         d: new Date(),
       };
 
-      console.log(data);
       publishMQTT(this.chatKey, data).then(() => {
         this.message = "";
       });

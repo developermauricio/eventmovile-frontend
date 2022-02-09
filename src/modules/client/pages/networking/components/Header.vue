@@ -23,6 +23,9 @@
           <div class="logo-wrapper"><a href="page-home.html"><img src="" alt=""></a></div>
           <!-- Navbar Toggler -->
           <div class="chat-user--info d-flex align-items-center">
+            <div class="me-4">
+              <notification-component></notification-component>
+            </div>
             <router-link to="/networking-request-send">
               <div class="setting-wrapper me-4">
                 <div class="setting-trigger-btn">
@@ -119,6 +122,7 @@ export default {
   components: {
     Search: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/pages/networking/components/Search')),
     Filter: defineAsyncComponent(() => import(/* webpackChunkName: "Filter"*/ '@/modules/client/pages/networking/components/Filters')),
+    NotificationComponent: defineAsyncComponent(() => import(/* webpackChunkName: "Notification"*/ '@/modules/client/shared/components/NotificationComponent')),
   },
   data() {
     return {

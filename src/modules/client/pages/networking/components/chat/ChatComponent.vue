@@ -133,11 +133,16 @@ export default {
       return (user.name + " " + (user.lastname || "")).trim();
     },
     getMessages(success = () => {}) {
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
       window.axios
         .post("/networking-wa/messages/" + this.chatInfo.id, {
           page: this.currentPage,
         })
         .then((response) => {
+          loader.hide();
           this.currentPage += 1;
           response.data.data.forEach((message) => {
             this.messages.unshift({
@@ -148,6 +153,10 @@ export default {
             });
           });
           success();
+        })
+        .catch((err) => {
+          loader.hide();
+          console.log(err);
         });
     },
     openPopupVideoCall( userName ) {      
@@ -156,12 +165,21 @@ export default {
 
   },
   mounted() {
+    const loader = this.$loading.show({
+      container: this.fullPage ? null : this.$refs.containerLoarder,
+      canCancel: false,
+    });
     window.axios
       .get("/networking-wa/chat-info/" + this.chatKey)
       .then((response) => {
+        loader.hide();
         this.parseInfo(response.data);
+      })
+      .catch((err) => {
+        loader.hide();
+        console.log(err);
       });
-    subscriberMQTT(this.chatKey, (message) => {
+    subscriberMQTT("chat", this.chatKey, (message) => {
       this.addMessageBottom(JSON.parse(message));
     });
   },

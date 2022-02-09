@@ -3,6 +3,9 @@
     <div class="container mb-5">
       <div class="card w-100">
         <div class="card-body">
+          <p class="text-center" v-if="usersRemaining.length < 1">
+            Sin Solicitudes Recibidas
+          </p>
           <ul class="ps-0 chat-user-list">
             <!-- Single Chat User -->
             <li
@@ -101,6 +104,7 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
+import { createNotification } from "@/plugins/notification.js";
 
 export default {
   name: "Listrequestreceived",
@@ -117,12 +121,19 @@ export default {
     };
   },
   mounted() {
+    this.eventID = localStorage.getItem("eventId") || 0;
+    const loader = this.$loading.show({
+      container: this.fullPage ? null : this.$refs.containerLoarder,
+      canCancel: false,
+    });
     window.axios
-      .get("/networking-wa/get-solicitudes")
+      .get(`/networking-wa/get-solicitudes-recibidas?event=${this.eventID}`)
       .then((resp) => {
+        loader.hide();
         this.users = resp.data;
       })
       .catch((err) => {
+        loader.hide();
         console.log(err);
       });
   },
@@ -133,22 +144,41 @@ export default {
   },
   methods: {
     aceptarSolicitud(user) {
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
+      console.log(user);
       window.axios
         .put("/networking-wa/aceptar-solicitud/" + user.id)
         .then(() => {
+          loader.hide();
+          createNotification(
+            user.creator.id,
+            "Un nuevo amigo",
+            "Tienes un nuevo contacto",
+            "nw_new_contact"
+          );
           user.status = 1;
         })
         .catch((err) => {
+          loader.hide();
           console.log(err);
         });
     },
     rechazarSolicitud(user) {
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
       window.axios
         .put("/networking-wa/rechazar-solicitud/" + user.id)
         .then(() => {
+          loader.hide();
           user.status = 2;
         })
         .catch((err) => {
+          loader.hide();
           console.log(err);
         });
     },

@@ -92,12 +92,12 @@ const routes = [
   },
   {
     meta: {
-      title: 'Requestreceived',
+      title: 'RequestReceived',
       requiresAuth: true,
     },
     beforeEnter: [isAuthenticatedGuard],
     path: '/networking-request-received',
-    name: 'Requestreceived',
+    name: 'RequestReceived',
     component: () => import(/* webpackChunkName: "requestreceived" */ '../modules/client/pages/networking/Requetsreceived.vue'),
   },
   {
