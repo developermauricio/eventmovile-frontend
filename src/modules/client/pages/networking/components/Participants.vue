@@ -224,10 +224,6 @@ export default {
           loader.hide();
           console.log("error... ", error);
         })
-        .catch((error) => {
-          loader.hide();
-          console.log("error... ", error);
-        });
     },
   },
   created() {},

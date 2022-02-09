@@ -15,7 +15,7 @@
         <!-- Chat User Info -->
         <chat-header-info-user :chat-info="chatInfo" />
         <!-- Call & Video Wrapper -->
-        <chat-header-options />
+        <chat-header-options @openCallVideo="openCallVideo" />
       </div>
     </div>
   </div>
@@ -36,5 +36,10 @@ export default {
     ChatHeaderInfoUser,
     ChatHeaderOptions,
   },
+  methods: {
+    openCallVideo() {
+      this.$emit('openCallVideo')
+    }
+  }
 };
 </script>
