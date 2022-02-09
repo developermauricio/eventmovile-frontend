@@ -15,7 +15,7 @@
             <div class="container">
                 <div class="agora-view">
                     <div :class="{'agora-video-local': videoLocal}" class="agora-video">
-                        <StreamPlayer :stream="localStream" :domId="localStream.getId()" v-if="localStream" />
+                        <StreamPlayer :stream="localStream" :domId="localStream.getId()" v-if="localStream" />                        
                     </div>
                     <div class="agora-video" v-for="(remoteStream, index) in remoteStreams" :key="index">
                         <StreamPlayer :stream="remoteStream" :domId="remoteStream.getId()"/>
@@ -58,6 +58,13 @@ export default {
     name: 'VideoCall',
     components: {  
         StreamPlayer: defineAsyncComponent(() => import('@/modules/client/pages/agora/components/StreamPlayer'))
+    },
+    props: {
+        user: {
+            type: String,
+            required: false,
+            default: ''
+        }
     },
     data() {
         return {
@@ -124,7 +131,10 @@ export default {
     computed: {
         videoLocal() {
             return this.remoteStreams.length === 0 ? false : true; 
-        }
+        },
+        firstLetterNameUser() {
+            return (this.userName || "").slice(0, 1);
+        },
     },
     created() {
         this.rtc = new RTCClient();
@@ -159,6 +169,10 @@ export default {
             this.remoteStreams = this.remoteStreams.filter((it) => it.getId() !== evt.uid)
         }) 
     },
+    mounted() {
+        //this.userName = this.$route.params.user || ''
+        console.log('user name: ', this.user)
+    }
 }
 </script>
 
@@ -195,7 +209,7 @@ export default {
 .agora-view {
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
+    justify-content: flex-end;
 }
 .agora-video {
     width: 100%;
@@ -216,12 +230,5 @@ export default {
 }
 .color-icon {
     background-color: #ac58bc;
-}
-
-@media (max-width: 767.98px) { 
-    .agora-video-local {
-        width: 15vh;
-        height: 15vh;
-    }
 }
 </style>

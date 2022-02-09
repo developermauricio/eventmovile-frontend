@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .agora-video-player {
   height: 100%;
   width: 100%;

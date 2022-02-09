@@ -169,6 +169,7 @@ const routes = [
       requiresAuth: true,
     },
     beforeEnter: [isAuthenticatedGuard],
+    //path: "/video-call/:user",
     path: "/video-call",
     name: 'VideoCall',
     props: true,

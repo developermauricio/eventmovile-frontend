@@ -16,6 +16,8 @@
         <div class="button-group">
             <a @click="closePopup" class="btn btn-lg btn-danger btn-round me-3" href="#" >Cerrar</a>
             <router-link to="/video-call" class="btn btn-lg btn-success btn-round ms-3" href="#" >Aceptar</router-link>
+            <!-- <router-link :to="{path: '/video-call/', params: {user: userName}}" class="btn btn-lg btn-success btn-round ms-3" href="#" >Aceptar</router-link> -->
+            <!-- <router-link :to="`/video-call/${userName}`" class="btn btn-lg btn-success btn-round ms-3" href="#" >Aceptar</router-link> -->
         </div>
         </div>
     </div>
@@ -27,10 +29,12 @@ export default {
     data() {
         return {
             showModal: false,
+            userName: '',
         }
     },
     methods: {
-        openPopupVideoCall() {
+        openPopupVideoCall( userName ) {            
+            this.userName = userName
             this.showModal = !this.showModal
         },
         closePopup() {

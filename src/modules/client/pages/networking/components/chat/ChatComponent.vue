@@ -150,8 +150,8 @@ export default {
           success();
         });
     },
-    openPopupVideoCall() {
-      this.$refs.videoCall.openPopupVideoCall()
+    openPopupVideoCall( userName ) {      
+      this.$refs.videoCall.openPopupVideoCall(userName)
     }
 
   },
