@@ -6,8 +6,8 @@ export const subscribeNotifications = (callback) => {
     const user = JSON.parse(window.localStorage.getItem('user') || '{}');
     if (user.id) {
         const channel = channelNotification.replace('_', user.id);
-        subscriberMQTT(channel, data => {
-            callback(data);
+        subscriberMQTT('notification', channel, data => {
+            callback(JSON.parse(data));
         });
     }
 };

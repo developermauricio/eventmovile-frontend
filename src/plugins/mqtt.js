@@ -40,7 +40,8 @@ const createConnection = () => {
 
     clientMQ.on("message", (topic, message) => {
         if (callbacks[topic]) {
-            callbacks[topic].forEach(callback => {
+            Object.keys(callbacks[topic]).forEach(key => {
+                const callback = callbacks[topic][key];
                 callback(message.toString());
             });
         } else {
@@ -51,7 +52,7 @@ const createConnection = () => {
 
 createConnection();
 
-export const subscriberMQTT = (topic, callback, config = { qos: 0, retain: false }) => {
+export const subscriberMQTT = (key, topic, callback, config = { qos: 0, retain: false }) => {
     return new Promise((resolve, reject) => {
         clientMQ.subscribe(topic, config, (error, res) => {
             if (error) {
@@ -60,9 +61,9 @@ export const subscriberMQTT = (topic, callback, config = { qos: 0, retain: false
                 return;
             }
             if (!callbacks[topic]) {
-                callbacks[topic] = [];
+                callbacks[topic] = {};
             }
-            callbacks[topic].push(callback);
+            callbacks[topic][key] = callback;
             resolve(res);
         });
     })

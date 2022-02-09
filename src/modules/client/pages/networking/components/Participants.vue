@@ -37,7 +37,13 @@
                   </div>
                 </div>
                 <!-- Options solicitud enviada-->
-                <div v-if="user.sendRequest" class="dropstart chat-options-btn">
+                <div
+                  v-if="
+                    (user.request_sent && user.request_sent.status == 0) ||
+                    (user.request_received && user.request_received.status == 0)
+                  "
+                  class="dropstart chat-options-btn"
+                >
                   <button
                     @click="cancelRequest(user)"
                     class="btn dropdown-toggle"
@@ -61,8 +67,14 @@
                   </button>
                 </div>
                 <!-- Options enviar solicitud-->
-                <div v-else class="dropstart chat-options-btn">
+                <div
+                  v-else-if="
+                    !user.request_received || user.request_received.status !== 1
+                  "
+                  class="dropstart chat-options-btn"
+                >
                   <button
+                    v-if="!user.request_sent"
                     @click="sendRequest(user)"
                     class="btn dropdown-toggle"
                     type="button"
@@ -120,31 +132,52 @@ export default {
     clickUserChat(user) {
       this.$refs.modalInfoUserChat.setInfoUserChat(user);
     },
+    eliminarSolicitud(user) {
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
+      const id = user.request_received?user.request_received.id:user.request_sent.id;
+      window.axios
+        .delete("/networking-wa/eliminar-solicitud/" + id)
+        .then(() => {
+          loader.hide();
+          user.request_sent = null;
+          user.request_received = null;
+          localStorage.setItem(
+            "listUserChat",
+            JSON.stringify(this.listUserChat)
+          );
+        })
+        .catch((err) => {
+          loader.hide();
+          console.log(err);
+        });
+    },
     sendRequest(user) {
       const loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.containerLoarder,
         canCancel: false,
       });
       const data = {
-        guest: user.user_id,
-        event: this.eventID
+        guest: user.id,
+        event: this.eventID,
       };
       window.axios
         .post("/networking-wa/send-solicitud", data)
-        .then((user) => {
-          loader.hide();
-          user.sendRequest = true;
+        .then((response) => {
+          user.request_sent = response.data;
           localStorage.setItem(
             "listUserChat",
             JSON.stringify(this.listUserChat)
           );
-
           createNotification(
             data.guest,
             "Nueva Solicitud",
             "Has recibido una nueva solicitud",
             "nw_new_request"
           );
+          loader.hide();
         })
         .catch((err) => {
           loader.hide();
@@ -167,11 +200,7 @@ export default {
         })
         .then((result) => {
           if (result.isConfirmed) {
-            user.sendRequest = false;
-            localStorage.setItem(
-              "listUserChat",
-              JSON.stringify(this.listUserChat)
-            );
+            this.eliminarSolicitud(user);
           }
         });
     },
@@ -182,10 +211,9 @@ export default {
       });
 
       window.axios
-        .get(`usersForEvent/${this.eventID}`)
+        .get(`/networking-wa/get-participants/${this.eventID}`)
         .then((response) => {
           this.listUserChat = response.data.data;
-          this.listUserChat.map((user) => (user.sendRequest = false));
           localStorage.setItem(
             "listUserChat",
             JSON.stringify(this.listUserChat)
@@ -205,10 +233,12 @@ export default {
   created() {},
   mounted() {
     this.eventID = localStorage.getItem("eventId") || 0;
-    this.listUserChat = JSON.parse(localStorage.getItem("listUserChat")) || [];
-    if (this.listUserChat.length === 0) {
-      this.getListsUserEvent();
-    }
+    this.listUserChat = JSON.parse(
+      localStorage.getItem("listUserChat") || "[]"
+    );
+    // if (this.listUserChat.length === 0) {
+    this.getListsUserEvent();
+    // }
   },
 };
 </script>

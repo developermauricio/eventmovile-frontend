@@ -207,11 +207,12 @@ export default {
       .then((response) => {
         loader.hide();
         this.parseInfo(response.data);
-      }).catch(err => {
+      })
+      .catch((err) => {
         loader.hide();
         console.log(err);
       });
-    subscriberMQTT(this.chatKey, (message) => {
+    subscriberMQTT("chat", this.chatKey, (message) => {
       this.addMessageBottom(JSON.parse(message));
     });
   },
