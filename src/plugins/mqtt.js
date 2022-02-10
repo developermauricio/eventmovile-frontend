@@ -1,7 +1,20 @@
 import mqtt from 'mqtt';
 
+// const connection = {
+//     host: "broker.emqx.io",
+//     port: 8083,
+//     endpoint: "/mqtt",
+//     clean: true,
+//     connectTimeout: 4000,
+//     reconnectPeriod: 4000,
+//     // Certification Information
+//     clientMQId: "mqttjs_3be2c321",
+//     username: "emqx_test",
+//     password: "emqx_test",
+// };
+
 const connection = {
-    host: "broker.emqx.io",
+    host: "mqtt.socket-aicode.art",
     port: 8083,
     endpoint: "/mqtt",
     clean: true,
@@ -9,8 +22,8 @@ const connection = {
     reconnectPeriod: 4000,
     // Certification Information
     clientMQId: "mqttjs_3be2c321",
-    username: "emqx_test",
-    password: "emqx_test",
+    username: "mqtt",
+    password: "HVH1RpPLiB2hxI5VwKoY",
 };
 
 let clientMQ = {
@@ -23,7 +36,7 @@ const callbacks = {
 
 const createConnection = () => {
     const { host, port, endpoint, ...options } = connection;
-    const connectUrl = `ws://${host}:${port}${endpoint}`;
+    const connectUrl = `wss://${host}:${port}${endpoint}`;
     try {
         clientMQ = mqtt.connect(connectUrl, options);
     } catch (error) {
