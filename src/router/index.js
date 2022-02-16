@@ -12,6 +12,16 @@ const routes = [
     name: 'Login',
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/login/Login.vue')
   },
+  {
+    meta: {
+      title: 'Registro',
+      requiresAuth: false,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/register',
+    name: 'Register',
+    component: () => import('../modules/client/pages/login/Register')
+  },
 
   {
     meta: {

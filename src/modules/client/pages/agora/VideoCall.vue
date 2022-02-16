@@ -72,10 +72,10 @@ export default {
     data() {
         return {
             option: {
-                appid: 'c95b93d3616a4beaa910a3bcc70c8796',
-                token: '006c95b93d3616a4beaa910a3bcc70c8796IACqFoDC8IRkDenB5vmRloi4kagnoqGjtG8p8sGHY3cdZkMecUYAAAAAEADL5xHfOTQFYgEAAQA5NAVi',
+                appid: process.env.VUE_APP_AGORA_APPID,
+                token: process.env.VUE_APP_AGORA_TOKEN,
                 uid: null,
-                channel: 'prueba',
+                channel: process.env.VUE_APP_AGORA_CHANNEL,
             },
             disableJoin: false,
             audioOn: true,
@@ -112,6 +112,8 @@ export default {
                 })
             this.localStream = null
             this.remoteStreams = []
+            if ( !this.cameraOn ) this.cameraOn = true
+            if ( !this.audioOn ) this.audioOn = true
         },
         handleCamera() {
             if ( !this.localStream ) return

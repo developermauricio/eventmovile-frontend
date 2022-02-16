@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     openCallVideo() {
-      this.$emit('openCallVideo', this.chatInfo.name)
+      this.$emit('openCallVideo')
     }
   }
 };

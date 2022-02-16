@@ -75,7 +75,7 @@
               <router-link to="/login">INICIA SESIÓN</router-link>
             </li>
             <li>
-              <a class="btn m-1 btn-primary" href="#">REGISTRATE</a>
+              <router-link to="/register" class="btn m-1 btn-primary">REGISTRATE</router-link>
             </li>
           </ul>
         </div>

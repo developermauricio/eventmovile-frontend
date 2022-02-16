@@ -14,7 +14,7 @@
           <!-- Navbar Toggler -->
           <div class="chat-user--info d-flex align-items-center">
             <div class="user-thumbnail-name  ms-4">
-              <a href="" class="text-register">REGISTRATE</a>
+              <a @click="goRegisterEvent" href="#" class="text-register">REGISTRATE</a>
             </div>
           </div>
         </div>
@@ -22,8 +22,18 @@
     </div>
 
     <!-- Login Wrapper Area -->
-    <div class="login-wrapper d-flex align-items-center justify-content-center">
+    <div class="login-wrapper d-flex align-items-center justify-content-center">  
       <div class="custom-container">
+        <!-- Danger Toast-->
+        <div :class="{'show': showAlert}" class="toast custom-toast-1 toast-danger mb-5" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000" data-bs-autohide="false">
+          <div class="toast-body">
+            <div class="toast-text">
+              <p class="mb-0 text-white">Es requerida la información del evento.</p><small class="d-block">Ejemplo: {{ urlBase }}nombre-evento</small>
+            </div>
+          </div>
+          <button @click="closeAlert" class="btn btn-close btn-close-white position-absolute p-1" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+
         <div class="text-center px-4">
           <img class="login-intro-img" :src="this.styles.home_img_logo ? this.urlBaseFile + this.styles.home_img_logo : 'assets/img/img-generic.png'" width="180" alt="Logo evento">
         </div>
@@ -59,6 +69,7 @@ export default {
   data() {
     return {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      urlBase: process.env.VUE_APP_URL_FRONT,
       styles: {},
       form: {
         email: "",
@@ -71,6 +82,7 @@ export default {
       validatorEmail: null,
       fullPage: false,
       loader: null,
+      showAlert: false,
     };
   },
   methods: {
@@ -95,9 +107,17 @@ export default {
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("_current_token", user.token);
     },
+    goRegisterEvent() {
+      if ( !this.urlBack ) {
+        this.showContentAlert()
+        return
+      }
+
+      this.$router.push({path: "/register"})
+    },
     onSubmit() {
       if ( this.urlBack === '' ) {
-        alert('Es requerida la información del evento en la url.')
+        this.showContentAlert()
         return;
       }
 
@@ -143,10 +163,9 @@ export default {
               cancelButtonText: 'No',
             }).then((result) => {
               if (result.isConfirmed) {
-                console.log('ir a registro');
+                this.$router.push({path: "/register"})
               }
             })
-            //TODO revisar para enviarlo a registrarse
           }
         }); 
       
@@ -155,6 +174,16 @@ export default {
       let styleEvent = localStorage.getItem('style-event')
       this.styles = JSON.parse(styleEvent)
     }, 
+    showContentAlert() {
+      this.showAlert = true
+
+      setTimeout( () => {
+        this.showAlert = false
+      }, 5000)
+    },
+    closeAlert() {
+      this.showAlert = false;
+    }
   },
   created() {
     this.urlBack = localStorage.getItem("webAppPath") || ''
