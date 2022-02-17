@@ -18,7 +18,7 @@ export default {
     Headerhome: defineAsyncComponent(() => import(/* webpackChunkName: "Headerhome"*/ '@/modules/client/shared/components/Headerhome')),
     Headerprofile: defineAsyncComponent(() => import(/* webpackChunkName: "Headerprofile"*/ '@/modules/client/pages/profile/components/Headerprofile')),
     Infoprofile: defineAsyncComponent(() => import(/* webpackChunkName: "Infoprofile"*/ '@/modules/client/pages/profile/components/Infoprofile')),
-    Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton'))
+    Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton')),
   },
   data(){
     return {
