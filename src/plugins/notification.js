@@ -20,11 +20,13 @@ export const createNotification = (userId, title, description, key, data = {}) =
         data.title = title;
         data.description = description;
         data.key = key;
+        console.log('esta es la data: ', data)
         window.axios.post(
             '/networking-wa/add-notification/' + userId,
             data
         ).then(resp => {
             const channel = channelNotification.replace('_', userId);
+            console.log('vamos por mqtt: ', channel)
             publishMQTT(
                 channel,
                 {

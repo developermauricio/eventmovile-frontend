@@ -133,6 +133,15 @@ export default {
                 canCancel: false,
             });
             // TODO: falta validar los datos, los fieldsEvent tambien se validan
+            const validateEmail = await getSendRequest(`validateUser/${this.newUser.email}`)
+            console.log('retorno esto: ', validateEmail)
+            if ( validateEmail != false ) {
+                alert('El usuario se ecuentra regstrado ir al login')
+                this.newUser.email = ''
+                this.loader.hide()
+                return
+            }
+
 
             if ( this.event.password ) {
                 this.newUser.password = this.event.password
@@ -206,12 +215,6 @@ export default {
             }
         },
 
-        async validateEmailNewUser() {
-            let em = 'rodinsonst@gmail.com'
-            const validateEmail = await getSendRequest(`validateUser/${em}`)
-            console.log('retorno esto: ', validateEmail)
-        },
-
         async setInfoPage() {
             this.event = JSON.parse( localStorage.getItem('event') ) || {}
 
@@ -254,9 +257,7 @@ export default {
             this.setInfoPage();
         };
         //console.log('Created')
-        this.setInfoPage();
-
-        this.validateEmailNewUser();        
+        this.setInfoPage();    
     },
 }
 </script>
