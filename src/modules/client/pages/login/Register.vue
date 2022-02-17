@@ -195,7 +195,7 @@ export default {
             this.goToHome()
         },
 
-        async goToHome() {            
+        async goToHome() {
             const dataLogin = {
                 email: this.newUser.email,
                 password: this.newUser.password,
