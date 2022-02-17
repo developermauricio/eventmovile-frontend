@@ -132,6 +132,9 @@ export default {
         case "nw_new_contact":
           this.$router.push({ name: "Contacts" });
           break;
+        case "nw_new_video_call":
+          this.$router.push({ name: "VideoCall" });
+          break;
       }
     },
     readNotification(notification, accepted) {
@@ -179,8 +182,11 @@ export default {
     },
   },
   created() {
+    console.log('estoy en notificaciones....')
+
     this.loadNotifications();
     subscribeNotifications((data) => {
+      console.log('esta es la data: ', data)
       this.$toast.info(data.t, {
         position: "bottom-right",
         duration: 2027,

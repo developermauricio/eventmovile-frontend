@@ -25,7 +25,7 @@
 </template>
 
 <script>
-//import { createNotification } from "@/plugins/notification.js";
+import { createNotification } from "@/plugins/notification.js";
 
 export default {
     name: "PopupVideoCalling",
@@ -49,17 +49,19 @@ export default {
         closePopup() {
             this.showModal = false
         },
-        doVideoCall() {
+        async doVideoCall() {
             this.showModal = false
-            /* createNotification(
-                this.userName,
-                "Nueva Solicitud",
+            await createNotification(
+                this.user.user_id,
+                "Nueva solicitud videollamada",
                 "Has recibido una nueva solicitud",
-                "nw_new_request"
-            ); */
+                "nw_new_video_call"
+            );
             // revisar que no sirve el router
-            this.$router.push({name: "VideoCall", params: {user: this.userName}})
-            window.location = '/video-call'
+            //this.$router.push({name: "VideoCall", params: {user: this.userName}})
+            setTimeout( () => {                
+                window.location = '/video-call'
+            }, 1000);
         }
     }
 };
