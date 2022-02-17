@@ -62,8 +62,8 @@ export default {
     data() {
         return {
             option: {
-                appid: 'c95b93d3616a4beaa910a3bcc70c8796',
-                token: '006c95b93d3616a4beaa910a3bcc70c8796IACqFoDC8IRkDenB5vmRloi4kagnoqGjtG8p8sGHY3cdZkMecUYAAAAAEADL5xHfOTQFYgEAAQA5NAVi',
+                appid: 'b6984be78ae1470aaec57444f6fd94e1',
+                token: '006b6984be78ae1470aaec57444f6fd94e1IAB5+6V7PcruaYouTDRlqJp9mv6CpMKAh0oOSnQlmtGreEMecUYAAAAAEADL5xHfJX0FYgEAAQAlfQVi',
                 uid: null,
                 channel: 'prueba',
             },
