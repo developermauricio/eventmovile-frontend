@@ -1,4 +1,4 @@
-<template>
+<template onload="recargar()">
     <!-- Bootstrap Basic Modal -->
     <div :class="{'show': showModalTermCond}" class="modal fade" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -100,6 +100,8 @@
 
 <script>
 import { getSendRequest, postSendRequest } from '@/utils/using-axios';
+import { updateEvent, updateStyles } from '@/utils/update-local-storage';
+
 
 export default {
     name: 'Register',
@@ -124,16 +126,7 @@ export default {
             showModalTermCond: false,
         }
     },
-    methods: {
-        eventActived() {
-            let endDate = this.$dayjs(this.event.end_date).format('YYYY-MM-DD HH:mm:ss')
-            let nowDate = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
-
-            if ( !this.event.actived || endDate <= nowDate ) {
-                this.$swal({ icon: 'error', text: 'El proceso de registro ya fue cerrado.' })
-                this.$router.push({path: '/login'});
-            }
-        },       
+    methods: {             
         async SendInfoUser() {
             this.loader = this.$loading.show({
                 container: this.fullPage ? null : this.$refs.containerLoarder,
@@ -192,6 +185,7 @@ export default {
 
             this.goTopHome()
         },
+
         async goToHome() {            
             const dataLogin = {
                 email: this.newUser.email,
@@ -211,38 +205,59 @@ export default {
                 this.$router.push({path: "/"});
             }
         },
+
         async validateEmailNewUser() {
             let em = 'rodinsonst@gmail.com'
             const validateEmail = await getSendRequest(`validateUser/${em}`)
             console.log('retorno esto: ', validateEmail)
+        },
+
+        async setInfoPage() {
+            this.event = JSON.parse( localStorage.getItem('event') ) || {}
+
+            if ( !this.event.id ) this.$router.push({path: '/login'});            
+            
+            let endDate = this.$dayjs(this.event.end_date).format('YYYY-MM-DD HH:mm:ss')
+            let nowDate = this.$dayjs().format('YYYY-MM-DD HH:mm:ss')
+
+            if ( !this.event.actived || endDate <= nowDate ) {
+                this.$swal({ icon: 'error', text: 'El proceso de registro ya fue cerrado.' })
+                this.$router.push({path: '/login'});
+            }
+
+            let listFieldsEvent = await getSendRequest( `fieldsEventExternal/${this.event.id}` )
+            if ( listFieldsEvent ) this.fieldsEvent = listFieldsEvent.data;
+
+            let listHabeasdata = await getSendRequest( `habeasdataExternal/${this.event.id}` )
+            if ( listHabeasdata ) this.habeasdata = listHabeasdata
+            
+            if ( this.loader ) this.loader.hide()
+            this.loader = null
+
+            //TODO: falta utilizar los estilos
+            //TODO: falta revisar cuando el password del evento sea nulo, es necesario una contraseña 
+            //TODO: falta validar el numero de personas que asisten al evento, si supera el # no se debe registrar.
         }
        
-    },
-    async created() {
-        this.event = JSON.parse( localStorage.getItem('event') ) || {}
-
-        if ( !this.event.id ) this.$router.push({path: '/login'});
-
+    },  
+    created() {      
         this.loader = this.$loading.show({
             container: this.fullPage ? null : this.$refs.containerLoarder,
             canCancel: false,
         });
-        
-        this.eventActived()
 
-        let listFieldsEvent = await getSendRequest( `fieldsEventExternal/${this.event.id}` )
-        if ( listFieldsEvent ) this.fieldsEvent = listFieldsEvent.data;
+        window.onload = async () => {
+            //console.log('se recargo la pagina javascript....')
+            await updateEvent()
+            await updateStyles()
 
-        let listHabeasdata = await getSendRequest( `habeasdataExternal/${this.event.id}` )
-        if ( listHabeasdata ) this.habeasdata = listHabeasdata
-        
-        this.loader.hide()
-
-        //TODO: falta revisar cuando el password del evento sea nulo, es necesario una contraseña 
-        //TODO: falta validar el numero de personas que asisten al evento, si supera el # no se debe registrar.
+            this.setInfoPage();
+        };
+        //console.log('Created')
+        this.setInfoPage();
 
         this.validateEmailNewUser();        
-    }
+    },
 }
 </script>
 

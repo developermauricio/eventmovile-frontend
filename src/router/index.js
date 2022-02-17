@@ -204,7 +204,7 @@ const routes = [
     },
     beforeEnter: [isAuthenticatedGuard],
     //path: '/:catchAll(.*)',
-    path: '/error404',
+    path: '/no-found',
     name: 'Error404',
     component: () => import('../modules/client/pages/Page404/NoFound'),
   },
