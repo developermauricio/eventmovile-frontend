@@ -61,7 +61,7 @@ export default {
         window.tns({
           container: ".items-photo-event",
           items: 2,
-          gutter: 5,
+          gutter: this.gallery.length,
           center: false,
           slideBy: "page",
           autoplay: false,
