@@ -131,8 +131,13 @@ export default {
     }
   },
   created() {
+    this.loader = this.$loading.show({
+      container: this.fullPage ? null : this.$refs.containerLoarder,
+      canCancel: false,
+    });
+
     window.onload = async () => {
-      //console.log('se recargo la pagina javascript')
+      console.log('se recargo la pagina javascript')
       await updateEvent()
       await updateStyles()
 
@@ -146,10 +151,6 @@ export default {
   },
   methods: {
     async validWebApp(path_web_app) {      
-      this.loader = this.$loading.show({
-        container: this.fullPage ? null : this.$refs.containerLoarder,
-        canCancel: false,
-      });
 
       let data = new FormData
       data.append('path_wep_app', path_web_app)
@@ -171,7 +172,8 @@ export default {
       /***  traemos la info del evento  ***/
       await this.getEvent( this.eventId )
 
-      this.loader.hide()
+      if ( this.loader ) this.loader.hide()
+      this.loader = null
     },
 
     async getStyles( eventId ){
@@ -189,7 +191,7 @@ export default {
           localStorage.setItem("style-event", JSON.stringify(this.styles));
         }
     }, 
-    
+
     async getEvent( eventId ) {  
       let existEvent = localStorage.getItem('event')
 
@@ -198,7 +200,7 @@ export default {
         return
       } 
 
-      const showEvent = await getSendRequest(`showEvent/${eventId}`)    
+      const showEvent = await getSendRequest(`showEvent/${eventId}`)  
 
       if ( showEvent ) {
         this.event = showEvent[0]

@@ -7,6 +7,12 @@ import { createApp } from 'vue';
 import VueLoading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import VueSweetalert2 from 'vue-sweetalert2';
+
+import DropZone from 'dropzone-vue';
+import 'dropzone-vue/dist/dropzone-vue.common.css';
+
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 /* import VeeValidate, {Validator} from 'vee-validate';
 import validatorEs from 'vee-validate/dist/locale/es'; */
 /***  Importaciones de la aplicación  ***/
@@ -30,7 +36,9 @@ const app = createApp(App)
     .use(VueSweetalert2)
     .use(Toaster)
     .use(store)
-    .use(router);
+    .use(router)
+    .use(Toast)
+    .use(DropZone);
 
 /*** config library dayjs ***/
 dayjs.locale('es');

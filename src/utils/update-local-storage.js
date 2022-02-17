@@ -4,6 +4,8 @@ import { getSendRequest } from '@/utils/using-axios';
 const eventId = localStorage.getItem("eventId") || 0; 
 
 export const updateEvent = async () => {
+    if ( !eventId ) return;
+
     let eventResponse = await getSendRequest(`showEvent/${eventId}`);
     
     if ( eventResponse ) {
@@ -13,6 +15,8 @@ export const updateEvent = async () => {
 }
 
 export const updateStyles = async () => {
+    if ( !eventId ) return;
+
     let eventResponse = await getSendRequest(`styleEvent/${eventId}`);
     
     if ( eventResponse ) {

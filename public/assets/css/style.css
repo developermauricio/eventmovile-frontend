@@ -90,7 +90,15 @@ Created: December 10, 2020
       -ms-flex-pack: center;
           justify-content: center;
 }
-
+.dropzone__item-thumbnail{
+  border-radius: 5px !important;
+  width: 50% !important;
+  height: 100% !important;
+  margin: auto !important;
+}
+.dropzone__message.dropzone__message--style.dropzone-clickable{
+  display: none !important;
+}
 /* :: Bootstrap Color Reset CSS */
 a {
   color: #0d5afd;
@@ -5427,7 +5435,7 @@ input[type=color].form-control.is-valid, input[type=color].form-control:valid {
   z-index: 1;
   width: 2rem;
   height: 2rem;
-  border: 2px solid rgba(255, 255, 255, 0.85);
+  border: 2px solid rgba(105, 27, 154, 1);
   border-left-color: transparent;
   border-right-color: transparent;
   border-top-color: transparent;

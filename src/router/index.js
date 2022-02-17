@@ -98,8 +98,18 @@ const routes = [
     beforeEnter: [isAuthenticatedGuard],
     path: '/photos',
     name: 'Photo',
-    component: () => import(/* webpackChunkName: "contact" */ '../modules/client/pages/photo/Photo.vue'),
+    component: () => import(/* webpackChunkName: "Photo" */ '../modules/client/pages/photo/Photo.vue'),
   },
+  // {
+  //   meta: {
+  //     title: 'CameraPhoto',
+  //     requiresAuth: true,
+  //   },
+  //   beforeEnter: [isAuthenticatedGuard],
+  //   path: '/camera-photo',
+  //   name: 'CameraPhoto',
+  //   component: () => import(/* webpackChunkName: "CameraPhoto" */ '../modules/client/pages/photo/components/CameraPhoto.vue'),
+  // },
   {
     meta: {
       title: 'RequestReceived',
