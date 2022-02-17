@@ -75,7 +75,7 @@
               <router-link to="/login">INICIA SESIÓN</router-link>
             </li>
             <li>
-              <a class="btn m-1 btn-primary" href="#">REGISTRATE</a>
+              <router-link to="/register" class="btn m-1 btn-primary">REGISTRATE</router-link>
             </li>
           </ul>
         </div>
@@ -85,6 +85,8 @@
 </template>
 
 <script>
+import { getSendRequest, postSendRequest } from '@/utils/using-axios';
+import { updateEvent, updateStyles } from '@/utils/update-local-storage';
 
 export default {
   name: "Landing",
@@ -97,6 +99,7 @@ export default {
   data() {
     return {
       event: {},
+      eventId: 0,
       onLogin: false,
       onRegister: false,
       styles: null,
@@ -127,68 +130,83 @@ export default {
       return this.$dayjs(this.event.start_date).format('HH:mm a');
     }
   },
-  mounted() {
+  created() {
+    this.loader = this.$loading.show({
+      container: this.fullPage ? null : this.$refs.containerLoarder,
+      canCancel: false,
+    });
+
+    window.onload = async () => {
+      console.log('se recargo la pagina javascript')
+      await updateEvent()
+      await updateStyles()
+
+      this.validWebApp(this.webAppPath)
+    };
+    
     if ( this.webAppPath ) {
       localStorage.setItem('webAppPath', this.webAppPath)
       this.validWebApp(this.webAppPath)
     } 
   },
   methods: {
-    validWebApp(path_web_app) {
-      this.loader = this.$loading.show({
-        container: this.fullPage ? null : this.$refs.containerLoarder,
-        canCancel: false,
-      });
+    async validWebApp(path_web_app) {      
+
       let data = new FormData
       data.append('path_wep_app', path_web_app)
 
-      window.axios.post('validPathEvent', data)
-        .then( response => {
-          //console.log('data validPathEvent:.. ', response.data)
-          let eventId = response.data[0].id
-          localStorage.setItem('eventId', eventId)
-          /***  cargamos los styles  ***/
-          this.getStyles( eventId )
-          /***  traemos la info del evento  ***/
-          this.getEvent( eventId )
-        }).catch(err => {
-          // this.$swal("No existe evento asociado a este dominio")
-          console.log(err)
-          this.$router.push({name: "notFoundPage"})
-        })
-    },
-    getEvent( eventId ) {      
-      window.axios.get(`showEvent/${eventId}`)
-        .then( response => {
-          //console.log('data showEvent:.. ', response.data)
-          this.loader.hide()
-          this.event = response.data[0]
-          localStorage.setItem("event", JSON.stringify(this.event));
-        }).catch( err => {
-          this.loader.hide()
-          console.log(err)
-        })
-    },
-    getStyles( eventId ){
-        let checkStyle = localStorage.getItem('style-event')
+      /***  Se comprueba que exista el evento  ***/
+      const validPatnEvent =  await postSendRequest('validPathEvent', data)
+      
+      if ( validPatnEvent ) {
+        this.eventId = validPatnEvent[0].id
+        localStorage.setItem('eventId', this.eventId)
+      } else {
+        localStorage.clear()
+        this.$router.push({path: "/no-found"})
+      }
 
-        if ( checkStyle ) {
-          this.getStyleLocalStorage()
-        } else {
-          window.axios.get(`styleEvent/${eventId}`)
-            .then( response => {
-              //console.log('response this.styles: ',response.data );            
-              localStorage.setItem('style-event', JSON.stringify(response.data));
-              this.styles = response.data 
-            }) 
+      /***  cargamos los styles  ***/
+      await this.getStyles( this.eventId )
+
+      /***  traemos la info del evento  ***/
+      await this.getEvent( this.eventId )
+
+      if ( this.loader ) this.loader.hide()
+      this.loader = null
+    },
+
+    async getStyles( eventId ){
+        let existStyle = localStorage.getItem('style-event')
+
+        if ( existStyle ) {
+          this.styles = JSON.parse(existStyle)
+          return
+        }
+
+        const styleEvent = await getSendRequest(`styleEvent/${eventId}`)  
+
+        if ( styleEvent ) {
+          this.styles = styleEvent
+          localStorage.setItem("style-event", JSON.stringify(this.styles));
         }
     }, 
-    getStyleLocalStorage(){
-      let styleEvent = localStorage.getItem('style-event')
-      //console.log("localStorage ",styleEvent)
-      this.styles = JSON.parse(styleEvent)
-      //console.log("this.styles:",this.styles)
-    }, 
+
+    async getEvent( eventId ) {  
+      let existEvent = localStorage.getItem('event')
+
+      if ( existEvent ) {
+        this.event = JSON.parse(existEvent)
+        return
+      } 
+
+      const showEvent = await getSendRequest(`showEvent/${eventId}`)  
+
+      if ( showEvent ) {
+        this.event = showEvent[0]
+        localStorage.setItem("event", JSON.stringify(this.event));
+      }
+    },
   }
 }
 </script>

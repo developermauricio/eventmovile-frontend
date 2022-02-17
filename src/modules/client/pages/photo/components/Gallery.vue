@@ -45,9 +45,9 @@
                     <div class="chat-user-info" data-bs-toggle="offcanvas"
                          data-bs-target="#offcanvasBottomProfileNetworking"
                          aria-controls="offcanvasBottomProfileNetworking">
-                      <h6 class="text-truncate mb-0">{{ detailPost.name }}</h6>
+                      <h6 class="mb-0">{{ detailPost.name }} {{ detailPost.lastName }}</h6>
                       <div class="last-chat">
-                        <p class="mb-0 text-truncate">{{ detailPost.date }}</p>
+                        <p class="mb-0">{{ $dayjs(detailPost.date).format(`ddd DD MMMM, YYYY`)}}</p>
                       </div>
                     </div>
                   </div>
@@ -207,6 +207,7 @@ export default defineComponent({
       detailPost: {
         id: null,
         name: '',
+        lastName: '',
         picture: '',
         description: '',
         date: null,
@@ -271,6 +272,7 @@ export default defineComponent({
       this.detailPost.id = postGallery.id
       this.detailPost.picture = postGallery.picture
       this.detailPost.name = postGallery.user.name
+      this.detailPost.lastName = postGallery.user.lastname
       this.detailPost.description = postGallery.description
       this.detailPost.date = postGallery.created_at
       if (postGallery.gallery_like.length > 0) {
@@ -467,6 +469,9 @@ h6 {
 
 .bi-heart-fill {
   color: red;
+}
+.chat-user-info {
+  width: calc(100% - 40px) !important;
 }
 
 /*button {*/

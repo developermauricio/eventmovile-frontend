@@ -66,6 +66,7 @@ export default {
         img: null,
         id: null,
         name: null,
+        user_id: null
       },
       users: {},
       user: {},
@@ -102,6 +103,7 @@ export default {
           img: chatInfo.img,
           id: chatInfo.id,
           name: chatInfo.name,
+          user_id: null
         };
       }
 
@@ -120,6 +122,7 @@ export default {
           id: chatInfo.id,
           img: userDos.img,
           name: userDos.name,
+          user_id: userDos.id
         };
       }
 
@@ -159,8 +162,8 @@ export default {
           console.log(err);
         });
     },
-    openPopupVideoCall() {
-      this.$refs.videoCall.openPopupVideoCall()
+    openPopupVideoCall() {      
+      this.$refs.videoCall.openPopupVideoCall(this.chatInfo)
     }
 
   },

@@ -18,3 +18,12 @@
 .style-color-title {
     color: #6b6b6b;
 }
+
+
+/* Estilos para movil page videoCall */
+@media (max-width: 767.98px) { 
+    .agora-video-local {
+        width: 15vh;
+        height: 15vh;
+    }
+}

@@ -13,13 +13,16 @@
         <!-- Content video call -->
         <div class="mainContent"> 
             <div class="container">
-                <div class="agora-view">
+                <div v-if="localStream" class="agora-view">
                     <div :class="{'agora-video-local': videoLocal}" class="agora-video">
-                        <StreamPlayer :stream="localStream" :domId="localStream.getId()" v-if="localStream" />
+                        <StreamPlayer :stream="localStream" :domId="localStream.getId()" />                          
                     </div>
                     <div class="agora-video" v-for="(remoteStream, index) in remoteStreams" :key="index">
                         <StreamPlayer :stream="remoteStream" :domId="remoteStream.getId()"/>
                     </div>
+                </div>
+                <div v-else class="content-user">
+                    <AvatarUser :firstLetter="firstLetterCurrentUser" />                   
                 </div>
             </div>
         </div>
@@ -27,14 +30,13 @@
         <!-- Button Group-->
         <div class="call-btn-group">
             <!-- Camara -->
-            <a @click="handleCamera" class="btn btn-dark btn-circle color-icon">
+            <a @click="handleCamera" :class="{'color-icon' :  cameraOn}" class="btn btn-dark btn-circle">
               <i v-if="cameraOn" class="bi bi-camera-video"></i>
               <i v-else class="bi bi-camera-video-off"></i>
             </a>
 
             <!-- Hacer videollamada -->
             <a v-if="disableJoin" @click='leaveEvent' class="btn btn-lg btn-danger p-4 btn-call-leave" href="#">
-                <!-- <i class="bi bi-telephone"></i> -->                
                 <i class="bi bi-telephone-x"></i>
             </a>
             <a v-else @click="joinEvent" class="btn btn-lg btn-success p-4 btn-call-success" href="#">
@@ -42,7 +44,7 @@
             </a>   
 
             <!-- Microfono -->
-            <a @click="handleMic" class="btn btn-dark btn-circle color-icon">
+            <a @click="handleMic" :class="{'color-icon' :  audioOn}" class="btn btn-dark btn-circle">
                 <i v-if="audioOn" class="bi bi-mic"></i>
                 <i v-else class="bi bi-mic-mute"></i>
             </a>        
@@ -57,21 +59,30 @@ import { defineAsyncComponent } from "vue";
 export default {
     name: 'VideoCall',
     components: {  
-        StreamPlayer: defineAsyncComponent(() => import('@/modules/client/pages/agora/components/StreamPlayer'))
+        StreamPlayer: defineAsyncComponent(() => import('@/modules/client/pages/agora/components/StreamPlayer')),
+        AvatarUser: defineAsyncComponent(() => import('@/modules/client/pages/agora/components/AvatarUser'))
+    },
+    props: {
+        user: {
+            type: String,
+            required: false,
+            default: 'lalala'
+        }
     },
     data() {
         return {
             option: {
-                appid: 'b6984be78ae1470aaec57444f6fd94e1',
-                token: '006b6984be78ae1470aaec57444f6fd94e1IAB5+6V7PcruaYouTDRlqJp9mv6CpMKAh0oOSnQlmtGreEMecUYAAAAAEADL5xHfJX0FYgEAAQAlfQVi',
+                appid: process.env.VUE_APP_AGORA_APPID,
+                token: process.env.VUE_APP_AGORA_TOKEN,
                 uid: null,
-                channel: 'prueba',
+                channel: process.env.VUE_APP_AGORA_CHANNEL,
             },
             disableJoin: false,
             audioOn: true,
             cameraOn: true,
             localStream: null,
             remoteStreams: [],
+            currentUser: {},
         }
     },
     methods: {
@@ -101,6 +112,8 @@ export default {
                 })
             this.localStream = null
             this.remoteStreams = []
+            if ( !this.cameraOn ) this.cameraOn = true
+            if ( !this.audioOn ) this.audioOn = true
         },
         handleCamera() {
             if ( !this.localStream ) return
@@ -124,7 +137,13 @@ export default {
     computed: {
         videoLocal() {
             return this.remoteStreams.length === 0 ? false : true; 
-        }
+        },
+        firstLetterUser() {
+            return (this.user || "").slice(0, 1);
+        },
+        firstLetterCurrentUser() {
+            return (this.currentUser.name || '').slice(0, 1);
+        },
     },
     created() {
         this.rtc = new RTCClient();
@@ -159,6 +178,9 @@ export default {
             this.remoteStreams = this.remoteStreams.filter((it) => it.getId() !== evt.uid)
         }) 
     },
+    mounted() {
+        this.currentUser = JSON.parse( localStorage.getItem('user') ) || {}
+    }
 }
 </script>
 
@@ -178,6 +200,23 @@ export default {
     width: 100%;
     top: 5rem;
 }
+.content-user {
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+p.user-name {
+    display: flex;
+    position: absolute;
+    bottom: 8px;
+    margin-left: 10px;
+    margin-bottom: 0;
+    background-color: #ffffffed;
+    border-radius: 3px;
+    padding: 0 5px;
+}
 .btn-call-success {
     padding: 14px 10px 0 10px !important;
     width: 3rem;
@@ -195,7 +234,7 @@ export default {
 .agora-view {
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
+    justify-content: flex-end;
 }
 .agora-video {
     width: 100%;
@@ -216,12 +255,5 @@ export default {
 }
 .color-icon {
     background-color: #ac58bc;
-}
-
-@media (max-width: 767.98px) { 
-    .agora-video-local {
-        width: 15vh;
-        height: 15vh;
-    }
 }
 </style>

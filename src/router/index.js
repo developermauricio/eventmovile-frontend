@@ -12,6 +12,16 @@ const routes = [
     name: 'Login',
     component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/login/Login.vue')
   },
+  {
+    meta: {
+      title: 'Registro',
+      requiresAuth: false,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/register',
+    name: 'Register',
+    component: () => import('../modules/client/pages/login/Register')
+  },
 
   {
     meta: {
@@ -179,6 +189,7 @@ const routes = [
       requiresAuth: true,
     },
     beforeEnter: [isAuthenticatedGuard],
+    //path: "/video-call/:user",
     path: "/video-call",
     name: 'VideoCall',
     props: true,
@@ -203,7 +214,7 @@ const routes = [
     },
     beforeEnter: [isAuthenticatedGuard],
     //path: '/:catchAll(.*)',
-    path: '/error404',
+    path: '/no-found',
     name: 'Error404',
     component: () => import('../modules/client/pages/Page404/NoFound'),
   },
