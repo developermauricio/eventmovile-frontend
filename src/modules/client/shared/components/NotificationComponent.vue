@@ -87,6 +87,7 @@
         </div>
       </div>
     </div>
+    <toastComponent ref="toast"/>
   </div>
 </template>
 
@@ -95,9 +96,13 @@ import {
   subscribeNotifications,
   createNotification,
 } from "@/plugins/notification.js";
+import {defineAsyncComponent} from "vue";
 
 export default {
   name: "NotificationComponent",
+  components:{
+    toastComponent: defineAsyncComponent(() => import(/* webpackChunkName: "DropzoneUpload"*/ '@/modules/client/shared/components/ToastAlert')),
+  },
   data() {
     return {
       active: false,
@@ -187,11 +192,12 @@ export default {
     this.loadNotifications();
     subscribeNotifications((data) => {
       console.log('esta es la data: ', data)
-      this.$toast.info(data.t, {
-        position: "bottom-right",
-        duration: 2027,
-        max: 2,
-      });
+      this.$refs.toast.toastAlertSuccess(data.d)
+      // this.$toast.info(data.t, {
+      //   position: "bottom-right",
+      //   duration: 2027,
+      //   max: 2,
+      // });
       this.totalNew++;
       this.hasNewNotifications = true;
     });
