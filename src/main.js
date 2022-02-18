@@ -13,6 +13,7 @@ import 'dropzone-vue/dist/dropzone-vue.common.css';
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+// import IdleVue from 'idle-vue'
 /* import VeeValidate, {Validator} from 'vee-validate';
 import validatorEs from 'vee-validate/dist/locale/es'; */
 /***  Importaciones de la aplicación  ***/
@@ -39,6 +40,11 @@ const app = createApp(App)
     .use(router)
     .use(Toast)
     .use(DropZone);
+    // .use(IdleVue,{
+    //     eventEmitter: app,
+    //     idleTime: 10000
+    // })
+
 
 /*** config library dayjs ***/
 dayjs.locale('es');
