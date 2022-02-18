@@ -46,33 +46,36 @@ export default {
        setTimeout(() =>{
          window.axios.get(`${this.urlBase}/get-data-gallery-home/${resp.eventID}`).then(response =>{
            resp.gallery = response.data
-           if (document.querySelectorAll(".slide-photo-event").length > 0) {
-             window.tns({
-               container: ".items-photo-event",
-               items: 2,
-               gutter: this.gallery.length,
-               center: false,
-               slideBy: "page",
-               autoplay: false,
-               fixedWidth: 150,
-               loop: false,
-               autoplayButtonOutput: false,
-               autoplayTimeout: 4000,
-               speed: 1000,
-               mouseDrag: true,
-               controls: false,
-               nav: false,
-               navPosition: "bottom",
-               controlsContainer: document.querySelector('.controls-slide-schedule'),
-             });
-           }
+           setTimeout(() =>{
+             if (document.querySelectorAll(".slide-photo-event").length > 0) {
+               window.tns({
+                 container: ".items-photo-event",
+                 items: 2,
+                 gutter: this.gallery.length,
+                 center: false,
+                 slideBy: "page",
+                 autoplay: false,
+                 fixedWidth: 150,
+                 loop: false,
+                 autoplayButtonOutput: false,
+                 autoplayTimeout: 4000,
+                 speed: 1000,
+                 mouseDrag: true,
+                 controls: false,
+                 nav: false,
+                 navPosition: "bottom",
+                 controlsContainer: document.querySelector('.controls-slide-schedule'),
+               });
+             }
 
-           baguetteBox.run(".gallery-img", {
-             captions: true,
-             fullScreen: false,
-             animation: "slideIn", // Also available 'fadeIn' or 'false' options
-             overlayBackgroundColor: "rgba(15,7,15,0.7)"
-           });
+             baguetteBox.run(".gallery-img", {
+               captions: true,
+               fullScreen: false,
+               animation: "slideIn", // Also available 'fadeIn' or 'false' options
+               overlayBackgroundColor: "rgba(15,7,15,0.7)"
+             });
+           }, 1000)
+
 
          }).catch(err => {
            console.log(err)

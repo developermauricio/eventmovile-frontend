@@ -34,10 +34,19 @@ export default {
   data() {
     return {
       fullName: '',
+      urlBase: process.env.VUE_APP_API_URL,
     }
   },  
   methods:{
+    inactiveOnlineUser(){
+      window.axios.post(`${this.urlBase}/inactive-online-user/${this.dataUser.id}`).then(response =>{
+        console.log(response)
+      }).catch(err =>{
+        console.log(err)
+      })
+    },
     loggout(){
+      this.inactiveOnlineUser()
       localStorage.clear()
       this.$router.push('Login')
     }
@@ -45,7 +54,9 @@ export default {
   created() {
     this.fullName = this.dataUser.name + ' ' + this.dataUser.lastname
   },
-  mounted() { },
+  mounted() {
+
+  },
 }
 </script>
 

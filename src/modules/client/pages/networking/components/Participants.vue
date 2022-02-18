@@ -15,14 +15,15 @@
                   <!-- Thumbnail -->
                   <div class="chat-user-thumbnail me-3 shadow">
                     <img
-                      class="img-circle"
-                      :src="
+                        class="img-circle"
+                        :src="
                         user.picture
                           ? user.picture
                           : '/assets/img/avatars/photo-user.png'
                       "
-                      alt="Photo user"
+                        alt="Photo user"
                     />
+                    <span class="active-status" v-if="user.online === '1'"></span>
                   </div>
                   <!-- Info -->
                   <div class="chat-user-info">
@@ -38,61 +39,61 @@
                 </div>
                 <!-- Options solicitud enviada-->
                 <div
-                  v-if="
+                    v-if="
                     (user.request_sent && user.request_sent.status == 0) ||
                     (user.request_received && user.request_received.status == 0)
                   "
-                  class="dropstart chat-options-btn"
+                    class="dropstart chat-options-btn"
                 >
                   <button
-                    @click="cancelRequest(user)"
-                    class="btn dropdown-toggle"
-                    type="button"
+                      @click="cancelRequest(user)"
+                      class="btn dropdown-toggle"
+                      type="button"
                   >
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="currentColor"
-                      class="bi bi-x-circle color-icon"
-                      viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        class="bi bi-x-circle color-icon"
+                        viewBox="0 0 16 16"
                     >
                       <path
-                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
                       />
                       <path
-                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                          d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
                       />
                     </svg>
                   </button>
                 </div>
                 <!-- Options enviar solicitud-->
                 <div
-                  v-else-if="
+                    v-else-if="
                     !user.request_received || user.request_received.status !== 1
                   "
-                  class="dropstart chat-options-btn"
+                    class="dropstart chat-options-btn"
                 >
                   <button
-                    v-if="!user.request_sent"
-                    @click="sendRequest(user)"
-                    class="btn dropdown-toggle"
-                    type="button"
+                      v-if="!user.request_sent"
+                      @click="sendRequest(user)"
+                      class="btn dropdown-toggle"
+                      type="button"
                   >
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      fill="currentColor"
-                      class="bi bi-person-plus style-color-icon"
-                      viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        fill="currentColor"
+                        class="bi bi-person-plus style-color-icon"
+                        viewBox="0 0 16 16"
                     >
                       <path
-                        d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
+                          d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
                       />
                       <path
-                        fill-rule="evenodd"
-                        d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
+                          fill-rule="evenodd"
+                          d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
                       />
                     </svg>
                   </button>
@@ -106,26 +107,28 @@
     <!--=====================================
     MODAL INFO PERFIL NETWOKING
    ======================================-->
-    <Profile ref="modalInfoUserChat" />
+    <Profile ref="modalInfoUserChat"/>
   </div>
 </template>
 
 <script>
 import "vuesax/dist/vuesax.css";
-import { defineAsyncComponent } from "vue";
-import { createNotification } from "@/plugins/notification.js";
+import {defineAsyncComponent} from "vue";
+import {subscriberMQTT} from "@/plugins/mqtt";
+import {createNotification} from "@/plugins/notification.js";
 
 export default {
   name: "Participants",
   components: {
     Profile: defineAsyncComponent(() =>
-      import("@/modules/client/pages/networking/components/Profile")
+        import("@/modules/client/pages/networking/components/Profile")
     ),
   },
   data() {
     return {
       eventID: 0,
       listUserChat: [],
+      showOnlineUser: false,
     };
   },
   methods: {
@@ -137,104 +140,127 @@ export default {
         container: this.fullPage ? null : this.$refs.containerLoarder,
         canCancel: false,
       });
-      const id = user.request_received?user.request_received.id:user.request_sent.id;
+      const id = user.request_received ? user.request_received.id : user.request_sent.id;
       window.axios
-        .delete("/networking-wa/eliminar-solicitud/" + id)
-        .then(() => {
-          loader.hide();
-          user.request_sent = null;
-          user.request_received = null;
-          localStorage.setItem(
-            "listUserChat",
-            JSON.stringify(this.listUserChat)
-          );
-        })
-        .catch((err) => {
-          loader.hide();
-          console.log(err);
-        });
+          .delete("/networking-wa/eliminar-solicitud/" + id)
+          .then(() => {
+            loader.hide();
+            user.request_sent = null;
+            user.request_received = null;
+            localStorage.setItem(
+                "listUserChat",
+                JSON.stringify(this.listUserChat)
+            );
+          })
+          .catch((err) => {
+            loader.hide();
+            console.log(err);
+          });
     },
     sendRequest(user) {
-      const loader = this.$loading.show({
-        container: this.fullPage ? null : this.$refs.containerLoarder,
-        canCancel: false,
-      });
-      const data = {
-        guest: user.id,
-        event: this.eventID,
-      };
-      window.axios
-        .post("/networking-wa/send-solicitud", data)
-        .then((response) => {
-          user.request_sent = response.data;
-          localStorage.setItem(
-            "listUserChat",
-            JSON.stringify(this.listUserChat)
-          );
-          createNotification(
-            data.guest,
-            "Nueva Solicitud",
-            "Has recibido una nueva solicitud",
-            "nw_new_request"
-          );
-          loader.hide();
-        })
-        .catch((err) => {
-          loader.hide();
-          console.log(err);
-        });
-      console.log("aqui se puede conectar al chat... info user: ", user);
-    },
-    cancelRequest(user) {
-      console.log("cancelar la solicitud...", user);
-      this.$swal
-        .fire({
-          title: "Cancelar solicitud",
-          text: "¿Está seguro que desea cancelar la solicitud enviada?",
-          icon: "info",
-          showCancelButton: true,
-          confirmButtonColor: "#68976b",
-          cancelButtonColor: "#aa47bc",
-          confirmButtonText: "Si",
-          cancelButtonText: "No",
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            this.eliminarSolicitud(user);
-          }
-        });
-    },
-    getListsUserEvent() {
+
       const loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.containerLoarder,
         canCancel: false,
       });
 
+
+      const data = {
+        guest: user.id,
+        event: this.eventID,
+      };
       window.axios
-        .get(`/networking-wa/get-participants/${this.eventID}`)
-        .then((response) => {
-          this.listUserChat = response.data.data;
-          localStorage.setItem(
-            "listUserChat",
-            JSON.stringify(this.listUserChat)
-          );
-          loader.hide();
-        })
-        .catch((error) => {
-          loader.hide();
-          console.log("error... ", error);
-        })
+          .post("/networking-wa/send-solicitud", data)
+          .then((response) => {
+            user.request_sent = response.data;
+            localStorage.setItem(
+                "listUserChat",
+                JSON.stringify(this.listUserChat)
+            );
+            createNotification(
+                data.guest,
+                "Nueva Solicitud",
+                "Has recibido una nueva solicitud",
+                "nw_new_request"
+            );
+            loader.hide();
+          })
+          .catch((err) => {
+            loader.hide();
+            console.log(err);
+          });
+      console.log("aqui se puede conectar al chat... info user: ", user);
     },
+    cancelRequest(user) {
+      console.log("cancelar la solicitud...", user);
+      this.$swal
+          .fire({
+            title: "Cancelar solicitud",
+            text: "¿Está seguro que desea cancelar la solicitud enviada?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#68976b",
+            cancelButtonColor: "#aa47bc",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              this.eliminarSolicitud(user);
+            }
+          });
+    },
+    getListsUserEvent() {
+      let loader = null;
+      if (this.showOnlineUser === false) {
+        loader = this.$loading.show({
+          container: this.fullPage ? null : this.$refs.containerLoarder,
+          canCancel: false,
+        });
+      }
+
+      window.axios
+          .get(`/networking-wa/get-participants/${this.eventID}`)
+          .then((response) => {
+            this.listUserChat = response.data.data;
+            localStorage.setItem(
+                "listUserChat",
+                JSON.stringify(this.listUserChat)
+            );
+            if (this.showOnlineUser === false) {
+              loader.hide();
+            }
+          })
+          .catch((error) => {
+            loader.hide();
+            console.log("error... ", error);
+          })
+    },
+    onlineUserSocket() {
+      let key = 'notification_online_eventmovil_31231'
+      let topic = 'online_users_eventmovil'
+      subscriberMQTT(key, topic, this.updateOnlineUser)
+    },
+    updateOnlineUser(data) {
+      console.log(data)
+      this.showOnlineUser = true
+      setTimeout(() => {
+        this.getListsUserEvent()
+      }, 2000)
+
+    }
   },
-  created() {},
+  created() {
+  },
   mounted() {
     this.eventID = localStorage.getItem("eventId") || 0;
     this.listUserChat = JSON.parse(
-      localStorage.getItem("listUserChat") || "[]"
+        localStorage.getItem("listUserChat") || "[]"
     );
     // if (this.listUserChat.length === 0) {
     this.getListsUserEvent();
     // }
+    this.onlineUserSocket()
   },
 };
 </script>
@@ -243,12 +269,15 @@ export default {
 .chat-user-list {
   box-shadow: none !important;
 }
+
 .last-chat p {
   color: #00000094 !important;
 }
+
 .chat-user-info {
   width: calc(100% - 40px);
 }
+
 .color-icon {
   color: #6b6b6b;
 }
