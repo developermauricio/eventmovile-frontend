@@ -30,7 +30,8 @@
 
             <!-- Falta subir la foto -->
             <div v-if="this.event.image_on_register && this.event.image_on_register == 1" class="text-center px-4">
-                <img class="login-intro-img" src="/assets/img/img-generic.png" alt="">
+                <!-- <img class="login-intro-img" src="/assets/img/img-generic.png" alt=""> -->
+                
             </div>
 
             <!-- Register Form -->
@@ -38,53 +39,68 @@
                 <form @submit.prevent="SendInfoUser" action="page-otp.html">
                     <!-- Terminos y condiciones -->
                     <template v-if="habeasdata.position == 'up'">
-                        <div class="form-check mb-3">
+                        <div class="form-check mb-4">
                             <input v-model="checkTerm" class="form-check-input" type="checkbox" id="checkTermCond">
                             <label for="checkTermCond">
                                 <a v-if="habeasdata.type=='file'" :href="uriImg+'storage/'+habeasdata.content" target="_black">Aceptar términos y condiciones.</a>
                                 <a v-if="habeasdata.type=='url'" :href="habeasdata.content" target="_black">Aceptar términos y condiciones.</a>
                                 <span v-else @click="showModalTermCond = !showModalTermCond" class="form-check-label text-muted fw-normal">Aceptar términos y condiciones.</span>
                             </label>
+                            <div v-if="errors.term.required" :class="{'invalid-feedback': errors.term.required}">{{ errors.term.msg }}</div>
                         </div>
                     </template>
 
-                    <div class="form-group">
-                        <label class="form-label">Nombre</label>
-                        <input v-model="newUser.name" class="form-control" type="text" placeholder="Ingrese nombre." required>
+                    <div class="form-group mb-4">
+                        <label class="form-label">Nombre <span class="required-data">*</span></label>
+                        <input @input="changeValueName" v-model="newUser.name" :class="{'form-is-invalid': errors.name.required}" class="form-control" type="text" placeholder="Ingrese nombre." required>
+                        <div v-if="errors.name.required" :class="{'invalid-feedback': errors.name.required}">{{ errors.name.msg }}</div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Apellido</label>
-                        <input v-model="newUser.lastname" class="form-control" type="text" placeholder="Ingrese apellido." required>
+                    <div class="form-group mb-4">
+                        <label class="form-label">Apellido <span class="required-data">*</span></label>
+                        <input @input="changeValueLastName" v-model="newUser.lastname" :class="{'form-is-invalid': errors.lastname.required}" class="form-control" type="text" placeholder="Ingrese apellido." required>
+                        <div v-if="errors.lastname.required" :class="{'invalid-feedback': errors.lastname.required}">{{ errors.lastname.msg }}</div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Correo electrónico</label>
-                        <input v-model="newUser.email" class="form-control" type="email" placeholder="Ingrese correo electrónico." required>
+                    <div class="form-group mb-4">
+                        <label class="form-label">Correo electrónico <span class="required-data">*</span></label>
+                        <input  @input="changeValueEmail" v-model="newUser.email" :class="{'form-is-invalid': errors.email.required}" class="form-control" type="email" placeholder="Ingrese correo electrónico." required>
+                        <div v-if="errors.email.required" :class="{'invalid-feedback': errors.email.required}">{{ errors.email.msg }}</div>
                     </div>
 
                     <!-- Dymanic form -->
                     <template v-for="(field, index) in fieldsEvent" :key="index">
-                        <div v-if="field.type == 'text' || field.type == 'number' || field.type == 'textarea'" class="form-group">
-                            <label class="form-label">{{ field.name }} <template v-if="field.required === 1">*</template></label>
+                        <div v-if="field.type == 'text' || field.type == 'number'" class="form-group mb-4">
+                            <label class="form-label">{{ field.name }} <span v-if="field.required === 1" class="required-data">*</span></label>
                             <input v-model="field.value" class="form-control" :type="field.type" :placeholder="'Ingrese '+field.name" :required="field.required == 1 ? true : false">
                         </div>
-                        <!-- TODO: Falta validar campo tipo select -->
+                        <div v-if="field.type == 'textarea'" class="form-group mb-4">
+                            <label class="form-label">{{ field.name }} <span v-if="field.required === 1" class="required-data">*</span></label>
+                            <textarea v-model="field.value" class="form-control" :placeholder="'Ingrese '+field.name" :required="field.required == 1 ? true : false"></textarea>
+                        </div>
+                        <div v-if="field.type == 'select'" class="form-group mb-4">
+                            <label class="form-label">{{ field.name }} <span v-if="field.required === 1" class="required-data">*</span></label>
+                            <select v-model="field.value" class="form-select form-control-clicked" :required="field.required == 1 ? true : false">
+                                <option v-for="item in getOptions(field.options)" :key="item" :value="item.trim()">{{item}}</option>
+                            </select>
+                        </div>
                     </template>
                     
                     <!-- Terminos y condiciones -->
                     <template v-if="habeasdata.position == 'down'">
-                        <div class="form-check mb-3">
+                        <div class="form-check mb-4">
                             <input v-model="checkTerm" class="form-check-input" type="checkbox" id="checkTermCond" required>
                             <label for="checkTermCond">
                                 <a v-if="habeasdata.type=='file'" :href="uriImg+'storage/'+habeasdata.content" target="_black">Aceptar términos y condiciones.</a>
                                 <a v-if="habeasdata.type=='url'" :href="habeasdata.content" target="_black">Aceptar términos y condiciones.</a>
                                 <span v-else @click="showModalTermCond = !showModalTermCond" class="form-check-label text-muted fw-normal">Aceptar términos y condiciones.</span>
+                                <span class="required-data"> *</span>
                             </label>
+                            <div v-if="errors.term.required" :class="{'invalid-feedback': errors.term.required}">{{ errors.term.msg }}</div>
                         </div>
                     </template>
 
-                    <button class="btn btn-primary w-100" type="submit">Registrarme</button>
+                    <button class="btn btn-primary w-100 mt-2" type="submit">Registrarme</button>
                 </form>
             </div>
             <!-- Login Meta -->
@@ -124,24 +140,89 @@ export default {
             uri: process.env.VUE_APP_API_URL,
             uriImg:process.env.VUE_APP_API_URL_FILES,
             showModalTermCond: false,
+            validatorEmail: null,
+            errors: {
+                name: { required: false, msg: 'El nombre es requerido.' },
+                lastname: { required: false, msg: 'El Apellido es requerido.' },
+                email: { required: false, msg: '' },
+                term: { required: false, msg: 'Los términos y condiciones son requeridos' }
+            }
         }
     },
-    methods: {             
+    methods: {   
+        onChangePicture( image ) {
+            console.log('New picture selected!')
+            if (image) {
+                console.log('Picture loaded.')
+                this.image = image
+            } else {
+                console.log('FileReader API not supported: use the <form>, Luke!')
+            }
+        },
+        getOptions( options ) {
+            options = options.slice(1)
+            options = options.slice(0, -1)
+            options = options.split(',')
+
+            return options
+        },   
+        changeValueName() {
+            this.newUser.name ? this.errors.name.required = false : this.errors.name.required = true
+        },    
+        changeValueLastName() {
+            this.newUser.lastname ? this.errors.lastname.required = false : this.errors.lastname.required = true
+        },   
+        changeValueEmail() {
+            if ( this.newUser.email ) {
+                if ( this.validatorEmail.test(this.newUser.email) ) {
+                    this.errors.email.required = false
+                } else {
+                    this.errors.email.required = true
+                    this.errors.email.msg = 'Ingrese un correo electrónico valido.'
+                }                
+            } else {
+                this.errors.email.required = true
+                this.errors.email.msg = 'El correo electrónico es requerido.'
+            }
+        },
+        async validateForm() {
+            await this.changeValueName()
+            await this.changeValueLastName()
+            await this.changeValueEmail()
+            let validationOk = false;
+
+            //for ( const [key, val] of Object.entries(this.errors) ) {
+            for ( const val of Object.values(this.errors) ) {
+                if ( val.required ) validationOk = true
+            }
+
+            if ( this.checkTerm ) {
+                this.errors.term.required = false
+            } else {
+                this.errors.term.required = true
+                validationOk = true
+            }
+
+            return validationOk;
+        },
         async SendInfoUser() {
             this.loader = this.$loading.show({
                 container: this.fullPage ? null : this.$refs.containerLoarder,
                 canCancel: false,
             });
+
+            if ( this.validateForm() ) return
+
             // TODO: falta validar los datos, los fieldsEvent tambien se validan
             const validateEmail = await getSendRequest(`validateUser/${this.newUser.email}`)
-            console.log('retorno esto: ', validateEmail)
+            console.log('retorno esto: ', validateEmail)            
+           
             if ( validateEmail != false ) {
-                alert('El usuario se ecuentra regstrado ir al login')
-                this.newUser.email = ''
+                this.errors.email.required = true
+                this.errors.email.msg = 'Este correo electrónico ya se encuentra registrado.'
                 this.loader.hide()
                 return
             }
-
 
             if ( this.event.password ) {
                 this.newUser.password = this.event.password
@@ -160,19 +241,23 @@ export default {
             let emptyfields = false
 
             this.fieldsEvent.forEach( field => {
-                if ( field.value ) emptyfields = true
+                if ( field.required ) {
+                    if ( field.value ) emptyfields = true
+                }                
             })
 
             /***  Guardar campos extra del registro  ***/
             if ( emptyfields ) {
                 await Promise.all( this.fieldsEvent.map( async item => {
-                    let dataValue = {
-                        register_id: item.id,
-                        user_id: userCreated.id,
-                        value: item.value
+                    if ( item.value ) {
+                        let dataValue = {
+                            register_id: item.id,
+                            user_id: userCreated.id,
+                            value: item.value
+                        }
+                        
+                        await postSendRequest('dataRegistersExternal', dataValue)
                     }
-                    
-                    await postSendRequest('dataRegistersExternal', dataValue)
                 }))
             }
 
@@ -239,7 +324,9 @@ export default {
 
             //TODO: falta utilizar los estilos
             //TODO: falta revisar cuando el password del evento sea nulo, es necesario una contraseña 
-            //TODO: falta validar el numero de personas que asisten al evento, si supera el # no se debe registrar.
+            //TODO: falta validar el numero de personas que asisten al evento, si supera el # no se debe registrar. pendiente
+            const peoleLimit = await getSendRequest( `peopleLimit/${this.event.id}` )
+            console.log('peoleLimit: ', peoleLimit)
         }
        
     },  
@@ -249,14 +336,16 @@ export default {
             canCancel: false,
         });
 
+        this.validatorEmail = RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+        
         window.onload = async () => {
-            //console.log('se recargo la pagina javascript....')
+            
             await updateEvent()
             await updateStyles()
 
             this.setInfoPage();
         };
-        //console.log('Created')
+        
         this.setInfoPage();    
     },
 }
@@ -265,5 +354,26 @@ export default {
 <style scoped>
 .show {
     display: block !important;
+}
+textarea.form-control {
+    min-height: 80px;
+}
+.form-select.form-control-clicked {
+    background-color: #ffffff;
+    border-color: #ebebeb;
+    color: #691b9a;
+}
+span.required-data {
+    color: #9f1b1b;
+}
+.form-is-invalid {
+    border-color: #dc3545;
+}
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: .875em;
+    color: #dc3545;
 }
 </style>

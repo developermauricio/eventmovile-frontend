@@ -127,7 +127,7 @@ export default {
  
       const dataLogin = {
         email: this.form.email,
-        password: this.event.password.trim(),
+        password: this.event.password,
         eventId: this.eventId,
       };
 
