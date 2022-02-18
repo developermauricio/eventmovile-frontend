@@ -13,8 +13,11 @@
                  :src="urlBaseFile+item.picture === '' || urlBaseFile+item.picture === null ? '/assets/img/img-generic.png': urlBaseFile+item.picture"
                  alt="">
             <!-- Fav Icon -->
-            <div class="fav-icon shadow">
+            <div class="fav-icon shadow" v-if="item.gallery_like.length > 0">
               <i class="bi bi-heart-fill"></i>
+            </div>
+            <div class="fav-icon shadow" v-else>
+              <i class="bi bi-heart"></i>
             </div>
           </button>
         </div>
@@ -295,8 +298,7 @@ export default defineComponent({
           resp.userLikeId = response.data.user_id
           resp.like = true
         })
-
-      }, 100)
+      }, 80)
     },
 
     getDataGallery() {
@@ -311,6 +313,10 @@ export default defineComponent({
         window.axios.get(`${this.urlBase}/get-data-gallery/${resp.eventID}/?page=${resp.page}`).then(({data}) => {
           resp.lastpage = data.last_page
           resp.itemsGallery = data.data
+          localStorage.setItem(
+              "itemsGallery",
+              JSON.stringify(resp.itemsGallery)
+          );
         }).catch(err => {
           console.log('Error ', err);
         })
@@ -402,6 +408,10 @@ export default defineComponent({
     this.post.event_id = parseInt(this.eventID)
     this.user = JSON.parse(localStorage.getItem('user'))
     this.post.user_id = this.user.id
+
+    this.itemsGallery = JSON.parse(
+        localStorage.getItem("itemsGallery") || "[]"
+    );
     let resp = this
     let modalDetailGallery = document.getElementById('modalDetailGallery')
     modalDetailGallery.addEventListener('hidden.bs.modal', function (event) {
