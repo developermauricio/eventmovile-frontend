@@ -51,6 +51,7 @@ export default {
         },
         async doVideoCall() {
             this.showModal = false
+            
             await createNotification(
                 this.user.user_id,
                 "Nueva solicitud videollamada",
