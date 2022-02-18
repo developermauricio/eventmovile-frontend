@@ -47,7 +47,12 @@ export default {
     },
     loggout(){
       this.inactiveOnlineUser()
-      localStorage.clear()
+      localStorage.removeItem('itemsGallery')
+      localStorage.removeItem('listUserChat')
+      localStorage.removeItem('user')
+      localStorage.removeItem('_current_token')
+      localStorage.removeItem('listSpeakers')
+      localStorage.removeItem('galleryHome')
       this.$router.push('Login')
     }
   },
