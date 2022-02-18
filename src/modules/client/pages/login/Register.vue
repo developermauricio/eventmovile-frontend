@@ -202,7 +202,7 @@ export default {
                 this.errors.term.required = true
                 validationOk = true
             }
-
+            console.log('value ok: ', validationOk)
             return validationOk;
         },
         async SendInfoUser() {
@@ -211,7 +211,10 @@ export default {
                 canCancel: false,
             });
 
-            if ( this.validateForm() ) return
+            if ( await this.validateForm() ) {
+                this.loader.hide()
+                return
+            }
 
             // TODO: falta validar los datos, los fieldsEvent tambien se validan
             const validateEmail = await getSendRequest(`validateUser/${this.newUser.email}`)
