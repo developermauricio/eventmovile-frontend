@@ -120,7 +120,7 @@ export default {
       if (!this.chatInfo.img && userDos) {
         this.chatInfo = {
           id: chatInfo.id,
-          img: userDos.img,
+          img: userDos.pic,
           name: userDos.name,
           user_id: userDos.id
         };

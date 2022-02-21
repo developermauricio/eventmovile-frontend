@@ -49,6 +49,7 @@ export default {
       this.inactiveOnlineUser()
       localStorage.removeItem('itemsGallery')
       localStorage.removeItem('listUserChat')
+      localStorage.removeItem('listChat')
       localStorage.removeItem('user')
       localStorage.removeItem('_current_token')
       localStorage.removeItem('listSpeakers')

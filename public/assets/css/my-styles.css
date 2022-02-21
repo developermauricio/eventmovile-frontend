@@ -18,6 +18,10 @@
 .style-color-title {
     color: #6b6b6b;
 }
+.menu-tex-icon-nav-bar li span{
+    font-size: 0.64rem !important;
+}
+
 
 
 /* Estilos para movil page videoCall */

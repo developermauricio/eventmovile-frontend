@@ -7,7 +7,11 @@
       <div class="offcanvas-body p-4">
         <div class="row">
           <div class="col-12 align-items-center text-center">
-            <img class="img-circle" :src="userChat.picture ? userChat.picture : '/assets/img/avatars/photo-user.png'" width="100" alt="Photo user">
+            <img v-if="userChat.picture" class="img-circle" :src="userChat.picture ? userChat.picture : '/assets/img/avatars/photo-user.png'" width="100" alt="Photo user">
+            <div v-else class="content-first-letter m-auto">
+              <span class="user-first-letter">{{ ( userChat.name || "").slice(0, 1) }} </span>
+            </div>
+            <span class="active-status" v-if="userChat.online === '1'"></span>
             <h6 class="mt-2 m-0">{{ userChat.name + ' ' + userChat.lastname }}</h6>
             <p class="m-0">{{ userChat.empresa ? userChat.empresa : 'Por definir' }}</p>
           </div>
@@ -15,7 +19,7 @@
         <div class="container">
           <div class="row mt-2">
             <div class="col-12">
-              <p>{{ userChat.user_description ? userChat.user_description : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. At beatae corporis dolorem fuga fugiat hic ipsa magni, officia omnis optio porro provident quae quas quisquam sed, tempora ullam vel voluptas?'}} </p>
+              <p style="text-align: justify">{{ userChat.user_description ? userChat.user_description : ''}} </p>
             </div>
           </div>
         </div>
@@ -57,6 +61,22 @@ export default {
       this.userChat = data
       this.showModal = true
     },
+    // showChat(chat) {
+    //   const user_id =
+    //       chat.user.id == chat.creator_id ? chat.guest_id : chat.creator_id;
+    //
+    //   const data = {
+    //     chat_id: chat.chat_id,
+    //     id: chat.id,
+    //     user_id: user_id,
+    //   };
+    //
+    //   window.localStorage.setItem("chat", JSON.stringify(data));
+    //   setTimeout(() => {
+    //     this.$router.push({name: "Chat"});
+    //   }, 200);
+    // },
+
     closeModal() {
       this.showModal = false
     },
@@ -68,8 +88,35 @@ export default {
 </script>
 
 <style scoped>
+.active-status{
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  /*bottom: 1px;*/
+  /*right: 0;*/
+  border: 2px solid #ffffff;
+  background-color: #2ecc4a;
+}
+.content-first-letter {
+  border: 2px solid #f1f2fb;
+  background-color: white;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+span.user-first-letter {
+  font-size: 2rem;
+  color: #a133b4;
+  font-weight: 700;
+}
+
 .modal-canvas-info-user {
-  height: 45vh;
+  height: 40%;
   border-radius: 30px 30px 0 0;
   z-index: 1048;
 }

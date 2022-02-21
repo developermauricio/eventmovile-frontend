@@ -14,7 +14,7 @@ export default {
     const toastAlertSuccess = (message) =>{
       // or with options
       toast.success(message, {
-        timeout: 3500,
+        timeout: 5500,
         icon: 'bi bi-check-lg'
       });
     }
