@@ -18,6 +18,7 @@
 
 <script>
 import {defineAsyncComponent} from "vue";
+import { refreshToken, refreshDataHome } from '@/utils/update-local-storage';
 
 export default {
   name: "Home",
@@ -46,19 +47,25 @@ export default {
       userName: '',
     }
   },
+  methods: {
+    loadDataPage() {
+      //const dataUserString = this.$route.params.dataUser
+      //dataUserString ? this.dataUser = Object.assign({}, JSON.parse(dataUserString)) : ''
+      this.dataUser = JSON.parse( localStorage.getItem('user') ) || {}
+      this.eventStyles = JSON.parse( localStorage.getItem('style-event') ) || {}
+      this.userName = this.dataUser.name + ' ' + this.dataUser.lastname
+    }
+  },
   created() {
-    //const dataUserString = this.$route.params.dataUser
-    //dataUserString ? this.dataUser = Object.assign({}, JSON.parse(dataUserString)) : ''
-    this.dataUser = JSON.parse( localStorage.getItem('user') ) || {}
-    this.eventStyles = JSON.parse( localStorage.getItem('style-event') ) || {}
-    this.userName = this.dataUser.name + ' ' + this.dataUser.lastname
-    
-  },
-  mounted() {
-    /* setInterval( () => {
-      console.log('esto es una prueba');
-    }, 5000); */
-  },
+    window.onload = async () => {
+      await refreshToken();
+      await refreshDataHome();
+
+      this.loadDataPage()
+    };
+
+    this.loadDataPage()
+  }
 }
 </script>
 

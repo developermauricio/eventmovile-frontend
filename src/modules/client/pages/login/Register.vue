@@ -29,9 +29,16 @@
             </div>
 
             <!-- Falta subir la foto -->
-            <div v-if="this.event.image_on_register && this.event.image_on_register == 1" class="text-center px-4">
-                <!-- <img class="login-intro-img" src="/assets/img/img-generic.png" alt=""> -->
-                
+            <div v-if="this.event.image_on_register && this.event.image_on_register == 1" class="content-photo mb-5">
+                <PhotoUser v-on:removeMessagePrincial="removeMessagePrincial"
+                    v-on:urlArchiveServe="urlArchiveServe" />
+                <div v-if="showTextDropzone" class="text-icon-dropzone">
+                    <p>Arrastre y suelte una imagen o haga clic aquí</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cloud-arrow-up icon-upload-dropzone" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z"/>
+                        <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                    </svg>
+                </div>
             </div>
 
             <!-- Register Form -->
@@ -115,12 +122,15 @@
 </template>
 
 <script>
+import {defineAsyncComponent, defineComponent} from "vue";
 import { getSendRequest, postSendRequest } from '@/utils/using-axios';
 import { updateEvent, updateStyles } from '@/utils/update-local-storage';
 
-
-export default {
+export default defineComponent ({
     name: 'Register',
+    components: {
+        PhotoUser: defineAsyncComponent(() => import('@/modules/client/pages/login/components/PhotoUser'))
+    },
     data() {
         return {
             event: {},
@@ -134,7 +144,9 @@ export default {
                 password: 'password',         
                 event: 0,
                 event_type_id: null,       
+                pic: '',
             },
+            showTextDropzone: true,
             loader: null,
             fullPage: false,
             uri: process.env.VUE_APP_API_URL,
@@ -150,14 +162,12 @@ export default {
         }
     },
     methods: {   
-        onChangePicture( image ) {
-            console.log('New picture selected!')
-            if (image) {
-                console.log('Picture loaded.')
-                this.image = image
-            } else {
-                console.log('FileReader API not supported: use the <form>, Luke!')
-            }
+        removeMessagePrincial( data ) {
+            this.showTextDropzone = data
+        },
+        urlArchiveServe( data ) {
+            console.log('urlArchiveServe llega esto: ', data)
+            this.newUser.pic = data
         },
         getOptions( options ) {
             options = options.slice(1)
@@ -351,10 +361,25 @@ export default {
         
         this.setInfoPage();    
     },
-}
+})
 </script>
 
 <style scoped>
+.text-icon-dropzone {
+    position: absolute;
+    width: 130px;
+    margin-top: 37px;
+    text-align: center;
+}
+.icon-upload-dropzone {
+    color: #7e4aa7;
+}
+.content-photo {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
 .show {
     display: block !important;
 }
