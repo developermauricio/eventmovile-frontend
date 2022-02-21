@@ -4,7 +4,7 @@
       <div class="card w-100">
         <div class="card-body">
           <p class="text-center" v-if="usersRemaining.length < 1">
-            Sin Solicitudes Recibidas
+            Sin solicitudes recibidas
           </p>
           <ul class="ps-0 chat-user-list">
             <!-- Single Chat User -->

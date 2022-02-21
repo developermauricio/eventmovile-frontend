@@ -55,7 +55,7 @@ export default {
 
 <style scoped>
 .offcanvas-bottom {
-  height: 45vh !important;
+  height: 55vh !important;
   border-radius: 30px 30px 0 0;
 }
 .hidd {

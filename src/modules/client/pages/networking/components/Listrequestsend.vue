@@ -3,7 +3,7 @@
     <div class="container mb-5">
       <div class="card w-100">
         <div class="card-body">
-          <p class="text-center" v-if="solicitudes.length < 1">Sin Solicitudes Enviadas</p>
+          <p class="text-center" v-if="solicitudes.length < 1">Sin solicitudes enviadas</p>
           <ul class="ps-0 chat-user-list">
             <!-- Single Chat User -->
             <li

@@ -4,7 +4,7 @@
     <div class="container px-0">
       <!-- Navigation Botton -->
       <div class="footer-nav position-relative icons-nav-button">
-        <ul class="h-100 d-flex align-items-center justify-content-between ps-0">
+        <ul class="h-100 d-flex align-items-center justify-content-between ps-0 menu-tex-icon-nav-bar">
           <li class=""><router-link to="/">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>

@@ -10,19 +10,22 @@
 
             <!-- Single Chat User -->
             <template v-else>
-              <li v-for="user in listUserChat" :key="user.user_id" class="p-3">
+              <li v-for="user in listUserChat" :key="user.user_id" class="p-1 pt-4 pb-4">
                 <div @click="clickUserChat(user)" class="d-flex">
                   <!-- Thumbnail -->
-                  <div class="chat-user-thumbnail me-3 shadow">
-                    <img
+                  <div class="chat-user-thumbnail me-3">
+                    <img v-if="user.pic"
                         class="img-circle"
                         :src="
-                        user.picture
-                          ? user.picture
+                        user.pic
+                          ? user.pic
                           : '/assets/img/avatars/photo-user.png'
                       "
                         alt="Photo user"
                     />
+                    <div v-else class="content-first-letter">
+                      <span class="user-first-letter">{{ ( user.name || "").slice(0, 1) }} </span>
+                    </div>
                     <span class="active-status" v-if="user.online === '1'"></span>
                   </div>
                   <!-- Info -->
@@ -268,6 +271,22 @@ export default {
 <style scoped>
 .chat-user-list {
   box-shadow: none !important;
+}
+.content-first-letter {
+  border: 2px solid #f1f2fb;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+span.user-first-letter {
+  font-size: 1rem;
+  color: #a133b4;
+  font-weight: 700;
 }
 
 .last-chat p {
