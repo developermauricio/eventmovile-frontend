@@ -45,7 +45,8 @@ export default {
       audio: false,
       user: {},
       dataUserGuest: {},
-      userJoinVideoCall: false
+      userJoinVideoCall: false,
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
     }
   },
   computed: {

@@ -46,9 +46,16 @@
               <div @click="clickUserChat(user)" class="d-flex">
                   <!-- Thumbnail -->
                   <div class="chat-user-thumbnail me-3 shadow">
-                    <img class="img-circle" :src="user.picture ? user.picture : '/assets/img/avatars/photo-user.png'" alt="Photo user">
+                    <img v-if="user.pic"
+                        class="img-circle"
+                        :src="user.pic ? urlBaseFile + user.pic : '/assets/img/avatars/photo-user.png'"
+                        alt="Photo user"/>
+
+                    <div v-else class="content-first-letter">
+                      <span class="user-first-letter">{{ ( user.name || "").slice(0, 1) }} </span>
+                    </div>
                   </div>
-                  <!-- Info -->
+
                   <div class="chat-user-info">
                     <h6 class="mb-0">{{ user.name + ' ' + user.lastname }}</h6>
                     <div class="last-chat">
@@ -57,7 +64,7 @@
                   </div>
                 </div>
                 <!-- Options solicitud enviada-->
-                <div v-if="user.sendRequest" class="dropstart chat-options-btn">
+                <div v-if="(user.request_sent && user.request_sent.status == 0) || (user.request_received && user.request_received.status == 0)" class="dropstart chat-options-btn">
                   <button @click="cancelRequest(user)" class="btn dropdown-toggle" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-circle color-icon" viewBox="0 0 16 16">
                       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -66,8 +73,8 @@
                   </button>
                 </div>
                 <!-- Options enviar solicitud-->
-                <div v-else class="dropstart chat-options-btn">
-                  <button @click="sendRequest(user)" class="btn dropdown-toggle" type="button">
+                <div v-else-if="!user.request_received || user.request_received.status !== 1" class="dropstart chat-options-btn">
+                  <button v-if="!user.request_sent" @click="sendRequest(user)" class="btn dropdown-toggle" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-plus style-color-icon" viewBox="0 0 16 16">
                       <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                       <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
@@ -85,8 +92,8 @@
 </template>
 
 <script>
-
 import {defineAsyncComponent} from "vue";
+import {createNotification} from "@/plugins/notification.js";
 
 export default {
   name: "Search",
@@ -97,6 +104,8 @@ export default {
     return {
       searchQuery: '',
       listUserChat: [],
+      eventID: 0,
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
     }
   },
   computed: {
@@ -117,13 +126,37 @@ export default {
       this.$refs.modalInfoSearchUserChat.setInfoUserChat( user )
     },
     sendRequest( user ) {
-      user.sendRequest = true
-      localStorage.setItem("listUserChat", JSON.stringify(this.listUserChat));
-      console.log('aqui se puede conectar al chat... info user: ', user)
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
+
+      const data = {
+        guest: user.id,
+        event: this.eventID,
+      };
+
+      window.axios.post("/networking-wa/send-solicitud", data)
+          .then((response) => {
+            user.request_sent = response.data;
+            localStorage.setItem(
+                "listUserChat",
+                JSON.stringify(this.listUserChat)
+            );
+            createNotification(
+                data.guest,
+                "Nueva Solicitud",
+                "Has recibido una nueva solicitud",
+                "nw_new_request"
+            );
+            loader.hide();
+          })
+          .catch((err) => {
+            loader.hide();
+            console.log(err);
+          });
     },
     cancelRequest( user ) {
-      console.log('cancelar la solicitud...', user)
-
       this.$swal.fire({
         title: 'Cancelar solicitud',
         text: "¿Está seguro que desea cancelar la solicitud enviada?",
@@ -135,14 +168,36 @@ export default {
         cancelButtonText: 'No',
       }).then((result) => {
         if (result.isConfirmed) {
-          user.sendRequest = false
-          localStorage.setItem("listUserChat", JSON.stringify(this.listUserChat));
+          this.eliminarSolicitud(user)
         }
       })
+    },
+    eliminarSolicitud(user) {
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.containerLoarder,
+        canCancel: false,
+      });
+      const id = user.request_received ? user.request_received.id : user.request_sent.id;
+      window.axios
+          .delete("/networking-wa/eliminar-solicitud/" + id)
+          .then(() => {
+            loader.hide();
+            user.request_sent = null;
+            user.request_received = null;
+            localStorage.setItem(
+                "listUserChat",
+                JSON.stringify(this.listUserChat)
+            );
+          })
+          .catch((err) => {
+            loader.hide();
+            console.log(err);
+          });
     },
   },
   mounted() {
     this.listUserChat = JSON.parse( localStorage.getItem('listUserChat') ) || []
+    this.eventID = localStorage.getItem("eventId") || 0;
   }
 }
 </script>

@@ -8,14 +8,13 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
+import { refreshToken } from '@/utils/update-local-storage';
 
 export default {
   name: "ChatNetworking",
   components: {
     ChatComponent: defineAsyncComponent(() =>
-      import(
-        /* webpackChunkName: "ChatComponent"*/ "@/modules/client/pages/networking/components/chat/ChatComponent"
-      )
+      import("@/modules/client/pages/networking/components/chat/ChatComponent")
     ),
   },
   data() {
@@ -28,6 +27,10 @@ export default {
     };
   },
   mounted() {
+    window.onload = async () => {
+      await refreshToken();
+    };
+
     const chat = JSON.parse(window.localStorage.getItem("chat") || "{}");
     Object.assign(this.chat, chat);
   },

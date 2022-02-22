@@ -22,6 +22,23 @@
     font-size: 0.64rem !important;
 }
 
+.content-first-letter {
+    border: 2px solid #f1f2fb;
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  span.user-first-letter {
+    font-size: 1rem;
+    color: #a133b4;
+    font-weight: 700;
+  }
+
 
 
 /* Estilos para movil page videoCall */
