@@ -2,16 +2,16 @@
   <div :class="{'show': showModal}" class="offcanvas offcanvas-bottom modal-canvas-video-call"
        :style="{'visibility' : showModal ? 'visible' : 'hidden'}" id="">
     <!-- Close Button -->
-    <button @click="closeModal()" class="btn-close text-reset" type="button"></button>
+    <button @click="closeModal()" class="btn-close text-reset btn-close-video-call" id="close-modal-video-call" type="button"></button>
     <!-- Offcanvas Body -->
     <div class="offcanvas-body">
-      <VideoCall ref="userJoin" :guest="guestUser"/>
+      <VideoCall ref="userJoin" v-on:aceptRequestVideoCall="aceptVideoCall" @cancelVideoCall="cancelVideoCall" @userDesconnected="endVideoCall" @endVideoCall="endVideoCall" :guest="guestUser"/>
     </div>
   </div>
-
   <audio src="/assets/audio/sonido-llamada-saliente.mp3" id="eventAudioCall"></audio>
   <div @click="closeModal()" :class="{'show': showModal, 'hidd': showModal}" class="offcanvas-backdrop fade"
        style="display: none"></div>
+  <ToastAlert ref="toast"/>
 </template>
 
 <script>
@@ -19,12 +19,13 @@ import VideoCall from "../VideoCall";
 import {createNotification} from "@/plugins/notification.js";
 import {publishMQTT} from "@/plugins/mqtt";
 import {onMounted, ref, watch} from "vue";
-import {useIdle} from "@vueuse/core";
+import ToastAlert from "@/modules/client/shared/components/ToastAlert";
 
 export default {
   name: "ModalVideoCallFloat",
   components: {
     VideoCall,
+    ToastAlert
   },
   emits: ["closeModalReceivedCall"],
   props: ['guestUser'],
@@ -32,21 +33,33 @@ export default {
     let showModal = ref(false)
     let audioCall = ref(false)
     let userId = ref(null)
+    let timoutCancel = ref(null)
     const userJoin = ref(null)
-    const {idle, lastActive} = useIdle(1 * 60 * 1000) // 5 minutos
+    const toast = ref(null)
 
+    const openModal = (data, userIdNotification) => {
 
-    const openModal = (data) => {
       setTimeout(() => {
         showModal.value = true
+        audioCall.value = true
+        userId.value = userIdNotification
+        playAudio()
         userJoin.value.userJoinVideoCall(data)
         // cancelVideoCall()
-      }, 200)
+      }, 100)
+
+    }
+
+    const endVideoCall = () =>{
+      showModal.value = false
+      audioCall.value = false
+      document.querySelectorAll('.btn-close-video-call').forEach(element => element.click());
 
     }
 
     const aceptVideoCall = () => {
-      this.audioCall.value = false
+      audioCall.value = false
+      clearTimeout(window.timoutCancel);
       let buttonAudio = document.getElementById('eventAudioCall');
       buttonAudio.getAttribute('src')
       buttonAudio.pause()
@@ -54,27 +67,35 @@ export default {
     }
 
     const closeModal = () => {
-      showModal.value = !showModal.value;
+      showModal.value = false
     }
 
-    const playAudio = (data) => {
-      audioCall.value = true
-      userId.value = data
+    const playAudio = () => {
       let buttonAudio = document.getElementById('eventAudioCall');
       buttonAudio.getAttribute('src')
       buttonAudio.play()
-    }
-    const stopAudio = () => {
-      audioCall.value = false
+      if (window.timoutCancel){
+        clearTimeout(window.timoutCancel);
+      }
+      window.timoutCancel = setTimeout(() => {
+        audioCall.value = false
+        sendNotificationCallCanceled()
+        closeVideoCall()
+      }, 10000)
+
     }
 
     const cancelVideoCall = async () => {
 
+      clearTimeout(window.timoutCancel);
       let buttonAudio = document.getElementById('eventAudioCall');
       buttonAudio.getAttribute('src')
       buttonAudio.pause()
-      audioCall.value = false
       showModal.value = false
+      audioCall.value = false
+      // document.getElementById('close-modal-video-call').click()
+      document.querySelectorAll('.btn-close-video-call').forEach(element => element.click());
+      toast.value.toastAlertError('Llamada rechazada')
     }
 
 
@@ -90,10 +111,14 @@ export default {
     }
 
     const closeVideoCall = () => {
-
+      let buttonAudio = document.getElementById('eventAudioCall');
+      buttonAudio.getAttribute('src')
+      buttonAudio.pause()
       setTimeout(() => {
         let datacloseVideoCall = false
         publishMQTT('nw_close_video_call', datacloseVideoCall)
+        userJoin.value.leaveEvent()
+        toast.value.toastAlertError('No disponible')
       }, 1000)
     }
 
@@ -102,29 +127,21 @@ export default {
       watch(audioCall, (v) => {
         console.log('EL VALOR DE ', v)
         if (v === false) {
-          sendNotificationCallCanceled()
+
           closeVideoCall()
-          let buttonAudio = document.getElementById('eventAudioCall');
-          buttonAudio.getAttribute('src')
-          buttonAudio.pause()
-        }else{
+
+        } else {
           // let buttonAudio = document.getElementById('eventAudioCall');
           // buttonAudio.getAttribute('src')
           // buttonAudio.pause()
         }
 
       })
-      watch(idle, (v) => {
-        console.log(v)
-        if (v === true && audioCall.value === true) {
-          cancelVideoCall()
-        }
-      })
     })
 
     return {
-      showModal, audioCall, userId, userJoin, lastActive, stopAudio, openModal,
-      closeModal, playAudio, cancelVideoCall,
+      showModal, audioCall, userId, userJoin, timoutCancel, toast, openModal,
+      closeModal, playAudio, cancelVideoCall, endVideoCall,
       sendNotificationCallCanceled, closeVideoCall, aceptVideoCall
     }
   }
@@ -139,6 +156,10 @@ export default {
 
 .modal-canvas-video-call {
   background-color: rgba(6, 18, 56, 0.9) !important;
+}
+
+.offcanvas-body{
+  padding: 0 !important;
 }
 
 </style>

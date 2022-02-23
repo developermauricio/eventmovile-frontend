@@ -76,8 +76,8 @@ export default {
       await publishMQTT('nw_new_video_call', JSON.stringify(dataUserSendVideoCall))
       //AQUI ABRIMOS LA MODAL DE LA VIDEO LLAMADA CON EL AUDIO EN ESPERA QUE CONTESTEN
       this.userJoinVideoCall = true
-      this.$refs.modalVideoCall.openModal(this.userJoinVideoCall)
-      this.$refs.modalVideoCall.playAudio(this.user.user_id)
+      this.$refs.modalVideoCall.openModal(this.userJoinVideoCall, this.user.user_id)
+      // this.$refs.modalVideoCall.playAudio()
       // await createNotification(
       //     this.user.user_id,
       //     "Nueva solicitud videollamada",

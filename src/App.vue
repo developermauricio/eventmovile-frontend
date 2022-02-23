@@ -1,17 +1,19 @@
 <template>
-  <div class="add-new-contact-wrap button-fload-call" v-if="shoButtonFloat">
+  <div @click="openModalVideoCallButton" class="add-new-contact-wrap button-fload-call" id="float-button-call" style="display: none !important;">
     <a class="shadow icon-font-call">
       <i class="bi bi-qr-code"></i>
       <img width="45" src="/assets/img/icon-call.gif" alt="">
     </a>
   </div>
   <ReceivedVideoCall ref="modal"/>
+  <ModalVideoCallFloat ref="modalVideoCall"/>
   <router-view/>
 
 </template>
 
 
 <script>
+import ModalVideoCallFloat from "./modules/client/pages/agora/components/ModalVideoCallFloat";
 import {useIdle} from "@vueuse/core";
 import {onMounted, ref, watch} from "vue";
 import {subscriberMQTT} from "@/plugins/mqtt";
@@ -20,13 +22,23 @@ import ReceivedVideoCall from "@/modules/client/shared/components/ReceivedVideoC
 
 export default {
   name: 'App',
+  components: {
+    ReceivedVideoCall,
+    ModalVideoCallFloat
+  },
   setup() {
     const shoButtonFloat = ref(false)
     const app_idle = ref(false)
     const user = ref({})
+    const modalVideoCall = ref(null)
     const modal = ref(null)
     const urlBase = process.env.VUE_APP_API_URL
     const {idle, lastActive} = useIdle(1 * 60 * 1000) // 5 minutos
+
+    const openModalVideoCallButton = ()=>{
+      // modalVideoCall.value.openModalVideoCall()
+      document.querySelectorAll('.modal-canvas-video-call').classList('openModalVideoCallButton')
+    }
 
     const inactiveOnlineUser = () => {
       user.value = JSON.parse(localStorage.getItem('user') || '{}')
@@ -102,9 +114,9 @@ export default {
       notificationVideoCall()
     })
     return {
-      app_idle, lastActive, urlBase, user, modal, shoButtonFloat,
+      app_idle, lastActive, urlBase, user, modal, shoButtonFloat, modalVideoCall,
       inactiveOnlineUser, activeOnlineUser, closeWindows,
-      notificationVideoCall, openModalVideoCall
+      notificationVideoCall, openModalVideoCall, openModalVideoCallButton
     }
   },
   data() {
@@ -113,9 +125,7 @@ export default {
     }
   },
 
-  components: {
-    ReceivedVideoCall
-  },
+
   watch: {
     '$route'(to, from) {
       const toDepth = to.path.split('/').length

@@ -32,7 +32,7 @@
 
 <script>
 import ModalVideoCallFloat from "@/modules/client/pages/agora/components/ModalVideoCallFloat";
-import {subscriberMQTT} from "@/plugins/mqtt";
+import {subscriberMQTT, publishMQTT} from "@/plugins/mqtt";
 import {onMounted, ref} from "vue";
 
 export default {
@@ -56,9 +56,14 @@ export default {
 
     const closePopup = () => {
       showModal.value = false
+      // let callRequestCancel = 0
+      publishMQTT('nw_acept_request_cancel_video_call', user.value.id)
     }
 
     const doVideoCall = () => {
+      // let callRequest = 1
+      // publishMQTT('nw_acept_request_video_call', callRequest)
+
       showModal.value = false
       userJoinVideoCall.value = true
       modalVideoCall.value.openModal(userJoinVideoCall.value)
@@ -73,7 +78,6 @@ export default {
     }
 
     const closeVideoCall = () => {
-      console.log('EMIT EVENTO')
       showModal.value = false
     }
 
