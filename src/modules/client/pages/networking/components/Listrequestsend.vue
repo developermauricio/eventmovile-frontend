@@ -11,19 +11,17 @@
               v-for="(solicitud, index) in solicitudes"
               :key="solicitud.id"
             >
-              <a class="d-flex" href="#">
+              <a @click="clickUserQuestSend(solicitud)" class="d-flex" href="#">
                 <!-- Thumbnail -->
-                <div
-                  class="chat-user-thumbnail me-3 shadow"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasBottomProfileNetworking"
-                  aria-controls="offcanvasBottomProfileNetworking"
-                >
-                  <img
-                    class="img-circle"
-                    src="/assets/img/avatars/perfil-women.jpg"
-                    alt=""
-                  />
+                <div class="chat-user-thumbnail me-3">
+                  <img v-if="solicitud.guest.pic"
+                      class="img-circle"
+                      :src="solicitud.guest.pic ? urlBaseFile + solicitud.guest.pic : '/assets/img/avatars/photo-user.png'"
+                      alt="Photo user"/>
+
+                  <div v-else class="content-first-letter">
+                    <span class="user-first-letter">{{ ( solicitud.guest.name || "").slice(0, 1) }} </span>
+                  </div>
                 </div>
                 <!-- Info -->
                 <div
@@ -72,7 +70,7 @@
     <!--=====================================
     MODAL INFO PERFIL NETWOKING
    ======================================-->
-    <Profile />
+    <Profile ref="modalInfoQuestSend" />
   </div>
 </template>
 
@@ -84,6 +82,7 @@ export default {
   data() {
     return {
       solicitudes: [],
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
     };
   },
   components: {
@@ -124,6 +123,9 @@ export default {
         });
       console.log(solicitud);
     },
+    clickUserQuestSend( user ) {
+      this.$refs.modalInfoQuestSend.setInfoUserChat(user.guest, this.eventID);
+    }
   },
 };
 </script>

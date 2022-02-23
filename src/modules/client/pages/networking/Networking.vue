@@ -8,6 +8,7 @@
 
 <script>
 import {defineAsyncComponent} from "vue";
+import { refreshToken } from '@/utils/update-local-storage';
 
 export default {
   name: "Networking",  
@@ -16,6 +17,11 @@ export default {
     Header: defineAsyncComponent(() => import('@/modules/client/pages/networking/components/Header')),
     Participants: defineAsyncComponent(() => import('@/modules/client/pages/networking/components/Participants')),
   },
+  mounted() {
+    window.onload = async () => {
+      await refreshToken();
+    };
+  }
 }
 </script>
 

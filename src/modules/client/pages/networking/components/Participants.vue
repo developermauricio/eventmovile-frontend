@@ -16,15 +16,11 @@
                   <div class="chat-user-thumbnail me-3">
                     <img v-if="user.pic"
                         class="img-circle"
-                        :src="
-                        user.pic
-                          ? user.pic
-                          : '/assets/img/avatars/photo-user.png'
-                      "
-                        alt="Photo user"
-                    />
+                        :src="user.pic ? urlBaseFile + user.pic : '/assets/img/avatars/photo-user.png'"
+                        alt="Photo user"/>
+
                     <div v-else class="content-first-letter">
-                      <span class="user-first-letter">{{ ( user.name || "").slice(0, 1) }} </span>
+                      <span class="user-first-letter">{{ ( user.name || "").slice(0, 1) }}</span>
                     </div>
                     <span class="active-status" v-if="user.online === '1'"></span>
                   </div>
@@ -41,29 +37,18 @@
                   </div>
                 </div>
                 <!-- Options solicitud enviada-->
-                <div
-                    v-if="
-                    (user.request_sent && user.request_sent.status == 0) ||
-                    (user.request_received && user.request_received.status == 0)
-                  "
-                    class="dropstart chat-options-btn"
-                >
-                  <button
-                      @click="cancelRequest(user)"
-                      class="btn dropdown-toggle"
-                      type="button"
-                  >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
+                <div v-if="(user.request_sent && user.request_sent.status == 0) || (user.request_received && user.request_received.status == 0)"
+                    class="dropstart chat-options-btn">
+                  <button @click="cancelRequest(user)"
+                    class="btn dropdown-toggle"
+                    type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
                         fill="currentColor"
                         class="bi bi-x-circle color-icon"
-                        viewBox="0 0 16 16"
-                    >
-                      <path
-                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                      />
+                        viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                       <path
                           d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
                       />
@@ -132,11 +117,12 @@ export default {
       eventID: 0,
       listUserChat: [],
       showOnlineUser: false,
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
     };
   },
   methods: {
     clickUserChat(user) {
-      this.$refs.modalInfoUserChat.setInfoUserChat(user);
+      this.$refs.modalInfoUserChat.setInfoUserChat(user, this.eventID);
     },
     eliminarSolicitud(user) {
       const loader = this.$loading.show({

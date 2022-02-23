@@ -13,19 +13,17 @@
               v-for="user in usersRemaining"
               :key="user.id"
             >
-              <a class="d-flex" href="#">
+              <a @click="clickQuestReceived(user)" class="d-flex" href="#">
                 <!-- Thumbnail -->
-                <div
-                  class="chat-user-thumbnail me-3 shadow"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasBottomProfileNetworking"
-                  aria-controls="offcanvasBottomProfileNetworking"
-                >
-                  <img
-                    class="img-circle"
-                    src="/assets/img/avatars/perfil-women.jpg"
-                    alt=""
-                  />
+                <div class="chat-user-thumbnail me-3">
+                  <img v-if="user.creator.pic"
+                      class="img-circle"
+                      :src="user.creator.pic ? urlBaseFile + user.creator.pic : '/assets/img/avatars/photo-user.png'"
+                      alt="Photo user"/>
+
+                  <div v-else class="content-first-letter">
+                    <span class="user-first-letter">{{ ( user.creator.name || "").slice(0, 1) }} </span>
+                  </div>
                 </div>
                 <!-- Info -->
                 <div
@@ -34,7 +32,7 @@
                   data-bs-target="#offcanvasBottomProfileNetworking"
                   aria-controls="offcanvasBottomProfileNetworking"
                 >
-                  <h6 class="text-truncate mb-0">{{ user.creator.name }}</h6>
+                  <h6 class="text-truncate mb-0">{{ user.creator.name + ' ' + user.creator.lastname }}</h6>
                   <div class="last-chat">
                     <p class="mb-0 text-truncate">por definir</p>
                   </div>
@@ -98,7 +96,7 @@
     <!--=====================================
     MODAL INFO PERFIL NETWOKING
    ======================================-->
-    <Profile />
+    <Profile ref="modalInfoUserRequestReceived" />
   </div>
 </template>
 
@@ -118,6 +116,7 @@ export default {
   data() {
     return {
       users: [],
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
     };
   },
   mounted() {
@@ -182,6 +181,9 @@ export default {
           console.log(err);
         });
     },
+    clickQuestReceived( user ) {
+      this.$refs.modalInfoUserRequestReceived.setInfoUserChat(user.creator, this.eventID);
+    }
   },
 };
 </script>
@@ -201,5 +203,21 @@ export default {
 }
 .bi-three-dots-vertical {
   color: #00000094 !important;
+}
+.content-first-letter {
+  border: 2px solid #f1f2fb;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+span.user-first-letter {
+  font-size: 1rem;
+  color: #a133b4;
+  font-weight: 700;
 }
 </style>

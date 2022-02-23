@@ -9,7 +9,17 @@
             <li class="p-3" v-for="chat in chats" :key="chat.id">
               <a class="d-flex" href="#">
                 <!-- Thumbnail -->
-                <div
+                <div class="chat-user-thumbnail me-3">
+                  <img v-if="chat.user.pic"
+                      class="img-circle"
+                      :src="chat.user.pic ? urlBaseFile + chat.user.pic : '/assets/img/avatars/photo-user.png'"
+                      alt="Photo user"/>
+
+                  <div v-else class="content-first-letter">
+                    <span class="user-first-letter">{{ ( chat.user.name || "").slice(0, 1) }} </span>
+                  </div>
+                </div>
+                <!-- <div
                     data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasBottomProfileNetworking"
                     aria-controls="offcanvasBottomProfileNetworking"
@@ -20,7 +30,7 @@
                       src="/assets/img/avatars/perfil-men.jpg"
                       alt=""
                   />
-                </div>
+                </div> -->
                 <!-- Info -->
                 <div
                     class="chat-user-info"
@@ -87,6 +97,7 @@ export default {
   data() {
     return {
       chats: [],
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
     };
   },
 
