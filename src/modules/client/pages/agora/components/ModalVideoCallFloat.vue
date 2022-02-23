@@ -128,7 +128,7 @@ export default {
         console.log('EL VALOR DE ', v)
         if (v === false) {
 
-          closeVideoCall()
+          // closeVideoCall()
 
         } else {
           // let buttonAudio = document.getElementById('eventAudioCall');
