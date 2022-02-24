@@ -51,6 +51,7 @@ export default {
       console.log('DATA USER ', data)
       user.value = data || {}
       showModal.value = true
+      modalVideoCall.value.dataAgoraNewVideoCall(data.channel, data.token)
       //TODO falta poner la foto o la primer letra del nombre y enviar la notificacion.
     }
 

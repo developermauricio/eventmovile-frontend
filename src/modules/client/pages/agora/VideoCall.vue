@@ -65,6 +65,8 @@ export default {
     AvatarUser: defineAsyncComponent(() => import('@/modules/client/pages/agora/components/AvatarUser'))
   },
   props: {
+    tokenAgora: null,
+    channelAgora: null,
     guest: null,
     user: {
       type: String,
@@ -77,10 +79,17 @@ export default {
       option: {
         audio: false,
         appid: process.env.VUE_APP_AGORA_APPID,
-        token: process.env.VUE_APP_AGORA_TOKEN,
+        token: null,
         uid: null,
-        channel: process.env.VUE_APP_AGORA_CHANNEL,
+        channel: null
       },
+
+      // audio: false,
+      // appid: process.env.VUE_APP_AGORA_APPID,
+      // token: null,
+      // uid: null,
+      // channel: process.env.VUE_APP_AGORA_CHANNEL,
+
       disableJoin: false,
       joinUser: false,
       audioOn: true,
@@ -91,20 +100,32 @@ export default {
     }
   },
   methods: {
+
     joinEvent() {
-      this.rtc.joinChannel(this.option)
-          .then(() => {
-            this.rtc.publishStream()
-                .then((stream) => {
-                  //console.log('Publish Success', stream)
-                  this.localStream = stream
-                }).catch((err) => {
-              console.log('publish local error', err)
-            })
-          }).catch((err) => {
-        console.log('join channel error', err)
-      });
-      this.disableJoin = true
+      setTimeout(() =>{
+        this.option.token = this.tokenAgora
+        this.option.channel = this.channelAgora
+
+        console.log('TOKEN DESDE EL VIDEO', this.option.token)
+        console.log('CANAL DESDE EL VIDEO', this.option.channel)
+      }, 1000)
+
+      setTimeout(() => {
+        this.rtc.joinChannel(this.option)
+            .then(() => {
+              this.rtc.publishStream()
+                  .then((stream) => {
+                    //console.log('Publish Success', stream)
+                    this.localStream = stream
+                  }).catch((err) => {
+                console.log('publish local error', err)
+              })
+            }).catch((err) => {
+          console.log('join channel error', err)
+        });
+        this.disableJoin = true
+      }, 1000)
+
     },
     requestCancelVideoCall() {
       let key = 'eiownd2032234'
@@ -169,6 +190,7 @@ export default {
     },
   },
   created() {
+
     this.rtc = new RTCClient();
     let rtc = this.rtc
 
@@ -209,6 +231,7 @@ export default {
     })
   },
   mounted() {
+
     // this.joinEvent()
     this.userJoinVideoCall()
     this.requestCancelVideoCall()
@@ -218,9 +241,10 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   padding: 0 !important;
 }
+
 .mainContent {
   top: 0 !important;
   height: 100% !important;

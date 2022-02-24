@@ -5,7 +5,7 @@
     <button @click="closeModal()" class="btn-close text-reset btn-close-video-call" id="close-modal-video-call" type="button"></button>
     <!-- Offcanvas Body -->
     <div class="offcanvas-body">
-      <VideoCall ref="userJoin" v-on:aceptRequestVideoCall="aceptVideoCall" @cancelVideoCall="cancelVideoCall" @userDesconnected="endVideoCall" @endVideoCall="endVideoCall" :guest="guestUser"/>
+      <VideoCall ref="userJoin" :tokenAgora="tokenAgora" :channelAgora="channelAgora" v-on:aceptRequestVideoCall="aceptVideoCall" @cancelVideoCall="cancelVideoCall" @userDesconnected="endVideoCall" @endVideoCall="endVideoCall" :guest="guestUser"/>
     </div>
   </div>
   <audio src="/assets/audio/sonido-llamada-saliente.mp3" id="eventAudioCall"></audio>
@@ -34,8 +34,17 @@ export default {
     let audioCall = ref(false)
     let userId = ref(null)
     let timoutCancel = ref(null)
+    const tokenAgora = ref(null)
+    const channelAgora = ref(null)
     const userJoin = ref(null)
     const toast = ref(null)
+
+   const dataAgoraNewVideoCall = (channelUnique, token) =>{
+      tokenAgora.value = token
+      channelAgora.value = channelUnique
+
+     console.log('channel AGORA ',channelAgora.value)
+    }
 
     const openModal = (data, userIdNotification) => {
 
@@ -140,8 +149,8 @@ export default {
     })
 
     return {
-      showModal, audioCall, userId, userJoin, timoutCancel, toast, openModal,
-      closeModal, playAudio, cancelVideoCall, endVideoCall,
+      showModal, audioCall, userId, userJoin, timoutCancel, toast, tokenAgora, channelAgora, openModal,
+      closeModal, playAudio, cancelVideoCall, endVideoCall, dataAgoraNewVideoCall,
       sendNotificationCallCanceled, closeVideoCall, aceptVideoCall
     }
   }
