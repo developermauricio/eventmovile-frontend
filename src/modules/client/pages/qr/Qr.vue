@@ -136,6 +136,8 @@ export default {
       nit: this.user.nit,
       phone: this.user.phone,
       user_type: this.user.user_type,
+      password: this.event.password,
+      eventId: this.event.id
     }
     this.dataUser = JSON.stringify( infoUser )
   }
