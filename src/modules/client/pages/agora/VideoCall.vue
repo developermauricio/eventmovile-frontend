@@ -36,7 +36,8 @@
       </a>
 
       <!-- Hacer videollamada -->
-      <a v-if="disableJoin" @click='leaveEvent' class="btn btn-lg btn-danger p-4 btn-call-leave" href="#">
+      <a v-if="disableJoin" @click='leaveEvent' id="btn-close-video-call"
+         class="btn btn-lg btn-danger p-4 btn-call-leave" href="#">
         <i class="bi bi-telephone-x"></i>
       </a>
       <a v-else @click="joinEvent" class="btn btn-lg btn-success p-4 btn-call-success" href="#">
@@ -55,6 +56,7 @@
 <script>
 import RTCClient from "@/plugins/agora-rtc-client.js";
 import {defineAsyncComponent} from "vue";
+import {subscriberMQTT} from "@/plugins/mqtt";
 
 export default {
   name: 'VideoCall',
@@ -63,6 +65,8 @@ export default {
     AvatarUser: defineAsyncComponent(() => import('@/modules/client/pages/agora/components/AvatarUser'))
   },
   props: {
+    tokenAgora: null,
+    channelAgora: null,
     guest: null,
     user: {
       type: String,
@@ -75,10 +79,17 @@ export default {
       option: {
         audio: false,
         appid: process.env.VUE_APP_AGORA_APPID,
-        token: process.env.VUE_APP_AGORA_TOKEN,
+        token: null,
         uid: null,
-        channel: process.env.VUE_APP_AGORA_CHANNEL,
+        channel: null
       },
+
+      // audio: false,
+      // appid: process.env.VUE_APP_AGORA_APPID,
+      // token: null,
+      // uid: null,
+      // channel: process.env.VUE_APP_AGORA_CHANNEL,
+
       disableJoin: false,
       joinUser: false,
       audioOn: true,
@@ -89,24 +100,48 @@ export default {
     }
   },
   methods: {
+
     joinEvent() {
-      this.rtc.joinChannel(this.option)
-          .then(() => {
-            this.rtc.publishStream()
-                .then((stream) => {
-                  //console.log('Publish Success', stream)
-                  this.localStream = stream
-                }).catch((err) => {
-              console.log('publish local error', err)
-            })
-          }).catch((err) => {
-        console.log('join channel error', err)
-      });
-      this.disableJoin = true
+      setTimeout(() =>{
+        this.option.token = this.tokenAgora
+        this.option.channel = this.channelAgora
+
+        console.log('TOKEN DESDE EL VIDEO', this.option.token)
+        console.log('CANAL DESDE EL VIDEO', this.option.channel)
+      }, 1000)
+
+      setTimeout(() => {
+        this.rtc.joinChannel(this.option)
+            .then(() => {
+              this.rtc.publishStream()
+                  .then((stream) => {
+                    //console.log('Publish Success', stream)
+                    this.localStream = stream
+                  }).catch((err) => {
+                console.log('publish local error', err)
+              })
+            }).catch((err) => {
+          console.log('join channel error', err)
+        });
+        this.disableJoin = true
+      }, 1000)
+
+    },
+    requestCancelVideoCall() {
+      let key = 'eiownd2032234'
+      let topic = 'nw_acept_request_cancel_video_call'
+      let user_connect = JSON.parse(localStorage.getItem('user'))
+      subscriberMQTT(key, topic, (user_id) => {
+        if (user_connect.id == user_id) {
+          document.getElementById('btn-close-video-call').click()
+          this.$emit('cancelVideoCall', user_id)
+        }
+      })
+
     },
     leaveEvent() {
       this.disableJoin = false
-
+      this.$emit('endVideoCall')
       this.rtc.leaveChannel()
           .then(() => {
             console.log('Leave Success')
@@ -136,9 +171,9 @@ export default {
       this.disableJoin = false
       this.$router.go(-1);
     },
-    userJoinVideoCall(data){
+    userJoinVideoCall(data) {
       this.joinUser = data
-      if (this.joinUser === true){
+      if (this.joinUser === true) {
         this.joinEvent()
       }
     }
@@ -155,6 +190,7 @@ export default {
     },
   },
   created() {
+
     this.rtc = new RTCClient();
     let rtc = this.rtc
 
@@ -165,6 +201,8 @@ export default {
     })
 
     rtc.on('stream-subscribed', (evt) => {
+      this.$emit('aceptRequestVideoCall')
+      document.getElementById('float-button-call').style.display = 'block'
       let {stream} = evt
       console.log.bind('stream.getId:. ', stream.getId())
       if (!this.remoteStreams.find((it) => it.getId() === stream.getId())) {
@@ -176,6 +214,11 @@ export default {
       let {stream} = evt
       console.log.bind('stream.getId:.. ', stream.getId())
       this.remoteStreams = this.remoteStreams.filter((it) => it.getId() !== stream.getId())
+      document.getElementById('btn-close-video-call').click()
+      document.getElementById('float-button-call').style.display = 'none'
+      setTimeout(() => {
+        this.$emit('userDesconnected')
+      }, 200)
     })
 
     rtc.on('peer-online', (evt) => {
@@ -188,18 +231,25 @@ export default {
     })
   },
   mounted() {
+
     // this.joinEvent()
     this.userJoinVideoCall()
+    this.requestCancelVideoCall()
     this.currentUser = JSON.parse(localStorage.getItem('user')) || {}
   }
 }
 </script>
 
 <style scoped>
-.mainContent{
+.container {
+  padding: 0 !important;
+}
+
+.mainContent {
   top: 0 !important;
   height: 100% !important;
 }
+
 .btn-go-back {
   top: 0;
   width: 100%;
@@ -260,7 +310,7 @@ p.user-name {
 
 .agora-video {
   width: 100%;
-  height: 70vh;
+  height: 100vh;
   background-image: url('/assets/img/icons/icon-videocall.png');
   background-size: 30%;
   background-repeat: no-repeat;
@@ -285,4 +335,5 @@ p.user-name {
   height: 100% !important;
   width: 100% !important;
 }
+
 </style>

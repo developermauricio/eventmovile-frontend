@@ -22,7 +22,7 @@ export default {
     const toastAlertError = (message) =>{
       // or with options
       toast.error(message, {
-        timeout: 2000,
+        timeout: 5500,
         icon: 'bi bi-exclamation-triangle'
       });
     }

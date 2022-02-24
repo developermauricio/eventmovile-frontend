@@ -34,9 +34,10 @@
 // import {createNotification} from "@/plugins/notification.js";
 import {publishMQTT} from "@/plugins/mqtt";
 import ModalVideoCallFloat from "@/modules/client/pages/agora/components/ModalVideoCallFloat";
+
 export default {
   name: "PopupVideoCalling",
-  components:{
+  components: {
     ModalVideoCallFloat
   },
   data() {
@@ -44,6 +45,8 @@ export default {
       showModal: false,
       audio: false,
       user: {},
+      tokenAgora: null,
+      channelAgora: null,
       dataUserGuest: {},
       userJoinVideoCall: false,
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
@@ -55,6 +58,32 @@ export default {
     }
   },
   methods: {
+
+    async getTokenAgora() {
+      let resp = this
+      let creator = JSON.parse(localStorage.getItem('user'))
+      let guest = this.user.user_id.toString()
+      let event_id = localStorage.getItem('eventId')
+
+      let channelUnique = 'call-' + creator.id.toString() + guest + Math.random().toString(36).substr(2);
+      this.channelAgora = channelUnique
+      const data = new FormData()
+      data.append('event_id', event_id);
+      data.append('meeting_id', channelUnique);
+      data.append('creator_id', creator.id);
+      data.append('guest_id', guest);
+      data.append('type_call', 'Video');
+      // data.append('creator_id')
+      await window.axios.post('token-agora', data).then(response => {
+
+        resp.$refs.modalVideoCall.dataAgoraNewVideoCall(channelUnique, response.data.data.token)
+        resp.tokenAgora = response.data.data.token
+        // resp.option.uid = response.data.uid
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
     openPopupVideoCall(user) {
       this.user = user || {}
       this.showModal = !this.showModal
@@ -66,19 +95,22 @@ export default {
     async doVideoCall() {
       this.showModal = false
       const currentUser = JSON.parse(localStorage.getItem('user'))
+      await this.getTokenAgora()
 
       let dataUserSendVideoCall = {
         idUserGuest: this.user.user_id,
         id: currentUser.id,
         name: currentUser.name + ' ' + currentUser.lastname,
-        img: currentUser.pic
+        img: currentUser.pic,
+        token: this.tokenAgora,
+        channel: this.channelAgora
       }
-      // ABRIMOS LA MODAL DE LA SOLICITUD DE LLAMADA QUE SE ENCUENTRE EN EL App.vue
-      await publishMQTT('nw_new_video_call', JSON.stringify(dataUserSendVideoCall))
       //AQUI ABRIMOS LA MODAL DE LA VIDEO LLAMADA CON EL AUDIO EN ESPERA QUE CONTESTEN
       this.userJoinVideoCall = true
-      this.$refs.modalVideoCall.openModal(this.userJoinVideoCall)
-      this.$refs.modalVideoCall.playAudio(this.user.user_id)
+      this.$refs.modalVideoCall.openModal(this.userJoinVideoCall, this.user.user_id)
+      // ABRIMOS LA MODAL DE LA SOLICITUD DE LLAMADA QUE SE ENCUENTRE EN EL App.vue
+      await publishMQTT('nw_new_video_call', JSON.stringify(dataUserSendVideoCall))
+      // this.$refs.modalVideoCall.playAudio()
       // await createNotification(
       //     this.user.user_id,
       //     "Nueva solicitud videollamada",
