@@ -105,7 +105,6 @@ export default {
       setTimeout(() =>{
         this.option.token = this.tokenAgora
         this.option.channel = this.channelAgora
-
         console.log('TOKEN DESDE EL VIDEO', this.option.token)
         console.log('CANAL DESDE EL VIDEO', this.option.channel)
       }, 1000)
@@ -113,6 +112,11 @@ export default {
       setTimeout(() => {
         this.rtc.joinChannel(this.option)
             .then(() => {
+              window.axios.post('/on-call/'+this.currentUser.id).then(response =>{
+                console.log(response)
+              }).catch(err =>{
+                console.log(err)
+              })
               this.rtc.publishStream()
                   .then((stream) => {
                     //console.log('Publish Success', stream)
@@ -140,6 +144,7 @@ export default {
 
     },
     leaveEvent() {
+      document.getElementById('float-button-call').style.display = 'none'
       this.disableJoin = false
       this.$emit('endVideoCall')
       this.rtc.leaveChannel()

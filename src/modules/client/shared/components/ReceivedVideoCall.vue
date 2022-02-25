@@ -68,6 +68,7 @@ export default {
       showModal.value = false
       userJoinVideoCall.value = true
       modalVideoCall.value.openModal(userJoinVideoCall.value)
+      window.modalVideoCallReference = modalVideoCall.value
       modalVideoCall.value.aceptVideoCall()
     }
 

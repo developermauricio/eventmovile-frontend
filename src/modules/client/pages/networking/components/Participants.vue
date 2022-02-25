@@ -15,12 +15,12 @@
                   <!-- Thumbnail -->
                   <div class="chat-user-thumbnail me-3">
                     <img v-if="user.pic"
-                        class="img-circle"
-                        :src="user.pic ? urlBaseFile + user.pic : '/assets/img/avatars/photo-user.png'"
-                        alt="Photo user"/>
+                         class="img-circle"
+                         :src="user.pic ? urlBaseFile + user.pic : '/assets/img/avatars/photo-user.png'"
+                         alt="Photo user"/>
 
                     <div v-else class="content-first-letter">
-                      <span class="user-first-letter">{{ ( user.name || "").slice(0, 1) }}</span>
+                      <span class="user-first-letter">{{ (user.name || "").slice(0, 1) }}</span>
                     </div>
                     <span class="active-status" v-if="user.online === '1'"></span>
                   </div>
@@ -37,18 +37,19 @@
                   </div>
                 </div>
                 <!-- Options solicitud enviada-->
-                <div v-if="(user.request_sent && user.request_sent.status == 0) || (user.request_received && user.request_received.status == 0)"
+                <div
+                    v-if="(user.request_sent && user.request_sent.status == 0) || (user.request_received && user.request_received.status == 0)"
                     class="dropstart chat-options-btn">
                   <button @click="cancelRequest(user)"
-                    class="btn dropdown-toggle"
-                    type="button">
+                          class="btn dropdown-toggle"
+                          type="button">
                     <svg xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="currentColor"
-                        class="bi bi-x-circle color-icon"
-                        viewBox="0 0 16 16">
-                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                         width="24"
+                         height="24"
+                         fill="currentColor"
+                         class="bi bi-x-circle color-icon"
+                         viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                       <path
                           d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
                       />
@@ -82,6 +83,29 @@
                       <path
                           fill-rule="evenodd"
                           d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div v-else class="dropstart chat-options-btn">
+                  <button
+                      class="btn dropdown-toggle"
+                      type="button"
+                      @click="showChat(user)"
+                  >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        fill="currentColor"
+                        class="bi bi-chat-left-text"
+                        viewBox="0 0 16 16"
+                    >
+                      <path
+                          d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+                      />
+                      <path
+                          d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"
                       />
                     </svg>
                   </button>
@@ -121,6 +145,22 @@ export default {
     };
   },
   methods: {
+
+    showChat(chat) {
+      const user = JSON.parse(localStorage.getItem('user'))
+
+      const data = {
+        chat_id: chat.request_received ? chat.request_received.chat_id : chat.request_sent.chat_id,
+        id: chat.request_received ? chat.request_received.id : chat.request_sent.id,
+        user_id: user.id,
+      };
+
+      window.localStorage.setItem("chat", JSON.stringify(data));
+      setTimeout(() => {
+        this.$router.push({name: "Chat"});
+      }, 200);
+    },
+
     clickUserChat(user) {
       this.$refs.modalInfoUserChat.setInfoUserChat(user, this.eventID);
     },
@@ -169,7 +209,7 @@ export default {
             createNotification(
                 data.guest,
                 "Nueva Solicitud",
-                "Has recibido una nueva solicitud",
+                "Alguien quiere conectar contigo",
                 "nw_new_request"
             );
             loader.hide();
@@ -258,6 +298,7 @@ export default {
 .chat-user-list {
   box-shadow: none !important;
 }
+
 .content-first-letter {
   border: 2px solid #f1f2fb;
   background-color: white;

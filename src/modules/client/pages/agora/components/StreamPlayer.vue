@@ -17,14 +17,14 @@ export default {
       }
     })
   },
-  onBeforeUnmount() {
-    if ( this.stream ) {
-      if ( this.stream.isPlaying() ) {
-        this.stream.stop()
-      }
-      this.stream.close()
-    }
-  }
+  // onBeforeUnmount() {
+  //   if ( this.stream ) {
+  //     if ( this.stream.isPlaying() ) {
+  //       this.stream.stop()
+  //     }
+  //     this.stream.close()
+  //   }
+  // }
 }
 </script>
 

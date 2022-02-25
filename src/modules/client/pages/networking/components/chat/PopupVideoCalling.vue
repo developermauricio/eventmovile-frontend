@@ -108,6 +108,7 @@ export default {
       //AQUI ABRIMOS LA MODAL DE LA VIDEO LLAMADA CON EL AUDIO EN ESPERA QUE CONTESTEN
       this.userJoinVideoCall = true
       this.$refs.modalVideoCall.openModal(this.userJoinVideoCall, this.user.user_id)
+      window.modalVideoCallReference = this.$refs.modalVideoCall
       // ABRIMOS LA MODAL DE LA SOLICITUD DE LLAMADA QUE SE ENCUENTRE EN EL App.vue
       await publishMQTT('nw_new_video_call', JSON.stringify(dataUserSendVideoCall))
       // this.$refs.modalVideoCall.playAudio()
