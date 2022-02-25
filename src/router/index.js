@@ -198,6 +198,30 @@ const routes = [
 
   {
     meta: {
+      title: 'Chat grupal',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: "/group-chat",
+    name: 'GroupChat',
+    props: true,
+    component: () => import('../modules/client/pages/groupchat/GroupChat')
+  },
+
+  {
+    meta: {
+      title: 'Lector QR',
+      requiresAuth: false,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: "/reader-qr",
+    name: 'ReaderQR',
+    props: true,
+    component: () => import('../modules/client/pages/readerqr/ReaderQR')
+  },
+
+  {
+    meta: {
       title: 'Profile',
       requiresAuth: true,
     },
