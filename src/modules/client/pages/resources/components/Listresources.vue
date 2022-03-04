@@ -1,13 +1,33 @@
-<template>
-  <a class="affan-element-item" href="element-header-menu.html">Escenarios virtuales<i class="bi bi-paperclip"></i></a>
-  <a class="affan-element-item" href="element-footer-menu.html">Paginas web recomendadas<i class="bi bi-paperclip"></i></a>
-  <a class="affan-element-item" href="element-sidebar-left-menu.html">Nuestras ferías<i class="bi bi-paperclip"></i></a>
-  <a class="affan-element-item" href="element-sidebar-left-menu.html">Presentación comercial<i class="bi bi-paperclip"></i></a>
+<template> 
+  <div v-for="resource in resoursesActivity" :key="resource.id">
+    <a v-if="resource.type == 'url'" class="affan-element-item" :href="resource.url" target="_blank">
+      {{ resource.name }}
+      <i class="bi bi-link" style="font-size: 20px;"></i>
+    </a>
+    <a v-else class="affan-element-item" :href="urlBaseFile + resource.url" target="_blank">
+      {{ resource.name }}
+      <i class="bi bi-cloud-arrow-down" style="font-size: 20px;"></i>
+    </a>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Listresources"
+  name: "Listresources",
+  props: {
+    resoursesActivity: {
+      type: Array,
+    },
+  },
+  data() {
+    return {
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+    }
+  },
+  mounted(){
+    console.log('resoursesActivity:.... ', this.resoursesActivity)
+  }
+
 }
 </script>
 

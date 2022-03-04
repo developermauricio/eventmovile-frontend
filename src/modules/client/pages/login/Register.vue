@@ -226,29 +226,36 @@ export default defineComponent ({
                 return
             }
 
-            // TODO: falta validar los datos, los fieldsEvent tambien se validan
-            const validateEmail = await getSendRequest(`validateUser/${this.newUser.email}`)
-            console.log('retorno esto: ', validateEmail)            
-           
-            if ( validateEmail != false ) {
-                this.errors.email.required = true
-                this.errors.email.msg = 'Este correo electrónico ya se encuentra registrado.'
-                this.loader.hide()
-                return
-            }
-
             if ( this.event.password ) {
                 this.newUser.password = this.event.password
             } 
 
             this.newUser.event = this.event.id
-            
-            //TODO: Revisar la parte de la imagen de perfil.
+            let userID = 0;
 
-            /***  Guardar nuevo usuario  ***/
-            const newResponse = await postSendRequest( 'auth/register', this.newUser )            
-            console.log('new user: ', newResponse)
-            let userCreated = newResponse.data
+            // TODO: falta validar los datos, los fieldsEvent tambien se validan
+            const validateEmail = await getSendRequest(`validateUser/${this.newUser.email}`)
+            console.log('retorno esto: ', validateEmail)            
+           
+            if ( validateEmail == false ) {
+                /***  Guardar nuevo usuario  ***/
+                const newResponse = await postSendRequest( 'auth/register', this.newUser )            
+                console.log('new user: ', newResponse)
+                let userCreated = newResponse.data
+                if ( userCreated ) userID = userCreated.id
+            } else {
+                /***  actualizar password  ***/
+                userID = validateEmail.id
+                let params = { password: this.newUser.password }
+
+                await window.axios.put(`restorePassword/${userID}`, params)
+                    .then( response => {
+                        console.log('Response: ', response)
+                    })
+                    .catch( error => {
+                        console.log('Error: ', error)
+                    })
+            }            
 
             /***  Validar los campos extra del registro  ***/
             let emptyfields = false
@@ -259,13 +266,15 @@ export default defineComponent ({
                 }                
             })
 
+            if ( userID == 0 ) return
+
             /***  Guardar campos extra del registro  ***/
             if ( emptyfields ) {
                 await Promise.all( this.fieldsEvent.map( async item => {
                     if ( item.value ) {
                         let dataValue = {
                             register_id: item.id,
-                            user_id: userCreated.id,
+                            user_id: userID,
                             value: item.value
                         }
                         
@@ -276,7 +285,7 @@ export default defineComponent ({
 
             /***  Asociar el usuario al evento  ***/
             const eventUser = {
-                user_id: userCreated.id,
+                user_id: userID,
                 event_id: this.newUser.event,
                 event_type_id: this.newUser.event_type_id,
                 message_email_1: 'Registro exito',
@@ -286,7 +295,7 @@ export default defineComponent ({
                 message_email_5: 'Inicia/',
                 message_email_6: 'Termina/',
                 message_email_7: 'Añadir a calendario'
-            }            
+            }  
             
             await postSendRequest('eventUsers', eventUser)
 

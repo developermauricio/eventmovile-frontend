@@ -95,6 +95,7 @@ export default {
                 password: user.password,
                 eventId: user.eventId,
             };
+            //TODO: validar que los datos de user sean correctos 
 
             const loginUser =  await postSendRequest('auth/basic', dataLogin)
            

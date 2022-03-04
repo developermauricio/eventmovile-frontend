@@ -147,14 +147,14 @@ export default {
         .catch( error => {
           this.loader.hide()
           console.log('error login:  ', error)
-          if (error.response.status == 401) {
+          /* if (error.response.status == 401) {
             console.log('Usuario o contraseña incorrectos');
-          }
-          if ( error.response.status == 422 && typeof error.response.data.error.email !== "undefined" ) {
+          } */
+          //if ( error.response.status == 422 && typeof error.response.data.error.email !== "undefined" ) {
             console.log('El usuario no se encuentra registrado en el evento.');
             this.$swal.fire({
               title: 'Sin registro',
-              text: "El usuario ingresado no se encuentra registrado. ¿Desea registrase?",
+              text: "El usuario ingresado no se encuentra registrado a este evento. ¿Desea registrase?",
               icon: 'info',
               showCancelButton: true,
               confirmButtonColor: '#3085d6',
@@ -166,10 +166,10 @@ export default {
                 this.$router.push({path: "/register"})
               }
             })
-          }
+          //}
         }); 
       
-    },
+    },    
     getStyleLocalStorage(){
       let styleEvent = localStorage.getItem('style-event')
       this.styles = JSON.parse(styleEvent)

@@ -19,6 +19,7 @@
 <script>
 import {defineAsyncComponent} from "vue";
 import { refreshToken, refreshDataHome } from '@/utils/update-local-storage';
+import { getSendRequest } from '@/utils/using-axios';
 
 export default {
   name: "Home",
@@ -44,7 +45,9 @@ export default {
     return {
       dataUser: {},
       eventStyles: {},
+      event: {},
       userName: '',
+      hallsEvent: {},
     }
   },
   methods: {
@@ -53,8 +56,15 @@ export default {
       //dataUserString ? this.dataUser = Object.assign({}, JSON.parse(dataUserString)) : ''
       this.dataUser = JSON.parse( localStorage.getItem('user') ) || {}
       this.eventStyles = JSON.parse( localStorage.getItem('style-event') ) || {}
+      this.event = JSON.parse( localStorage.getItem('event') ) || {}
       this.userName = this.dataUser.name + ' ' + this.dataUser.lastname
-    }
+
+      this.getHallsEvent()
+    },
+    async getHallsEvent() {
+      const responseHalls = await getSendRequest(`hallsEvent/${this.event.id}`) 
+      console.log('get salas: ', responseHalls)      
+    },
   },
   created() {
     window.onload = async () => {

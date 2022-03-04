@@ -138,7 +138,7 @@ const routes = [
     beforeEnter: [isAuthenticatedGuard],
     path: '/resources',
     name: 'Resources',
-    component: () => import(/* webpackChunkName: "requestsend" */ '../modules/client/pages/resources/Rosources.vue'),
+    component: () => import(/* webpackChunkName: "requestsend" */ '../modules/client/pages/resources/Resources.vue'),
   },
   {
     meta: {
