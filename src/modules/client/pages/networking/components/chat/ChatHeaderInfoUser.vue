@@ -2,7 +2,7 @@
   <div class="chat-user--info d-flex align-items-center">
     <!-- Back Button -->
     <div class="back-button">
-      <a @click.prevent="back">
+      <router-link to="/networking-contacts">
         <svg
           class="bi bi-arrow-left-short"
           width="32"
@@ -15,7 +15,7 @@
             fill-rule="evenodd"
             d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
           ></path></svg
-      ></a>
+      ></router-link>
     </div>
     <!-- User Thumbnail & Name -->
     <div class="user-thumbnail-name">

@@ -36,8 +36,7 @@ export default {
     const {idle, lastActive} = useIdle(1 * 60 * 1000) // 5 minutos
 
     const openModalVideoCallButton = ()=>{
-      // modalVideoCall.value.openModalVideoCall()
-      document.querySelectorAll('.modal-canvas-video-call').classList('openModalVideoCallButton')
+      window.modalVideoCallReference.openModalButtonFloat()
     }
 
     const inactiveOnlineUser = () => {

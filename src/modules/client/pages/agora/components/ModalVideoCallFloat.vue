@@ -2,10 +2,13 @@
   <div :class="{'show': showModal}" class="offcanvas offcanvas-bottom modal-canvas-video-call"
        :style="{'visibility' : showModal ? 'visible' : 'hidden'}" id="">
     <!-- Close Button -->
-    <button @click="closeModal()" class="btn-close text-reset btn-close-video-call" id="close-modal-video-call" type="button"></button>
+    <button @click="closeModal()" class="btn-close text-reset btn-close-video-call" id="close-modal-video-call"
+            type="button"></button>
     <!-- Offcanvas Body -->
     <div class="offcanvas-body">
-      <VideoCall ref="userJoin" :tokenAgora="tokenAgora" :channelAgora="channelAgora" v-on:aceptRequestVideoCall="aceptVideoCall" @cancelVideoCall="cancelVideoCall" @userDesconnected="endVideoCall" @endVideoCall="endVideoCall" :guest="guestUser"/>
+      <VideoCall ref="userJoin" :tokenAgora="tokenAgora" :channelAgora="channelAgora"
+                 v-on:aceptRequestVideoCall="aceptVideoCall" @cancelVideoCall="cancelVideoCall"
+                 @userDesconnected="endVideoCall" @endVideoCall="endVideoCall" :guest="guestUser"/>
     </div>
   </div>
   <audio src="/assets/audio/sonido-llamada-saliente.mp3" id="eventAudioCall"></audio>
@@ -37,13 +40,14 @@ export default {
     const tokenAgora = ref(null)
     const channelAgora = ref(null)
     const userJoin = ref(null)
+    const userCreator = ref(null)
+    const userGuest = ref(null)
     const toast = ref(null)
 
-   const dataAgoraNewVideoCall = (channelUnique, token) =>{
+    const dataAgoraNewVideoCall = (channelUnique, token) => {
       tokenAgora.value = token
       channelAgora.value = channelUnique
 
-     console.log('channel AGORA ',channelAgora.value)
     }
 
     const openModal = (data, userIdNotification) => {
@@ -59,11 +63,26 @@ export default {
 
     }
 
-    const endVideoCall = () =>{
+    const endVideoCall = () => {
       showModal.value = false
       audioCall.value = false
+      let buttonAudio = document.getElementById('eventAudioCall');
+      buttonAudio.getAttribute('src')
+      buttonAudio.pause()
+      showModal.value = false
+      audioCall.value = false
+      updateStateCallUser()
       document.querySelectorAll('.btn-close-video-call').forEach(element => element.click());
 
+    }
+
+    const updateStateCallUser = () => {
+      let user = JSON.parse(localStorage.getItem('user'))
+      window.axios.post('/out-call/'+ user.id).then(response => {
+        console.log(response)
+      }).catch(err => {
+        console.log(err)
+      })
     }
 
     const aceptVideoCall = () => {
@@ -74,7 +93,9 @@ export default {
       buttonAudio.pause()
       // cancelVideoCall()
     }
-
+    const openModalButtonFloat = ()=>{
+      showModal.value = true
+    }
     const closeModal = () => {
       showModal.value = false
     }
@@ -83,14 +104,14 @@ export default {
       let buttonAudio = document.getElementById('eventAudioCall');
       buttonAudio.getAttribute('src')
       buttonAudio.play()
-      if (window.timoutCancel){
+      if (window.timoutCancel) {
         clearTimeout(window.timoutCancel);
       }
       window.timoutCancel = setTimeout(() => {
         audioCall.value = false
         sendNotificationCallCanceled()
         closeVideoCall()
-      }, 10000)
+      }, 25000)
 
     }
 
@@ -105,6 +126,7 @@ export default {
       // document.getElementById('close-modal-video-call').click()
       document.querySelectorAll('.btn-close-video-call').forEach(element => element.click());
       toast.value.toastAlertError('Llamada rechazada')
+      updateStateCallUser()
     }
 
 
@@ -129,6 +151,7 @@ export default {
         userJoin.value.leaveEvent()
         toast.value.toastAlertError('No disponible')
       }, 1000)
+      updateStateCallUser()
     }
 
     onMounted(() => {
@@ -149,9 +172,10 @@ export default {
     })
 
     return {
-      showModal, audioCall, userId, userJoin, timoutCancel, toast, tokenAgora, channelAgora, openModal,
+      showModal, audioCall, userId, userJoin, timoutCancel, toast,
+      tokenAgora, channelAgora, userCreator, userGuest, openModal, openModalButtonFloat,
       closeModal, playAudio, cancelVideoCall, endVideoCall, dataAgoraNewVideoCall,
-      sendNotificationCallCanceled, closeVideoCall, aceptVideoCall
+      sendNotificationCallCanceled, closeVideoCall, aceptVideoCall, updateStateCallUser
     }
   }
 }
@@ -167,7 +191,7 @@ export default {
   background-color: rgba(6, 18, 56, 0.9) !important;
 }
 
-.offcanvas-body{
+.offcanvas-body {
   padding: 0 !important;
 }
 
