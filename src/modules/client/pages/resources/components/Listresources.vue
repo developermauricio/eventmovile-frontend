@@ -23,11 +23,7 @@ export default {
     return {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
     }
-  },
-  mounted(){
-    console.log('resoursesActivity:.... ', this.resoursesActivity)
   }
-
 }
 </script>
 

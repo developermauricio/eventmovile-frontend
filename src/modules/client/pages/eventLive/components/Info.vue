@@ -3,8 +3,7 @@
         <div class="content-first-info">
             <div class="row">
                 <div class="col-10">
-                    <h5>Masterclass de Diseño:</h5>
-                    <h5>Tipografía y Lettering</h5>
+                    <h5>{{ activity.name }}</h5>
                 </div>
                 <div class="col-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart color-icon" viewBox="0 0 16 16">
@@ -18,7 +17,7 @@
                         <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
                         <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
                     </svg>
-                    <span>9:00 am</span>
+                    <span>{{ startDateHour(activity.start_date) }}</span>
                 </div>
                 <div class="style-span">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-record-circle color-icon" viewBox="0 0 16 16">
@@ -36,32 +35,64 @@
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-3">
-                <div class="">
-                    <img class="img-circle img-user" src="/assets/img/avatars/perfil-men.jpg" alt="">
-                </div>
-            </div>
-            <div class="col-9 pt-2">
-                <h6 class="text-truncate mb-0">Mustafa Rabbi</h6>
-                <div class="last-chat mt-2">
-                  <p class="text-truncate mb-0">How can I help you?</p>
-                </div>
-            </div>
+        <div v-if="activity.speakers.length == 0">
+            No hay speaker disponibles para esta actividad.
         </div>
-        <div class="row mt-5 style-margin-buttom">
-            <p class="text-justify">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.</p>
+
+        <div v-else>
+            <template v-for="(speaker, index) in activity.speakers" :key="index">
+                <div class="row mt-5">            
+                    <div class="col-2">
+                        <div class="">
+                            <img :src="speaker.pic ? urlBaseFile + speaker.pic : '/assets/img/avatars/photo-user.png'" class="img-circle img-user" alt="Photo speaker">
+                        </div>
+                    </div>
+                    <div class="col-9 pt-2">
+                        <h6 class="text-truncate mb-0">{{ speaker.name }}</h6>
+                        <div class="last-chat mt-2">
+                        <p class="text-truncate mb-0">{{ speaker.profesion ? speaker.profesion : 'Por definir' }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <p class="text-justify">{{ speaker.sort_description }}</p>
+                </div>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-  name: "Info"
+  name: "Info",
+  props: {
+    activity: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    }
+  },
+  data() {
+    return {
+        urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+    }
+  },
+  methods: {
+    startDateHour(start_date) {
+      return this.$dayjs(start_date).format('HH:mm a');
+    },
+  },
+  mounted(){ }
 }
 </script>
 
 <style scoped>
+.img-user {
+    object-fit: contain;
+    width: 60px;
+    height: 60px;
+}
 .content-first-info {
     background-color: #eee9f7;
     margin: -16px -24px;

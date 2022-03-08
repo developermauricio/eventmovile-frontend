@@ -136,6 +136,11 @@ export default {
 </script>
 
 <style scoped>
+.img-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
 .text-more {
   font-size: 1rem;
   color: #AA47BC;  

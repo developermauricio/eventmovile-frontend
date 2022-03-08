@@ -8,7 +8,7 @@
                     <button class="btn btn-close p-1 ms-auto" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-3">
                             <div class="">
                                 <img class="img-circle img-user" src="/assets/img/avatars/perfil-men.jpg" alt="">
@@ -20,8 +20,8 @@
                             <p class="text-truncate mb-0">How can I help you?</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="mt-5 content-sondeo">
+                    </div> -->
+                    <div class="content-sondeo">
                         <h4>¿Quieres regresar al trabajo desde la oficina?</h4>
                         <div class="single-plan-check shadow-sm active-effect mt-4">
                             <div class="form-check mb-0">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
 
-                    <div class="shop-pagination pt-3">
+                    <!-- <div class="shop-pagination pt-3">
                         <div class="container">
                             <div class="card">
                                 <div class="card-body py-3">
@@ -73,7 +73,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
                 <!-- <div class="modal-footer">
@@ -86,8 +86,33 @@
 </template>
 
 <script>
+import { getSendRequest } from '@/utils/using-axios';
+
 export default {
-  name: "ModalSondeo"
+    name: "ModalSondeo",
+    data() {
+        return {
+            activity: {},
+            sondeosActivity: [],
+            urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+        }
+    },
+    methods: {        
+        async getDataSondeo( activityID ) {
+            const responseSondeo = await getSendRequest(`probe-questions-activity-wh/${activityID}`)
+
+            if ( responseSondeo ) {
+                this.sondeosActivity = responseSondeo.data;
+                console.log('responseSondeo: ', this.sondeosActivity)
+            }
+        }
+        
+    },
+    mounted() {
+        this.activity = JSON.parse( localStorage.getItem('current_Activity') ) || {}
+
+        this.getDataSondeo( this.activity.id )
+    }
 }
 </script>
 
