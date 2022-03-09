@@ -5,7 +5,18 @@
         <!--        <div class="col-6">-->
         <!--          <img style="width: 100%" src="assets/img/img-upload-file.png" alt="">-->
         <!--        </div>-->
-        <div class="col-6 mt-2" v-for="item in itemsGallery" :key="item.id">
+
+        <div v-if="itemsGallery.length <= 0" class="container" data-v-17e58422="">
+          <div class="card" data-v-17e58422="">
+            <div class="card-body" data-v-17e58422="">
+              <div class="container" data-v-17e58422="">
+                <div data-v-17e58422=""> No hay fotografías disponibles para este evento</div>
+                <p>Puede comenzar agregando tus fotografías al dar clic el boton flotante</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="col-6 mt-2" id="data-gallery" v-for="item in itemsGallery" :key="item.id">
           <!-- Gallery Image -->
           <button @click.prevent="detailImg(item)" class="single-gallery-item" data-bs-toggle="modal"
                   data-bs-target="#modalDetailGallery">
@@ -13,7 +24,7 @@
                  :src="urlBaseFile+item.picture === '' || urlBaseFile+item.picture === null ? '/assets/img/img-generic.png': urlBaseFile+item.picture"
                  alt="">
             <!-- Fav Icon -->
-            <div class="fav-icon shadow" v-if="item.gallery_like.length > 0">
+            <div class="fav-icon shadow" v-if="item.is_like">
               <i class="bi bi-heart-fill"></i>
             </div>
             <div class="fav-icon shadow" v-else>
@@ -50,7 +61,7 @@
                          aria-controls="offcanvasBottomProfileNetworking">
                       <h6 class="mb-0">{{ detailPost.name }} {{ detailPost.lastName }}</h6>
                       <div class="last-chat">
-                        <p class="mb-0">{{ $dayjs(detailPost.date).format(`ddd DD MMMM, YYYY`)}}</p>
+                        <p class="mb-0">{{ $dayjs(detailPost.date).format(`ddd DD MMMM, YYYY`) }}</p>
                       </div>
                     </div>
                   </div>
@@ -58,13 +69,13 @@
                   <div class="dropstart chat-options-btn">
                     <button class="btn dropdown-toggle" type="button" @click.prevent="onlikeGallery(detailPost)">
                       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                           class="bi bi-heart-fill" viewBox="0 0 16 16" v-if="like">
+                           class="bi bi-heart-fill" viewBox="0 0 16 16" v-if="detailPost.isLiked">
                         <path fill-rule="evenodd"
                               d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                       </svg>
                       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                            style="color: red"
-                           class="bi bi-heart" viewBox="0 0 16 16" v-else >
+                           class="bi bi-heart" viewBox="0 0 16 16" v-else>
                         <path
                             d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                       </svg>
@@ -95,7 +106,7 @@
             <button class="btn btn-close p-1 ms-auto" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="row m-1" style="height: 6rem">
+            <div class="row me-1 ms-1">
               <!--=====================================
                   AGREGAR POR CAMARA
               ======================================-->
@@ -115,7 +126,7 @@
               <!--=====================================
                   AGREGAR POR ARCHIVOS DEL DISPOSITIVO
               ======================================-->
-              <div class="col-12 col-upload p-2">
+              <div :class="v$.post.picture.$errors.length > 0 ? 'is-invalid' : ''" class="col-12 col-upload p-2">
                 <DropzoneUpload ref="dropzoneComponent" :removedPicture="removePicture"
                                 v-on:removeMessagePrincial="removeMessagePrincial"
                                 v-on:urlArchiveServe="urlArchiveServe"/>
@@ -133,30 +144,32 @@
                     <h6>Seleccionar fotos</h6>
                   </div>
                 </div>
+              </div>
 
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="text-danger" v-if="v$.post.picture.$errors.length > 0">La imagen es requerida</p>
               </div>
             </div>
-            <!--            <div class="row" style="padding-top: 5rem; margin-bottom: -4rem;" v-show="button_remove_picture">-->
-            <!--              <div class="col-12 text-center" @click="removePictureEvent">-->
-            <!--                <p class="text-danger">Remover Archivo</p>-->
-            <!--              </div>-->
-            <!--            </div>-->
             <!--=====================================
                   COMENTARIO DEL POST
               ======================================-->
-            <div class="row" style="padding-top: 5rem">
+            <div class="row mt-3">
               <div class="col-12">
                 <div class="element-heading">
-                  <h6>Comentarios</h6>
+                  <h6 :class="validate.description ? 'text-danger':''">Comentarios</h6>
                 </div>
-                <textarea v-model="post.description" class="form-control" id="exampleTextarea1" name="textarea" cols="3"
+                <textarea :class="v$.post.description.$errors.length > 0 ? 'is-invalid' : ''" v-model="post.description"
+                          class="form-control" id="exampleTextarea1" name="textarea" cols="3"
                           rows="5"
                           placeholder="Escribe tu comentario..."></textarea>
+                <p class="text-danger"
+                   v-if="v$.post.description.$errors.length > 0">La descripción es requerida</p>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <!--            <button class="btn btn-sm btn-secondary" type="button" data-bs-dismiss="modal">Close</button>-->
             <button @click="savePicture" class="btn btn-success w-100 d-flex align-items-center justify-content-center"
                     type="button">
               Publicar
@@ -178,24 +191,35 @@
 <script>
 
 import {defineAsyncComponent, defineComponent} from "vue";
+import useVuelidate from '@vuelidate/core'
+import {required, helpers} from '@vuelidate/validators'
+
 export default defineComponent({
   name: "Gallery",
   components: {
+
     // CameraPhoto: defineAsyncComponent(() => import(/* webpackChunkName: "CameraPhoto"*/ '@/modules/client/pages/photo/components/CameraPhoto')),
     DropzoneUpload: defineAsyncComponent(() => import(/* webpackChunkName: "DropzoneUpload"*/ '@/modules/client/pages/photo/components/DropzoneUpload')),
     toastComponent: defineAsyncComponent(() => import(/* webpackChunkName: "DropzoneUpload"*/ '@/modules/client/shared/components/ToastAlert')),
   },
   data() {
     return {
+      v$: useVuelidate(),
+      messages: helpers,
       section_add_phone: true,
       button_remove_picture: false,
       removePicture: false,
+
+      validate: {
+        picture: false,
+        description: false
+      },
 
       like: false,
       loanding: false,
       lastpage: null,
       galleryLikeId: null,
-      userLikeId:null,
+      userLikeId: null,
       eventID: null,
       clearDropzone: false,
       urlBase: process.env.VUE_APP_API_URL,
@@ -213,6 +237,8 @@ export default defineComponent({
         lastName: '',
         picture: '',
         description: '',
+        isLiked: null,
+        idLikeUser: null,
         date: null,
         likeAuth: [],
       },
@@ -226,7 +252,17 @@ export default defineComponent({
       page: 1,
     }
   },
+
+  validations() {
+    return {
+      post: {
+        description: {required},
+        picture: {required},
+      }
+    }
+  },
   methods: {
+
     addFile(file) {
       console.log(file);
     },
@@ -239,79 +275,67 @@ export default defineComponent({
       this.post.picture = data
     },
 
-    onlikeGallery(gallery) {
+    onlikeGallery(detailPost) {
       let resp = this
       const data = new FormData();
-      data.append("gallery_id", gallery.id);
-      data.append("user_id", this.post.user_id);
-      if (this.like === false){
-        setTimeout(() =>{
-          window.axios.post(`${this.urlBase}/save-like-gallery`, data).then( response =>{
-            console.log(response)
-            resp.like = true
-          }).catch(err =>{
-            console.log(err)
+      data.append("gallery_id", detailPost.id);
+      data.append("user_id", this.user.id);
+      if (!detailPost.isLiked) {
+        window.axios.post(`${this.urlBase}/save-like-gallery`, data).then(res => {
+          console.log(res)
+          detailPost.isLiked = true
+          resp.galleryLikeId = res.data.idlike
+          resp.itemsGallery.map(item => {
+            item.id === detailPost.id ? item.is_like = true : ''
           })
-        }, 200)
-      }else{
-        setTimeout(() =>{
-          window.axios.post(`${this.urlBase}/remove-like-gallery/${resp.galleryLikeId}`, data).then( response =>{
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        setTimeout(() => {
+          window.axios.post(`${this.urlBase}/remove-like-gallery/${resp.galleryLikeId}`, data).then(response => {
             console.log(response)
-            // resp.getDataGallery()
-            resp.like = false
-          }).catch(err =>{
+            detailPost.isLiked = false
+            resp.itemsGallery.map(item => {
+              item.id === detailPost.id ? item.is_like = false : ''
+            })
+          }).catch(err => {
             console.log(err)
           })
         }, 200)
       }
+
     },
 
     removePictureEvent() {
       this.removePicture = true
-    },
+    }
+    ,
 
     detailImg(postGallery) {
-      console.log(postGallery)
+      console.log('veamos ', postGallery)
       this.detailPost.id = postGallery.id
       this.detailPost.picture = postGallery.picture
+      this.detailPost.isLiked = postGallery.is_like
       this.detailPost.name = postGallery.user.name
       this.detailPost.lastName = postGallery.user.lastname
       this.detailPost.description = postGallery.description
       this.detailPost.date = postGallery.created_at
-      if (postGallery.gallery_like.length > 0) {
-        this.detailPost.like = postGallery.gallery_like
-        for (let i = 0; i < this.detailPost.like.length; i++) {
-          if (this.detailPost.like[i].user_id === this.user.id) {
-            this.like = true
-          }
-        }
-      }
-      let resp = this
-      setTimeout(() => {
-        window.axios.get(`${this.urlBase}/get-data-gallery-like/${postGallery.id}/${resp.user.id}`).then(response =>{
-          if (JSON.stringify(response.data) === '{}'){
-            resp.like = false
-            return
-          }
-          console.log(response.data)
-          resp.galleryLikeId = response.data.id
-          resp.userLikeId = response.data.user_id
-          resp.like = true
-        })
-      }, 80)
+      this.galleryLikeId = postGallery.gallery_like.id
     },
 
     getDataGallery() {
       let resp = this;
-
       this.loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.containerLoarder,
         canCancel: false,
       });
 
-      setTimeout(() => {
-        window.axios.get(`${this.urlBase}/get-data-gallery/${resp.eventID}/?page=${resp.page}`).then(({data}) => {
-          resp.lastpage = data.last_page
+      setTimeout(async () => {
+
+        await window.axios.get(`${this.urlBase}/get-data-gallery/${this.eventID}/${this.user.id}?page=${this.page}`).then(({data}) => {
+
+          resp.lastpage = data.lastPage
           resp.itemsGallery = data.data
           localStorage.setItem(
               "itemsGallery",
@@ -322,35 +346,38 @@ export default defineComponent({
         })
         resp.loader.hide()
       }, 200)
-      // this.page = this.page + 1
     },
 
     scroll() {
       let resp = this
-      window.onscroll = () => {
-        if (this.page > this.lastpage) {
+      window.onscroll = function () {
+        if (resp.page > resp.lastpage) {
           return
         }
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow) {
-          this.loanding = true
+        if ((window.innerHeight + Math.ceil(window.pageYOffset)) >= document.body.offsetHeight) {
+          resp.loanding = true
           setTimeout(() => {
-            this.page = this.page + 1
-            window.axios.get(`${this.urlBase}/get-data-gallery/${resp.eventID}/?page=${resp.page}`).then(({data}) => {
+            resp.page = resp.page + 1
+            window.axios.get(`${resp.urlBase}/get-data-gallery/${resp.eventID}/${resp.user.id}?page=${resp.page}`).then(({data}) => {
               data.data.map(item => {
                 resp.itemsGallery.push(item)
               })
-              this.loanding = false
+              resp.loanding = false
             }).catch(err => {
               console.log('Error ', err);
             })
           }, 500)
         }
-      };
+      }
     },
+
 
     savePicture() {
       let resp = this
+      this.v$.$validate()
+      if (this.v$.$error) {
+        return
+      }
 
       this.loader = this.$loading.show({
         container: this.fullPage ? null : this.$refs.containerLoarder,
@@ -378,11 +405,12 @@ export default defineComponent({
 
         }).catch(err => {
           console.log(err)
-          this.$refs.toast.toastAlertSuccess('Error, consulte con el administrador')
+          this.$refs.toast.toastAlertError('Error, consulte con el administrador')
         });
         this.loader.hide()
       }, 200)
-    },
+    }
+    ,
 
     clearDataUploadPicture() {
       this.post.description = ''
@@ -390,25 +418,26 @@ export default defineComponent({
       this.$refs.dropzoneComponent.clearDropzone()
     }
 
-    // openCamera() {
-    //   setTimeout(() => {
-    //     this.$refs.modalOpenCamera.setOpenCamera()
-    //   }, 200)
-    //
-    // },
+// openCamera() {
+//   setTimeout(() => {
+//     this.$refs.modalOpenCamera.setOpenCamera()
+//   }, 200)
+//
+// },
   },
   beforeMount() {
     this.getDataGallery()
-  },
+  }
+  ,
   mounted() {
 
     this.scroll();
 
     this.eventID = localStorage.getItem('eventId')
-    this.post.event_id = parseInt(this.eventID)
     this.user = JSON.parse(localStorage.getItem('user'))
-    this.post.user_id = this.user.id
 
+    this.post.user_id = this.user.id
+    this.post.event_id = parseInt(this.eventID)
     this.itemsGallery = JSON.parse(
         localStorage.getItem("itemsGallery") || "[]"
     );
@@ -451,6 +480,12 @@ export default defineComponent({
   width: 100%;
 }
 
+.col-upload.is-invalid {
+  border: 1px solid red;
+  fill: red;
+  height: 10rem !important;
+}
+
 .col-upload {
   /*background-color: #f1f2fb !important;*/
   /*border-left: 1px solid #e6ecf5;*/
@@ -480,6 +515,7 @@ h6 {
 .bi-heart-fill {
   color: red;
 }
+
 .chat-user-info {
   width: calc(100% - 40px) !important;
 }
