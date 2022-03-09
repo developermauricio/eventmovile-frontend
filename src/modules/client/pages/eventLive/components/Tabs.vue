@@ -27,7 +27,7 @@
               <div class="rounded-lg p-3" id="affanTab2Content">
               <!-- <div class="tab-content rounded-lg p-3" id="affanTab2Content"> -->
                 <div class="tab-pane fade show active" id="sass" role="tabpanel" aria-labelledby="sass-tab">
-                  <Info v-if="infoTab" />
+                  <Info v-if="infoTab" :activity="activity"/>
                 </div>
                 <div class="tab-pane fade" id="npm" role="tabpanel" aria-labelledby="npm-tab">
                   <Chat v-if="chatTab"/>
@@ -47,6 +47,14 @@ import {defineAsyncComponent} from "vue";
 
 export default {
   name: "Tabs",
+  props: {
+    activity: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    }
+  },
   data() {
     return {
       infoTab: true,
@@ -80,6 +88,7 @@ export default {
       }
     }
   },
+  mounted(){ }
 }
 </script>
 

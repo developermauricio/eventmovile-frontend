@@ -1,6 +1,6 @@
 <template>
   <!-- Header Area -->
-    <div class="header-area" id="headerArea">
+    <div class="header-area">
       <div class="container">
         <!-- Header Content -->
         <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
@@ -13,10 +13,12 @@
             </router-link>
           </div>
           
-          <!-- Navbar Toggler -->
-          <div class="">
-            <img width="35" class="img-circle img-user" src="/assets/img/avatars/photo-user.png" alt="">
-          </div>
+          <!-- Photo user -->
+          <router-link to="/profile">
+            <div class="content-photo">
+              <img :src="user.pic ? urlBaseFile + user.pic : '/assets/img/avatars/photo-user.png'" class="img-circle img-photo-user" alt="Photo profile">
+            </div>         
+          </router-link>
         </div>
       </div>
     </div>
@@ -24,10 +26,22 @@
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  data() {
+    return {
+      user: {},
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+    }
+  },
+  created() {
+    this.user = JSON.parse( localStorage.getItem('user') ) || {}
+  }
 }
 </script>
 
 <style scoped>
-
+.img-photo-user {
+  width: 35px;
+  height: 35px;
+}
 </style>

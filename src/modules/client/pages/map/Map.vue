@@ -21,8 +21,10 @@
     </div>
   </div>
 
-  <div class="style-content-map">
-    <img :src="urlImgMap ? urlBaseFile + urlImgMap : 'assets/img/img-generic.png'" alt="Img map">
+  <div class="container">
+    <div class="style-content-map">
+      <img :src="urlImgMap ? urlBaseFile + urlImgMap : 'assets/img/img-generic.png'" alt="Img map">
+    </div>
   </div>
 </template>
 

@@ -94,30 +94,30 @@ export default {
 </script>
 
 <style scoped>
+.img-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
 .text-more {
   font-size: 1rem;
   color: #AA47BC;
 }
-
 .text-speaker {
   font-weight: 600;
 }
-
 .text-info-speaker p {
   color: #000000 !important;
   letter-spacing: 0.2vh;
   text-transform: uppercase;
   font-size: 0.75rem;
 }
-
 .text-info-speaker h6 {
   color: #000000 !important;
 }
-
 .card-speaker-img {
   background-color: #D4C8EB !important;
 }
-
 .modal-canvas-info-speaker {
   height: 50vh;
 }

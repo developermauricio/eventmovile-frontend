@@ -243,6 +243,17 @@ const routes = [
     component: () => import('../modules/client/pages/Page404/NoFound'),
   },
 
+  { //TODO: pendiente por revisar
+    meta: {
+      title: 'Landing Staff',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/staff',
+    name: 'LandingStaff',
+    component: () => import('../modules/client/pages/staff/LandingStaff'),
+  },
+
   {
     meta: {
       title: 'Landing',
