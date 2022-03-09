@@ -5124,7 +5124,7 @@ textarea.form-control {
 
 .was-validated .form-control:invalid,
 .form-control.is-invalid {
-  border-color: #ebebeb;
+  border-color: red !important;
 }
 
 .was-validated .form-control:valid,
