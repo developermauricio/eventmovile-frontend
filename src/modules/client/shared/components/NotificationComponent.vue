@@ -190,11 +190,9 @@ export default {
     },
   },
   created() {
-    console.log('estoy en notificaciones....')
-
     this.loadNotifications();
     subscribeNotifications((data) => {
-      console.log('esta es la data: ', data)
+      //console.log('esta es la data: ', data)
       this.$refs.toast.toastAlertSuccess(data.d)
       // this.$toast.info(data.t, {
       //   position: "bottom-right",
