@@ -1,36 +1,36 @@
 <template>
-  <div class="pb-5 pe-4 ps-4 pt-5" id="chat-wrapper">
+  <div class="page-content-wrapper pb-2" id="chat-wrapper">
 
-    <div class="chat-content-wrap" id="chat-global-event">
-      <!-- Single Chat Item -->
-      <div class="single-chat-item" v-for="(messages, index) in allMessagesChat" :key="index">
+      <div class="chat-content-wrap" id="chat-global-event">
+        <!-- Single Chat Item -->
+        <div class="single-chat-item"  v-for="(messages, index) in allMessagesChat" :key="index">
 
-        <!-- User Avatar -->
-        <div v-if="messages.pic === null" class="user-avatar mt-1 me-3">
-          <div class="content-first-letter">
-            <span class="user-first-letter">{{ (messages.name || "").slice(0, 1) }}</span>
+          <!-- User Avatar -->
+          <div v-if="messages.pic === null" class="user-avatar mt-1 me-3">
+            <div class="content-first-letter">
+              <span class="user-first-letter">{{ (messages.name || "").slice(0, 1) }}</span>
+            </div>
+
           </div>
-
-        </div>
-        <div v-else class="user-avatar mt-1 me-3">
-          <img :src="urlPicture+messages.pic" alt="">
-        </div>
-        <!-- User Message -->
-        <div class="user-message">
-          <div class="message-content pb-1">
-            <div class="single-message">
-              <h6>{{ messages.name }} {{ messages.lastname }}</h6>
-              <p>{{ messages.message }}</p>
+          <div v-else class="user-avatar mt-1 me-3">
+            <img :src="urlPicture+messages.pic" alt="">
+          </div>
+          <!-- User Message -->
+          <div class="user-message">
+            <div class="message-content pb-1">
+              <div class="single-message">
+                <h6>{{ messages.name }}</h6>
+                <p>{{ messages.message }}</p>
+              </div>
+            </div>
+            <!-- Time and Status -->
+            <div class="message-time-status mt-1">
+              <div class="sent-time">{{ $dayjs(messages.created_at).format("hh:mm:a") }}</div>
             </div>
           </div>
-          <!-- Time and Status -->
-          <div class="message-time-status mt-1">
-            <div class="sent-time">{{ $dayjs(messages.created_at).format("hh:mm:a") }}</div>
-          </div>
+          <hr>
         </div>
-        <hr>
       </div>
-    </div>
   </div>
   <div class="chat-footer">
     <div class="container h-100">
@@ -56,14 +56,13 @@
 import {onBeforeMount, onMounted, ref} from "vue";
 import {publishMQTT, subscriberMQTT} from "@/plugins/mqtt";
 import {postSendRequest} from "@/utils/using-axios"
+import VueScrollTo from "vue-scrollto";
 
 export default {
-  name: "Chat",
-  components: {},
-  props: ['activity'],
+  name: "ChatMessages",
+  setup() {
 
-  setup(props) {
-
+    const idEvent = ref()
     const urlPicture = process.env.VUE_APP_API_URL_FILES
     const urlServer = process.env.VUE_APP_API_URL
     const inputMessage = ref(null)
@@ -71,27 +70,33 @@ export default {
     const page = ref(1)
     const lastpage = ref(1)
 
+
     const getMessagesChat = async (data) => {
       console.log(data)
-      setTimeout(() => {
-        window.axios.get(`${urlServer}/activityMessages/${props.activity.id}?page=${page.value}`).then(res => {
+      setTimeout(() =>{
+        window.axios.get(`${urlServer}/eventChat/${idEvent.value}?page=${page.value}`).then( res =>{
           allMessagesChat.value = res.data.data.reverse()
           lastpage.value = res.data.last_page
-          toBottom()
-        }).catch(err => {
+        }).catch(err =>{
           console.log(err)
         })
-      }, 100)
+      })
+    }
+
+    const mqttGetMessageChat = () => {
+      let key = 'chat_activity_2102503190'
+      const topic = 'eventmovil/' + idEvent.value + '/chat';
+      subscriberMQTT(key, topic, getMessagesChat)
     }
 
     const scroll = () => {
       let el = document.getElementById('chat-wrapper');
       el.addEventListener('scroll', function (event) {
         if (event.target.scrollTop === 0) {
-
+alert('holas')
           setTimeout(() => {
             page.value = page.value + 1
-            window.axios.get(`${urlServer}/activityMessages/${props.activity.id}?page=${page.value}`).then(res => {
+            window.axios.get(`${urlServer}/eventChat/${idEvent.value}?page=${page.value}`).then(res => {
               res.data.data.map(item => {
                 allMessagesChat.value.unshift(item)
               })
@@ -103,42 +108,22 @@ export default {
       }, false);
     }
 
-    const mqttGetMessageChat = () => {
-      let key = 'chat_activity_2102i10'
-      const topic = 'eventmovil/' + props.activity.event_id + '/' + props.activity.id + '/chat';
-      subscriberMQTT(key, topic, getMessagesChat)
-    }
-
-    const toBottom = (transition = true) => {
-      const element = document.getElementById("chat-wrapper");
-
-      setTimeout(() => {
-        const params = {
-          top: element.scrollHeight,
-        };
-        if (transition) {
-          params.behavior = "smooth";
-        }
-        element.scrollTo(params);
-      }, 100);
-    }
-
     const setMessageChat = async () => {
-      if (!inputMessage.value || !inputMessage.value.trim()) {
+      if (!inputMessage.value || !inputMessage.value.trim() ) {
         return
       }
-
       const data = new FormData();
       data.append("message", inputMessage.value);
-      data.append("activity_id", props.activity.id);
+      data.append("event_id", idEvent.value);
 
-      const sendMessage = postSendRequest(`/activityChat`, data)
+      const sendMessage = postSendRequest(`/eventChat`, data)
 
       if (sendMessage) {
         sendMessage.then(res => {
           console.log(res)
-          const topic = 'eventmovil/' + props.activity.event_id + '/' + props.activity.id + '/chat';
+          const topic = 'eventmovil/' + idEvent.value + '/chat';
           let user = JSON.parse(localStorage.getItem('user'))
+          console.log(user)
           let params_1 = {
             message: inputMessage.value,
             lastname: user.lastname,
@@ -156,16 +141,25 @@ export default {
         })
       }
     }
-    onBeforeMount(() => {
+
+    const toBottom = () => {
+      const options = {
+        container: "body",
+        easing: "linear"
+      };
+      VueScrollTo.scrollTo('#chat-wrapper', 1000, options);
+    }
+
+    onBeforeMount(() =>{
+      idEvent.value = localStorage.getItem('eventId')
       getMessagesChat()
     })
-
     onMounted(() => {
       scroll()
       mqttGetMessageChat()
     })
-
     return {
+      idEvent,
       lastpage,
       urlPicture,
       inputMessage,
@@ -178,26 +172,25 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
-.chat-user-list {
-  border-radius: 0;
-  box-shadow: none;
+.marg-top {
+  margin-top: -18px;
 }
-
 .single-chat-item .user-avatar{
   background-color: transparent !important;
 }
 
-.chat-user-list li {
-  border-bottom: none;
+.style-input {
+  border-radius: 0 !important;
+  padding-left: 3rem;
 }
 
-#chat-wrapper {
-  overflow-y: scroll !important;
-  height: 20rem !important;
-  background-color: rgba(112, 71, 188, 0.18) !important;
+.style-icon {
+  left: 25px;
+  position: absolute;
+  z-index: 9;
+  color: #9187b0;
 }
 </style>

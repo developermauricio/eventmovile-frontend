@@ -90,7 +90,8 @@
       </div>
     </div>
   </div>
-    </div>
+  </div>
+  <ButtonFloat/>
 </template>
 
 <script>
@@ -101,7 +102,9 @@ export default {
   name: "qr",
   components: {
     VueQr,
-    Header: defineAsyncComponent(() => import('@/modules/client/pages/qr/components/Header'))
+    Header: defineAsyncComponent(() => import('@/modules/client/pages/qr/components/Header')),
+    ButtonFloat: defineAsyncComponent(() => import(/* webpackChunkName: "ButtonFloat"*/ '@/modules/client/pages/home/components/ButtonFloat')),
+
   },
   data(){
     return {

@@ -2,8 +2,8 @@
   <!--=====================================
          SECTION EVALUATE EVENT
     ======================================-->
-  <div class="page-content-wrapper py-3 m-0 mb-5">
-    <div class="container pe-0 ps-0 mb-1">
+  <div class="page-content-wrapper py-3 m-0 mb-5" >
+    <div class="container pe-0 ps-0 mb-1" v-if="isPoll">
       <div class="card" data-bs-toggle="modal" data-bs-target="#modalEvaluateEvent">
         <div class="card-body p-3">
           <a class="affan-page-item" href="#">
@@ -29,7 +29,7 @@
     </div>
   </div>
   <!--Modal Evaluar evento-->
-  <ModalEvaluateEvent/>
+  <ModalEvaluateEvent v-on:isPollUser="isPollUser"/>
 </template>
 
 <script>
@@ -38,8 +38,20 @@ import ModalEvaluateEvent from "../../evaluate/ModalEvaluateEvent";
 export default {
   name: "Evaluateevent",
   components: {
-    ModalEvaluateEvent
+    ModalEvaluateEvent,
   },
+  data(){
+    return{
+      isPoll: true
+    }
+  },
+  methods:{
+    isPollUser(data){
+      if (data === null){
+        this.isPoll = false
+      }
+    }
+  }
 }
 </script>
 

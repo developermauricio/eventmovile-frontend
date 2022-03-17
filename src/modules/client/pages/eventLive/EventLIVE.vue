@@ -37,10 +37,13 @@ export default {
     }
   },
   mounted() {
+
+    // this.activity = window.activityData
     this.activity = JSON.parse( localStorage.getItem('current_Activity') ) || {}
-    
-    if ( this.activity.code_streaming == 'null' ) {
-      this.codeStreaming = this.activity.event.code_streaming
+    this.event = JSON.parse( localStorage.getItem('event') ) || {}
+    console.log(this.activity)
+    if ( this.activity.code_streaming === 'null' ) {
+      this.codeStreaming = this.event.code_streaming
     } else {
       this.codeStreaming = this.activity.code_streaming
     }
