@@ -140,7 +140,7 @@ export default {
     =============================================*/
     const getDataQuestion = async (probeData) => {
       probe.value = probeData
-      await window.axios.get(`probe-questions-probe-wh/${probeData.id}`).then(res => {
+      await window.axios.get(`probe-questions-probe-wh/${probe.value.id}`).then(res => {
         state.collection = res.data.data
         if (res.data === "answered"){
           message.value = true
@@ -181,7 +181,7 @@ export default {
       setTimeout(() => {
         const data = new FormData();
 
-        data.append("probe_id", parseInt(probe.value));
+        data.append("probe_id", parseInt(probe.value.id));
         data.append("user_id", parseInt(user.value.id));
         data.append("probe_answer", JSON.stringify(state.collection));
 
