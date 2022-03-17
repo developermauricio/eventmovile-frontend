@@ -7,12 +7,14 @@ import { createApp } from 'vue';
 import VueLoading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import VueSweetalert2 from 'vue-sweetalert2';
+import Popper from "vue3-popper";
 
 import DropZone from 'dropzone-vue';
 import 'dropzone-vue/dist/dropzone-vue.common.css';
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
 // import IdleVue from 'idle-vue'
 /* import VeeValidate, {Validator} from 'vee-validate';
 import validatorEs from 'vee-validate/dist/locale/es'; */
@@ -36,6 +38,7 @@ const app = createApp(App)
     .use(VueLoading, { color: '#ac58bc' })
     .use(VueSweetalert2)
     .use(Toaster)
+    .use(Popper)
     .use(store)
     .use(router)
     .use(Toast)

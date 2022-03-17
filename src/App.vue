@@ -8,7 +8,7 @@
   <ReceivedVideoCall ref="modal"/>
   <ModalVideoCallFloat ref="modalVideoCall"/>
   <router-view/>
-
+<!--  <ButtonFloat/>-->
 </template>
 
 
@@ -24,7 +24,7 @@ export default {
   name: 'App',
   components: {
     ReceivedVideoCall,
-    ModalVideoCallFloat
+    ModalVideoCallFloat,
   },
   setup() {
     const shoButtonFloat = ref(false)

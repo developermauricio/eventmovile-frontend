@@ -54,6 +54,7 @@ export default {
       localStorage.removeItem('_current_token')
       localStorage.removeItem('listSpeakers')
       localStorage.removeItem('galleryHome')
+      localStorage.removeItem('current_Activity')
       this.$router.push('Login')
     }
   },

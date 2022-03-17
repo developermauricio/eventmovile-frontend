@@ -71,6 +71,12 @@ Created: December 10, 2020
 "Poppins", sans-serif;
 ----------------------- */
 /* :: Preloader CSS */
+.popper {
+  background: #691B9A !important;
+  padding: 15px !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+}
 #preloader {
   background-color: #f1f2fb;
   position: fixed;
@@ -98,6 +104,15 @@ Created: December 10, 2020
 }
 .dropzone__message.dropzone__message--style.dropzone-clickable{
   display: none !important;
+}
+button.carousel__next {
+  background-color: #AA47BC !important;
+}
+button.carousel__prev.carousel__prev--in-active{
+  background-color: #AA47BC !important;
+}
+button.carousel__prev{
+  background-color: #AA47BC !important;
 }
 /* :: Bootstrap Color Reset CSS */
 a {
@@ -1724,9 +1739,9 @@ textarea:invalid {
 .affan-page-item.active, .affan-page-item:hover, .affan-page-item:focus {
   background-color: #ffffff;
   border-color: #ebebeb;
-  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  padding: 0.5rem 0.75rem;
+  /*-webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);*/
+  /*        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);*/
+  /*padding: 0.5rem 0.75rem;*/
 }
 .affan-page-item.active .icon-wrapper, .affan-page-item:hover .icon-wrapper, .affan-page-item:focus .icon-wrapper {
   background-color: #c2d4f8;

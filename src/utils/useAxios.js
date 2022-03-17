@@ -1,7 +1,7 @@
 
 import store from "../store";
 import axios from "axios";
-import { async } from "vuesax";
+// import { async } from "vuesax";
 
 export default function (endpoint, options =  {}) {
     const API_URL = process.env.VUE_APP_API_URL;

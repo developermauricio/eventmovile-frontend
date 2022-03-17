@@ -16,21 +16,21 @@
                     CHAT
                   </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <button @click="changeTabs('participant')" class="btn" id="gulp-tab" data-bs-toggle="tab" data-bs-target="#gulp" type="button" role="tab" aria-controls="gulp" aria-selected="false">
-                  <!-- <button @click="changeTabs('participant')" class="btn" id="gulp-tab" data-bs-toggle="tab" data-bs-target="#gulp" type="button" role="tab" aria-controls="gulp" aria-selected="false"> -->
-                    PARTICIPANTES
-                  </button>
-                </li>
+<!--                <li class="nav-item" role="presentation">-->
+<!--                  <button @click="changeTabs('participant')" class="btn" id="gulp-tab" data-bs-toggle="tab" data-bs-target="#gulp" type="button" role="tab" aria-controls="gulp" aria-selected="false">-->
+<!--                  &lt;!&ndash; <button @click="changeTabs('participant')" class="btn" id="gulp-tab" data-bs-toggle="tab" data-bs-target="#gulp" type="button" role="tab" aria-controls="gulp" aria-selected="false"> &ndash;&gt;-->
+<!--                    PARTICIPANTES-->
+<!--                  </button>-->
+<!--                </li>-->
               </ul>
 
-              <div class="rounded-lg p-3" id="affanTab2Content">
+              <div class="rounded-lg" id="affanTab2Content">
               <!-- <div class="tab-content rounded-lg p-3" id="affanTab2Content"> -->
                 <div class="tab-pane fade show active" id="sass" role="tabpanel" aria-labelledby="sass-tab">
                   <Info v-if="infoTab" :activity="activity"/>
                 </div>
                 <div class="tab-pane fade" id="npm" role="tabpanel" aria-labelledby="npm-tab">
-                  <Chat v-if="chatTab"/>
+                  <Chat v-if="chatTab" :activity="activity"/>
                 </div>
                 <div class="tab-pane fade" id="gulp" role="tabpanel" aria-labelledby="gulp-tab">
                   <Participants v-if="participantsTab"/>
@@ -47,14 +47,7 @@ import {defineAsyncComponent} from "vue";
 
 export default {
   name: "Tabs",
-  props: {
-    activity: {
-      type: Object,
-      default: function () {
-        return {};
-      },
-    }
-  },
+  props:["activity"],
   data() {
     return {
       infoTab: true,
@@ -88,11 +81,31 @@ export default {
       }
     }
   },
-  mounted(){ }
+  mounted(){
+    window.activityData = this.activity
+  }
 }
 </script>
 
 <style scoped>
+::-webkit-scrollbar {
+  display: none;
+}
+.nav{
+  flex-wrap: initial !important;
+}
+ul.nav-tabs {
+  justify-content: space-around !important;
+  width: 100% !important;
+  overflow: auto !important;
+}
+
+.nav-item {
+  display: flex !important;
+  clear: both !important;
+  padding: 2px !important;
+}
+
 .card {
   border-radius: 0;
   border-top: 1px solid #8080804d;
