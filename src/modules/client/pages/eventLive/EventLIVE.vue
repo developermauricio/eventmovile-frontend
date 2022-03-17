@@ -2,11 +2,13 @@
   <Header/>
   <div class="container">
     <EframeLIVE :codeStreaming="codeStreaming"/>
+    <button @click="openModal" > Open Modal uphands </button>
     <Tabs :activity="activity"/>
     <FloatButtonFile/>
     <FloatButtonQuestion/>
   </div>
   <!-- <RateActivity/> -->
+  <ModalUpHands ref="modalhands" />
 </template>
 
 <script>
@@ -20,12 +22,18 @@ export default {
     Tabs: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Tabs')),
     FloatButtonFile: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonFile')),    
     FloatButtonQuestion: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonQuestion')),    
+    ModalUpHands: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/modals/ModalUpHands')),    
     //RateActivity: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/RateActivity')),    
   },
   data() {
     return {
       activity: {},
       codeStreaming: ''
+    }
+  },
+  methods: {
+    openModal() {
+      this.$refs.modalhands.openModal()      
     }
   },
   mounted() {
