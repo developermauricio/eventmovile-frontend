@@ -138,10 +138,9 @@ export default {
     /*=============================================
       FUNCIÓN PARA TRAER TODA LAs PREGUNTAS
     =============================================*/
-    const getDataQuestion = async (probe) => {
-      console.log('OAIMASAS', probe)
-      probe.value = probe
-      await window.axios.get(`probe-questions-probe-wh/${probe.id}`).then(res => {
+    const getDataQuestion = async (probeData) => {
+      probe.value = probeData
+      await window.axios.get(`probe-questions-probe-wh/${probeData.id}`).then(res => {
         state.collection = res.data.data
         if (res.data === "answered"){
           message.value = true
