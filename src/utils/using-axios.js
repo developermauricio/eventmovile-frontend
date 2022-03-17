@@ -21,3 +21,13 @@ export const postSendRequest = async ( url, data ) => {
             return null
         });
 }
+
+export const putSendRequest = async (url, data) => {
+    return await window.axios.put(url, data)
+        .then( response => {
+            return response.data
+        }).catch( error => {
+            console.log('error: ', error)
+            return null
+        });
+}

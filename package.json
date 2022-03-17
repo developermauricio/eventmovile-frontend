@@ -51,6 +51,7 @@
     "vue3-popper": "^1.4.2",
     "vue3-qrcode-reader": "0.0.1",
     "vue3-smooth-scroll": "^0.8.1",
+    "vue3-table-lite": "^1.1.7-1",
     "vuesax": "^4.0.1-alpha.25",
     "vuex": "^4.0.2",
     "vuex-persist": "^3.1.3"

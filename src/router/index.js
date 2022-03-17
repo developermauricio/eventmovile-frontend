@@ -211,7 +211,7 @@ const routes = [
   {
     meta: {
       title: 'Lector QR',
-      requiresAuth: false,
+      requiresAuth: true,
     },
     beforeEnter: [isAuthenticatedGuard],
     path: "/reader-qr",
@@ -231,6 +231,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "profile" */ '../modules/client/pages/profile/Profile.vue'),
   },
 
+  { 
+    meta: {
+      title: 'Landing Staff',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/staff',
+    name: 'LandingStaff',
+    component: () => import('../modules/client/pages/staff/LandingStaff'),
+  },
+
   { //TODO: pendiente por revisar
     meta: {
       title: 'Not Found',
@@ -241,17 +252,6 @@ const routes = [
     path: '/no-found',
     name: 'Error404',
     component: () => import('../modules/client/pages/Page404/NoFound'),
-  },
-
-  { //TODO: pendiente por revisar
-    meta: {
-      title: 'Landing Staff',
-      requiresAuth: true,
-    },
-    beforeEnter: [isAuthenticatedGuard],
-    path: '/staff',
-    name: 'LandingStaff',
-    component: () => import('../modules/client/pages/staff/LandingStaff'),
   },
 
   {
