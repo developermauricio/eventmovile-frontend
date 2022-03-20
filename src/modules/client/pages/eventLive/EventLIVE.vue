@@ -2,13 +2,10 @@
   <Header/>
   <div class="container">
     <EframeLIVE :codeStreaming="codeStreaming"/>
-    <button @click="openModal" > Open Modal uphands </button>
     <Tabs :activity="activity"/>
-    <FloatButtonFile/>
-    <FloatButtonQuestion/>
+    <FloatButton />
   </div>
   <!-- <RateActivity/> -->
-  <ModalUpHands ref="modalhands" />
 </template>
 
 <script>
@@ -19,11 +16,8 @@ export default {
   components: {
     Header: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Header')),
     EframeLIVE: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/EframeLIVE')),
-    Tabs: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Tabs')),
-    FloatButtonFile: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonFile')),    
-    FloatButtonQuestion: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButtonQuestion')),    
-    ModalUpHands: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/modals/ModalUpHands')),    
-    //RateActivity: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/RateActivity')),    
+    Tabs: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Tabs')), 
+    FloatButton: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/FloatButton')),     
   },
   data() {
     return {
@@ -31,14 +25,7 @@ export default {
       codeStreaming: ''
     }
   },
-  methods: {
-    openModal() {
-      this.$refs.modalhands.openModal()      
-    }
-  },
   mounted() {
-
-    // this.activity = window.activityData
     this.activity = JSON.parse( localStorage.getItem('current_Activity') ) || {}
     this.event = JSON.parse( localStorage.getItem('event') ) || {}
     console.log(this.activity)
@@ -47,7 +34,6 @@ export default {
     } else {
       this.codeStreaming = this.activity.code_streaming
     }
-
   }
 }
 </script>

@@ -1,11 +1,11 @@
 <template>
   <!-- Bootstrap Basic Modal -->
-  <div class="modal fade" id="modalSondeo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div :class="{'show': showModal}" class="modal fade" >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <!-- <h6 class="modal-title" id="exampleModalLabel">Modal Heading</h6> -->
-          <button class="btn btn-close p-1 ms-auto" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button @click="showModal = false" class="btn btn-close p-1 ms-auto" type="button"></button>
         </div>
         <div class="modal-body">
           <div class="content-sondeo" v-if="sondeosActivity.length > 0">
@@ -26,6 +26,8 @@
     </div>
   </div>
   <ModalAnwerSondeo ref="modalAnswer"/>
+
+  <div @click="showModal = false" :class="{'show': showModal}" class="offcanvas-backdrop fade" style="display: none"></div>
 </template>
 
 <script>
@@ -45,6 +47,7 @@ export default {
     const sondeoId = ref(null)
     const modalAnswer = ref()
     const user = ref(null)
+    let showModal = ref(false)
 
     const getDataSondeo = async (id) => {
       const responseSondeo = await getSendRequest(`probe-questions-activity-wh/${id}`)
@@ -74,6 +77,10 @@ export default {
       modalAnswer.value.getDataQuestion(probe)
     }
 
+    const openModal = () => {
+      showModal.value = true
+    }
+
     onBeforeMount(() => {
       activity.value = JSON.parse(localStorage.getItem('current_Activity'))
       user.value = JSON.parse(localStorage.getItem('user'))
@@ -93,7 +100,9 @@ export default {
       modalAnswer,
       getDataSondeo,
       sondeoGet,
-      verifyUserProbe
+      verifyUserProbe,
+      showModal,
+      openModal,
     }
   },
 
@@ -117,6 +126,9 @@ export default {
 </script>
 
 <style scoped>
+.show {
+  display: block !important;
+}
 .modal-header {
   border-bottom: none !important;
 }
