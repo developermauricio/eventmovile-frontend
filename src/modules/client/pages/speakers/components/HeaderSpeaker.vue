@@ -13,7 +13,7 @@
         </div>
         <!-- Page Title -->
         <div class="page-heading">
-          <h6 class="mb-0 position-relative text-center fw-bold style-color-title">Speakers</h6>
+          <h6 class="mb-0 position-relative text-center fw-bold">Speakers</h6>
         </div>
         <div class="setting-wrapper">
           <span @click="clickSearch()" class="padding-span">

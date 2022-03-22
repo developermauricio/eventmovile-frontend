@@ -53,7 +53,13 @@
                   <div class="d-flex">
                     <!-- Thumbnail -->
                     <div class="chat-user-thumbnail me-3 shadow">
-                      <img class="img-circle" src="/assets/img/avatars/perfil-men.jpg" alt="">
+                      <img v-if="detailPost.picUser" class="img-circle" :src="urlBaseFile+''+detailPost.picUser" alt="">
+                      <div v-else class="user-avatar mt-1 me-3">
+                        <div class="content-first-letter">
+                          <span class="user-first-letter">{{ (detailPost.name || "").slice(0, 1) }}</span>
+                        </div>
+
+                      </div>
                     </div>
                     <!-- Info -->
                     <div class="chat-user-info" data-bs-toggle="offcanvas"
@@ -236,6 +242,7 @@ export default defineComponent({
         name: '',
         lastName: '',
         picture: '',
+        picUser: '',
         description: '',
         isLiked: null,
         idLikeUser: null,
@@ -318,6 +325,7 @@ export default defineComponent({
       this.detailPost.picture = postGallery.picture
       this.detailPost.isLiked = postGallery.is_like
       this.detailPost.name = postGallery.user.name
+      this.detailPost.picUser = postGallery.user.pic
       this.detailPost.lastName = postGallery.user.lastname
       this.detailPost.description = postGallery.description
       this.detailPost.date = postGallery.created_at

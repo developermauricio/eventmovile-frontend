@@ -8,7 +8,7 @@
         <div class="col-12 align-items-center text-center">
           <img class="img-circle" :src="photoSpeaker" width="130" alt="photo speaker">
           <h6 class="mt-2 m-0">{{ speaker.speaker_name || '' }}</h6>
-          <p class="m-0">Irlanda</p>
+          <p class="m-0" v-if="speaker.country">{{ speaker.name }} <img :src="speaker.flag" width="20" alt=""></p>
         </div>
       </div>
       <div class="container">

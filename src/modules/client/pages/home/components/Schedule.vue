@@ -19,35 +19,13 @@
     <div class="container pe-0 ps-0 slide-schedule">
       <div class="card">
         <div class="card-body p-3">
-          <!--          <div class="slide-schedule-items">-->
-          <!--            <template v-for="(activities, index) in listActivitiesHalls" :key="index">-->
-          <!--              <div>-->
-          <!--                <a v-for="activity in activities" :key="activity.id" @click="openActivity(activity)" class="affan-page-item time-schedule-content" href="#">-->
-          <!--                  <div class="icon-wrapper ">-->
-          <!--                    <p>-->
-          <!--                      <span>{{ startDate(activity.start_date) }}</span>-->
-          <!--                      <br>-->
-          <!--                      <span>{{ startDateHour(activity.start_date) }}</span>-->
-          <!--                    </p>-->
-          <!--                  </div>-->
-
-          <!--                  <div class="pt-3">-->
-          <!--                    <h6 class="text-truncate mb-0">{{ activity.name }}</h6>-->
-          <!--                    <p>En vivo ahora</p>&lt;!&ndash; TODO: falta revisar si la actividad esta en vivo. &ndash;&gt;-->
-          <!--                  </div>-->
-
-          <!--                  <i class="bi bi-chevron-right px-3"></i>-->
-          <!--                </a>-->
-          <!--              </div>-->
-          <!--            </template>-->
-          <!--          </div>-->
           <Carousel>
             <Slide v-for="(activities, index) in listActivitiesHalls" :key="index">
               <div class="carousel__item items-activities">
                 <a v-for="activity in activities" :key="activity.id" @click="openActivity(activity)"
                    class="affan-page-item time-schedule-content" href="#">
                   <div class="icon-wrapper ">
-                    <p>
+                    <p class="p-0">
                       <span>{{ startDate(activity.start_date) }}</span>
                       <br>
                       <span>{{ startDateHour(activity.start_date) }}</span>
@@ -55,8 +33,8 @@
                   </div>
 
                   <div class="pt-3">
-                    <h6 class="text-truncate text-start">{{ activity.name.length > 15 ? activity.name.slice(0, 15) + "..." : activity.name }}</h6>
-                    <p class="text-start">En vivo ahora</p><!-- TODO: falta revisar si la actividad esta en vivo. -->
+                    <h6 class="text-start">{{ activity.name.length > 50 ? activity.name.slice(0, 40) + "..." : activity.name }}</h6>
+                    <p class="text-start">{{ activity.hall.map((item) =>{ return item.name }).join(', ') }}</p><!-- TODO: falta revisar si la actividad esta en vivo. -->
                   </div>
 
                   <i class="bi bi-chevron-right px-3"></i>
