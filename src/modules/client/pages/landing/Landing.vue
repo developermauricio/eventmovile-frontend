@@ -46,8 +46,8 @@
               </svg>
             </div>
             <!-- Info -->
-            <div class="chat-user-info">
-              <h6 class="text-truncate mb-0 text-title">{{ event.city_event.name ?  event.city_event.name : 'Por confirmar' }} | {{ event.city_event.country_event.name ?  event.city_event.country_event.name : 'Por confirmar' }}</h6>
+            <div class="chat-user-info" v-if="event.city_event">
+              <h6 class="text-truncate mb-0 text-title">{{ event.city_event ?  event.city_event.name : 'Por confirmar' }} | {{ event.city_event.country_event ?  event.city_event.country_event.name : 'Por confirmar' }}</h6>
               <div class="last-chat">
                 <p class="mb-0 text-truncate text-subtitle">{{ event.address ?  event.address : 'Por confirmar' }}</p>
               </div>

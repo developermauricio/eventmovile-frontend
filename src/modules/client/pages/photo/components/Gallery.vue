@@ -527,7 +527,15 @@ h6 {
 .chat-user-info {
   width: calc(100% - 40px) !important;
 }
+img.img-list-gallery{
+  object-fit: cover;
+  max-height: 200px;
+}
 
+div#data-gallery {
+  margin-bottom: 1rem;
+  /* width: 100%; */
+}
 /*button {*/
 /*  height: 60px;*/
 /*  width: 60px;*/
