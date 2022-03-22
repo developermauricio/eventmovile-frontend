@@ -5,19 +5,19 @@
             <div class="minimal-tab">
               <ul class="nav nav-tabs" id="affanTab2" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button @click="changeTabs('info')" class="btn active" id="sass-tab" data-bs-toggle="tab" data-bs-target="#sass" type="button" role="tab" aria-controls="sass" aria-selected="true">
+                  <button @click="changeTabs('info')" class="btn btn-tap active" id="sass-tab" data-bs-toggle="tab" data-bs-target="#sass" type="button" role="tab" aria-controls="sass" aria-selected="true">
                   <!-- <button @click="changeTabs('info')" class="btn active" id="sass-tab" data-bs-toggle="tab" data-bs-target="#sass" type="button" role="tab" aria-controls="sass" aria-selected="true"> -->
                     INFORMACIÓN
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button @click="changeTabs('chat')" class="btn" id="npm-tab" data-bs-toggle="tab" data-bs-target="#npm" type="button" role="tab" aria-controls="npm" aria-selected="false">
+                  <button @click="changeTabs('chat')" class="btn btn-tap" id="npm-tab" data-bs-toggle="tab" data-bs-target="#npm" type="button" role="tab" aria-controls="npm" aria-selected="false">
                   <!-- <button @click="changeTabs('chat')" class="btn" id="npm-tab" data-bs-toggle="tab" data-bs-target="#npm" type="button" role="tab" aria-controls="npm" aria-selected="false"> -->
                     CHAT
                   </button>
                 </li>
 <!--                <li class="nav-item" role="presentation">-->
-<!--                  <button @click="changeTabs('participant')" class="btn" id="gulp-tab" data-bs-toggle="tab" data-bs-target="#gulp" type="button" role="tab" aria-controls="gulp" aria-selected="false">-->
+<!--                  <button @click="changeTabs('participant')" class="btn btn-tap" id="gulp-tab" data-bs-toggle="tab" data-bs-target="#gulp" type="button" role="tab" aria-controls="gulp" aria-selected="false">-->
 <!--                  &lt;!&ndash; <button @click="changeTabs('participant')" class="btn" id="gulp-tab" data-bs-toggle="tab" data-bs-target="#gulp" type="button" role="tab" aria-controls="gulp" aria-selected="false"> &ndash;&gt;-->
 <!--                    PARTICIPANTES-->
 <!--                  </button>-->

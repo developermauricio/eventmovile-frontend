@@ -6726,7 +6726,7 @@ input[type=color].form-control.is-valid, input[type=color].form-control:valid {
           box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-.minimal-tab .btn {
+.minimal-tab .btn-tap {
   padding: 0 0.625rem 0.5rem;
   width: 100%;
   border-radius: 0;
@@ -6737,11 +6737,11 @@ input[type=color].form-control.is-valid, input[type=color].form-control:valid {
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
 }
-.minimal-tab .btn:focus {
+.minimal-tab .btn-tap:focus {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
-.minimal-tab .btn.active {
+.minimal-tab .btn-tap.active {
   border-bottom-color: #AA47BC;
   color: #AA47BC;
 }
