@@ -51,7 +51,7 @@ export default {
       showModal: false,
       activity: {},
       resoursesActivity: [],
-      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      urlBaseFile: process.env.VUE_APP_URL_BASE,
     }
   },
   methods: {
