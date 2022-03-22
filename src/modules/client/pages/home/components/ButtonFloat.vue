@@ -58,6 +58,8 @@
     </div>
   </div>
   <Chat />
+
+  <ModalUpHandsForEvent ref="modalQuestionEvent" />
 </template>
 
 <script>
@@ -70,26 +72,35 @@ export default {
   components: {
     FloatMenu,
     Chat: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/chat/Chat')),
+    ModalUpHandsForEvent: defineAsyncComponent(() => import('@/modules/client/pages/home/components/modals/ModalUpHandsForEvent')),
   },
   setup() {
+    const modalQuestionEvent = ref(null)
+
     const itemsMenu = ref([
       {name: "Mi Qr"},
       {name: "Chat"},
       {name: "Preguntar"},
     ])
-    const handleSelection = (selectedItem) => {
-      console.log(selectedItem)
+    const handleSelection = (selectedItem) => {      
       switch (selectedItem){
         case "Mi Qr":
           router.push('/qr')
-              break
+          break
         case "Chat":
           document.querySelectorAll('.openModalChatGlobal').forEach(element => element.click());
+          break
+        case "Preguntar":
+          console.log('preguntar...')
+          modalQuestionEvent.value.openModal()
+          break
       }
     };
+
     return {
       itemsMenu,
       handleSelection,
+      modalQuestionEvent
     };
   },
   // data() {
@@ -124,5 +135,6 @@ export default {
 .add-new-contact-wrap a {
   background-color: #7047bc !important;
 }
+
 </style>
 

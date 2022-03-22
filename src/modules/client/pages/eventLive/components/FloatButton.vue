@@ -109,7 +109,7 @@ ul.fab-list {
 }
 .btn-float-file {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .btn-action {
   position: relative;

@@ -39,6 +39,10 @@
     font-weight: 700;
   }
 
+.menu-active.menu-container {
+    min-height: auto !important;
+    padding: 1rem;
+}
 
 
 /* Estilos para movil page videoCall */
