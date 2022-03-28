@@ -39,7 +39,7 @@
           <!--=====================================
                     UBICACIÓN
           ======================================-->
-          <div class="d-flex pt-3">
+          <div class="d-flex pt-3"  v-if="event.city_event">
             <div class="chat-user-thumbnail me-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-geo-alt-fill icon-qr" viewBox="0 0 16 16">
                 <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
@@ -47,7 +47,7 @@
             </div>
             <!-- Info -->
             <div class="chat-user-info">
-              <h6 class="text-truncate mb-0 text-title">{{ event.city_event.name ?  event.city_event.name : 'Por confirmar' }} | {{ event.city_event.country_event.name ?  event.city_event.country_event.name : 'Por confirmar' }}</h6>
+              <h6 class="text-truncate mb-0 text-title">{{ event.city_event ?  event.city_event.name : 'Por confirmar' }} | {{ event.city_event.country_event ?  event.city_event.country_event.name : 'Por confirmar' }}</h6>
               <div class="last-chat">
                 <p class="mb-0 text-truncate text-subtitle">{{ event.address ?  event.address : 'Por confirmar' }}</p>
               </div>
