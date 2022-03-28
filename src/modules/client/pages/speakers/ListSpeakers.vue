@@ -6,6 +6,22 @@
   <div style="height: 50px;"></div>
 
   <SearchSpeaker ref="fieldSearch" @actionSearch="actionSearch" />
+
+  <div v-if="listFilterSpekers.length" class="container mt-3 mb-2">
+    <h6>Filtro por país</h6>    
+    <div class="direction-rtl">
+      <template v-for="speaker in listFilterSpekers" :key="speaker.id">
+        <span @click="removeFilterSpeaker(speaker)" 
+          class="m-1 badge rounded-pill bg-light text-black">
+          {{ speaker.name }} 
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle-fill close-activity" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+          </svg>
+        </span>
+      </template>
+    </div>    
+  </div>
+
   <!--=====================================
        SECTION SPEAKER
   ======================================-->
@@ -41,7 +57,7 @@
    MODAL INFO SPEAKER
   ======================================-->
   <InfoSpeaker ref="modalInfoSpeaker"/>  
-  <FilterSpeaker ref="modalFilterSpeaker" />
+  <FilterSpeaker ref="modalFilterSpeaker" @actionFilter="actionFilter" @actionCloseFilter="actionCloseFilter"/>
 </template>
 
 <script>
@@ -61,6 +77,7 @@ export default {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
       listSpeakersOriginal: [],
       listSpeakers: [],
+      listFilterSpekers: [],
       listColorSpeakers: ['#d4c8eb', '#ce93d8', '#9b7ed1', '#c8e6c9'],
       fullPage: false,
       loader: null,
@@ -87,13 +104,14 @@ export default {
       this.$refs.modalInfoSpeaker.setInfoSpeaker( speaker )
     },
     filterSpeaker() {
-      this.$refs.modalFilterSpeaker.showFilterSpeaker()
+      this.$refs.modalFilterSpeaker.showFilterSpeaker(this.listSpeakersOriginal)
     },
     searchSpeaker() {
       this.$refs.fieldSearch.showSearchSpeaker()
     },
     actionSearch( search ) {
       if ( search ) {
+        this.listFilterSpekers = []
         let speakerTemp = []
 
         this.listSpeakersOriginal.map( speaker => {
@@ -111,6 +129,34 @@ export default {
       } else {
         this.listSpeakers = this.listSpeakersOriginal.slice();
       }
+    },
+    removeFilterSpeaker( speaker ) {
+      let pos = this.listFilterSpekers.indexOf(speaker)
+
+      if (pos != -1) this.listFilterSpekers.splice(pos, 1)
+
+      if ( this.listFilterSpekers.length ) {
+        this.actionFilter( this.listFilterSpekers )
+      } else {
+        this.listSpeakers = this.listSpeakersOriginal.slice()
+      }
+    },
+    actionFilter( listFilter ) {
+      this.listFilterSpekers = listFilter
+      let listFilterTemp = []
+      
+      this.listSpeakersOriginal.map( speaker => {
+        let exits = listFilter.some( item => item.name === speaker.name )
+        if ( exits ) listFilterTemp.push( speaker )
+      })
+
+      if ( listFilterTemp.length ) {
+        this.listSpeakers = listFilterTemp.slice()
+      }
+    },
+    actionCloseFilter() {
+      this.listFilterSpekers = []
+      this.listSpeakers = this.listSpeakersOriginal.slice()
     }
   },
   computed: {
@@ -173,5 +219,16 @@ export default {
 }
 .text-description-speaker p{
   color: #00000099;
+}
+span.badge {
+  font-weight: 300;
+  padding: 8px 13px;
+}
+.bg-light {
+  background-color: #84848340 !important;
+}
+svg.close-activity {
+  margin-left: 6px;
+  color: #72299a;
 }
 </style>

@@ -18,7 +18,7 @@
           
           <!-- Filtro por  -->
           <div class="chat-user--info d-flex align-items-center">
-            <div class="setting-wrapper">
+            <div @click="actionFilter" class="setting-wrapper">
               <div class="setting-trigger-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="28" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
                   <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
@@ -62,6 +62,11 @@ export default {
     return {
       eventstyles: {},
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+    }
+  },
+  methods: {
+    actionFilter() {
+      this.$emit('actionFilter')
     }
   },
   created() {

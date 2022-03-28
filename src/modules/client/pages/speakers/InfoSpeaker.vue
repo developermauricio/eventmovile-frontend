@@ -61,4 +61,8 @@ export default {
 .hidd {
   display: block !important;
 }
+.text-description-speaker {
+  text-align: center;
+  margin-top: 1rem;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div :style="{'display' : showSearch ? 'block' : 'none'}" class="offcanvas-body p-1">
+    <div :style="{'display' : showSearch ? 'block' : 'none'}" class="container offcanvas-body p-1">
         <div class="chat-search-box py-1">
             <form action="#">
                 <div class="input-group">

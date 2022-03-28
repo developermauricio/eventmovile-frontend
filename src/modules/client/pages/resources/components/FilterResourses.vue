@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'show': showFilter}" class="offcanvas offcanvas-bottom" :style="{'visibility' : showFilter ? 'visible' : 'hidden'}" id="">
+   <div :class="{'show': showFilter}" class="offcanvas offcanvas-bottom" :style="{'visibility' : showFilter ? 'visible' : 'hidden'}" id="">
 
         <div class="header-content position-relative d-flex align-items-center justify-content-between">
             <!-- Back Button -->
@@ -13,14 +13,14 @@
         </div>
 
         <div class="container mt-3">
-            <h6>País</h6>
+            <h6>Actividades</h6>
             <div class="card">
                 <div class="card-body">
                     <div class="direction-rtl">
-                        <template v-for="speaker in listSpeakers" :key="speaker.id">
-                            <span @click="selectedFilter(speaker)" 
+                        <template v-for="activity in listActivities" :key="activity.id">
+                            <span @click="selectedFilter(activity)" 
                                 class="m-1 badge rounded-pill bg-light text-black mb-2" 
-                                v-bind:class="{ 'selected' : selectedCountry(speaker) }">{{ speaker.name }}</span>
+                                v-bind:class="{ 'selected' : selectedCountry(activity) }">{{ activity.name }}</span>
                         </template>
                     </div>
                 </div>
@@ -39,54 +39,49 @@
 
 <script>
 export default {
-  name: "FilterSpeaker",
+  name: "FilterResources",
   data(){
     return {
         showFilter: false,
-        listEmpty: false,
-        listSpeakers: [],
-        countriesSelected: [],
+        listActivities: [],
+        listActivitiesSelected: [],
+        listEmpty: false,        
     }
   },
   methods: {
-    showFilterSpeaker( list ) {
-        this.getCountrySpeaker( list )
+    showFilterResources( list ) {
+        this.listActivities = list
         this.listEmpty = false;
         this.showFilter = true
     },
-    getCountrySpeaker( list ) {
-        list.map( speaker => {
-            let exists = this.listSpeakers.some((item) => { return item.name === speaker.name })
-            if ( !exists && speaker.name ) this.listSpeakers.push(speaker)
-        })
-    },
     closeFilter() {
-        this.countriesSelected = []
+        this.listActivitiesSelected = []
         this.$emit('actionCloseFilter')
         this.showFilter = false
     },
+    selectedFilter( activity ) {
+        let exists = this.listActivitiesSelected.some((item) => {return item.id === activity.id})
+
+        if ( exists ) {
+            let pos = this.listActivitiesSelected.indexOf( activity )
+            if ( pos !== -1 ) this.listActivitiesSelected.splice(pos, 1)
+        } else {
+            this.listActivitiesSelected.push(activity)
+        }
+    },
+    selectedCountry( activity ){
+      return this.listActivitiesSelected.find( act => act.id === activity.id )
+    },
     applyFilter() {
-        if ( this.countriesSelected.length ) {
+        if ( this.listActivitiesSelected.length ) {
             this.listEmpty = false;
-            this.$emit('actionFilter', this.countriesSelected)
+            this.$emit('actionFilterResources', this.listActivitiesSelected)
             this.showFilter = false
         } else {
             this.listEmpty = true;
         }
     },
-    selectedFilter( speaker ){
-      let exists = this.countriesSelected.some((item) => {return item.speaker_id === speaker.speaker_id})
-
-      if ( exists ) {
-        let pos = this.countriesSelected.indexOf( speaker )
-        if ( pos !== -1 ) this.countriesSelected.splice(pos, 1)
-      } else {
-        this.countriesSelected.push(speaker)
-      }
-    },
-    selectedCountry( speaker ){
-      return this.countriesSelected.find( spe => spe.speaker_id === speaker.speaker_id )
-    }
+    
   }
 }
 </script>

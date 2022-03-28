@@ -146,6 +146,7 @@ export default {
       if (responseActivities) {
         responseActivities.then(res => {
           this.listActivitiesRes = res /*Almacenamos todas las actividades, vienen ordenadas por fecha*/
+          localStorage.setItem('list_activities', JSON.stringify(this.listActivitiesRes))
           this.getListActivities()
           if (document.querySelectorAll(".slide-schedule").length > 0) {
             window.tns({

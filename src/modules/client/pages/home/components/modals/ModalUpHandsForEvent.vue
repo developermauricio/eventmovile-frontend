@@ -30,7 +30,7 @@
             <div class="row mt-4">
                 <div class="content-question">
                     <div class="content-input">
-                        <span>Pregúntale al speaker</span>                    
+                        <span>Pregúntar sobre el evento</span>                    
                         <textarea maxlength="250" style="'border: 0.7px solid" :class="v$.questionUser.$error ? 'is-invalid' : ''" v-model="textUpHand.questionUser" class="form-control chat-textarea" name="chat"></textarea>
                         <div v-if="v$.questionUser.$error" class="input-error">La pregunta es requerido.</div>
                     </div>
