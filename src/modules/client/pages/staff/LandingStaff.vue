@@ -102,8 +102,8 @@ import { useLoading } from 'vue-loading-overlay'
 import TableLite from 'vue3-table-lite'
 import dayjs from 'dayjs';
 import { getSendRequest, postSendRequest } from '@/utils/using-axios';
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+//import html2canvas from "html2canvas";
+//import jsPDF from "jspdf";
 import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 
 export default defineComponent({
@@ -361,6 +361,7 @@ getBase64Image('https://uploads.sitepoint.com/wp-content/uploads/2015/12/1450377
     }
 
     const printTicket = () => {
+      console.log('imprimir ticket...')
       
       /* showPrint.value = true      
 
@@ -386,22 +387,22 @@ getBase64Image('https://uploads.sitepoint.com/wp-content/uploads/2015/12/1450377
       console.log('alto:  ',element.offsetHeight) */
 
       
-      window.html2canvas = html2canvas
-      const elementHTML = document.getElementById('my-print2')
+      /* window.html2canvas = html2canvas
+      const elementHTML = document.getElementById('my-print2') */
       //const heightPDF = elementHTML.offsetHeight
 
       //var doc = new jsPDF('l', 'px', [elementHTML.offsetWidth, elementHTML.offsetHeight]);
       //var doc = new jsPDF('p', 'mm', [80, heightPDF]);
-      var doc = new jsPDF('p', 'pt', 'a7');
+      //var doc = new jsPDF('p', 'pt', 'a7');
       
       // margin: [left, top, right ,bottom] // the default is [0, 0, 0, 0]
 
-      doc.html( elementHTML, {
+      /* doc.html( elementHTML, {
         margin: [-2, -2, 0, 0],
         callback: (pdf) => {
           pdf.save('mypdf.pdf')
         }
-      })      
+      })   */    
 
     }
 
