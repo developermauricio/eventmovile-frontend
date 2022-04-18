@@ -88,7 +88,7 @@
       </template>
     </div>
   </div>
-  <ModalRating/>
+  <ModalRating :activity="activity"/>
 </template>
 
 <script>

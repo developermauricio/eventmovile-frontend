@@ -33,7 +33,7 @@
                   v-model="rating"/>
             </div>
             <div class="text-center">
-              <button class="btn m-1 btn-primary">ENVIAR CALIFICACIÓN</button>
+              <button class="btn m-1 btn-primary" @click="sendRateActivity()">ENVIAR CALIFICACIÓN</button>
             </div>
           </div>
         </div>
@@ -44,17 +44,50 @@
 
 <script>
 import vue3starRatings from "vue3-star-ratings";
-
+import {onMounted, ref} from "vue";
 export default {
   name: "ModalRating",
   components: {
     vue3starRatings,
   },
-  data() {
-    return {
-      rating: null
+  props:['activity'],
+  setup(props){
+    const rating = ref(null);
+    const user = ref(null)
+
+    const sendRateActivity = async () =>{
+    if (rating.value === null){
+      return
+    }
+    setTimeout(async ()=>{
+      const data = new FormData();
+      data.append("activity_id", props.activity.id);
+      data.append("user_id", user.value.id);
+      data.append("rate", rating.value);
+      await window.axios.post(`/save-rate-activity`, data).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    }, 500)
+
+    }
+
+    onMounted(() => {
+      user.value = JSON.parse(localStorage.getItem('user'))
+    })
+
+    return{
+      user,
+      rating,
+      sendRateActivity
     }
   }
+  // data() {
+  //   return {
+  //     rating: null
+  //   }
+  // }
 }
 </script>
 
