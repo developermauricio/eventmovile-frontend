@@ -93,7 +93,6 @@ export default {
       let el = document.getElementById('chat-wrapper');
       el.addEventListener('scroll', function (event) {
         if (event.target.scrollTop === 0) {
-alert('holas')
           setTimeout(() => {
             page.value = page.value + 1
             window.axios.get(`${urlServer}/eventChat/${idEvent.value}?page=${page.value}`).then(res => {
