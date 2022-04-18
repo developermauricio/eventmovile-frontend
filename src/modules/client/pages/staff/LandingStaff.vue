@@ -62,16 +62,33 @@
     </div>
 
     <!-- print ticket -->
-    <div id="my-print" :class="{'show-print': showPrint}" class="print-ticke" style="display:none">
+    <!-- <div ref="contentPrint" id="my-print" :class="{'show-print': showPrint}" class="print-ticke" style="display:none"> -->
+    <!-- <div ref="contentPrint" id="my-print" :class="{'show-print': showPrint}" class="print-ticke" >
       <div class="fields">
-        <p>{{ userPrint.name }}</p>
-        <p>{{ userPrint.lastname }}</p>
-        <p>{{ userPrint.email }}</p>
+        <p>{{ userPrint.name || 'Nombre' }}</p>
+        <p>{{ userPrint.lastname || 'Apellido' }}</p>
+        <p>{{ userPrint.email || 'Email' }}</p>
       </div>
       <div>
         <img src="/assets/img/avatars/badge.png" class="img-qr">
       </div>
+    </div> -->
+    <div id="my-print2" :class="{'show-print': showPrint}" class="print-ticke2" >
+      <div class="fields2">
+        <p>{{ userPrint.name || 'Nombre' }}</p>
+        <p>{{ userPrint.lastname || 'Apellido' }}</p>
+        <p>{{ userPrint.email || 'Email' }}</p>
+      </div>
+      <div style="margin-top: -15px;">
+        <vue-qr :text="dataUser" :size="150"></vue-qr>
+        <!-- <img id="imgCodeQR" src="" class="img-qr2"> -->
+       <!--  <img :src="getUrlBase64('https://uploads.sitepoint.com/wp-content/uploads/2015/12/1450377118cors3.png')" class="img-qr2"> -->
+       <!--  <img src="https://backend-eventmovile.aicode-test.art/storage/documents/qr-code14235.png" class="img-qr2"> -->
+      </div>
     </div>
+
+    <!-- btn -->
+    <button @click="printTicket" class="btn btn-primary"> generar pdf </button>
 
     <!-- Modal Register -->
     <ModalRegister ref="modalRegisterOpen" @updateList="updateUser" />
@@ -85,10 +102,14 @@ import { useLoading } from 'vue-loading-overlay'
 import TableLite from 'vue3-table-lite'
 import dayjs from 'dayjs';
 import { getSendRequest, postSendRequest } from '@/utils/using-axios';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import VueQr from 'vue-qr/src/packages/vue-qr.vue'
 
 export default defineComponent({
   name: "LandingStaff",
   components: { 
+    VueQr,
     TableLite,
     ModalRegister: defineAsyncComponent(() => import('@/modules/client/pages/staff/components/ModalRegister')),
     ModalReaderQR: defineAsyncComponent(() => import('@/modules/client/pages/staff/components/ModalReaderQR')),
@@ -106,6 +127,12 @@ export default defineComponent({
     const modalUpdateDataUser = ref(null)
     let showPrint = ref(false)
     let userPrint = ref({})
+    const contentPrint = ref(null);
+    let dataUser = JSON.stringify({
+      name: 'Rodinson',
+      lastname: 'Tombe',
+      id: 123456,
+    })
     
     // Fake data
     const data = reactive({
@@ -302,13 +329,80 @@ export default defineComponent({
       loader.hide()
     }
 
+    const getUrlBase64 = ( url ) => {
+      const img = new Image();
+      img.setAttribute('crossOrigin', 'anonymous');
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 200;
+        canvas.height = 200;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        const dataURL = canvas.toDataURL("image/png");
+        console.log(dataURL)
+        document.getElementById("imgCodeQR").src = dataURL;
+      }
+      img.src = url
+      /* const getBase64Image = (url) => {
+  const img = new Image();
+  img.setAttribute('crossOrigin', 'anonymous');
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    const dataURL = canvas.toDataURL("image/png");
+    console.log(dataURL)
+  }
+  img.src = url
+}
+getBase64Image('https://uploads.sitepoint.com/wp-content/uploads/2015/12/1450377118cors3.png') */
+    }
+
     const printTicket = () => {
-      showPrint.value = true      
+      
+      /* showPrint.value = true      
 
       setTimeout(() => {
         window.print()
         showPrint.value = false
-      }, 500);
+      }, 500); */
+      /* const doc = new jsPDF();
+      doc.text("Hello world!", 10, 10);
+      doc.save("a4.pdf"); */
+
+      /* var doc = new jsPDF();
+
+      doc.setFontSize(40);
+      doc.text("Octonyan loves jsPDF", 35, 25);
+      //doc.addImage(imgData, "JPEG", 15, 40, 180, 180);   html2canvas
+
+      // Set the document to automatically print via JS
+      doc.autoPrint(); */
+      /* const element = document.getElementById('my-print')
+      console.log('elemento:  ',element)
+      console.log('ancho:  ',element.offsetWidth)
+      console.log('alto:  ',element.offsetHeight) */
+
+      
+      window.html2canvas = html2canvas
+      const elementHTML = document.getElementById('my-print2')
+      //const heightPDF = elementHTML.offsetHeight
+
+      //var doc = new jsPDF('l', 'px', [elementHTML.offsetWidth, elementHTML.offsetHeight]);
+      //var doc = new jsPDF('p', 'mm', [80, heightPDF]);
+      var doc = new jsPDF('p', 'pt', 'a7');
+      
+      // margin: [left, top, right ,bottom] // the default is [0, 0, 0, 0]
+
+      doc.html( elementHTML, {
+        margin: [-2, -2, 0, 0],
+        callback: (pdf) => {
+          pdf.save('mypdf.pdf')
+        }
+      })      
+
     }
 
     const updateUser = ( reload = true ) => {
@@ -320,7 +414,11 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      user.value = JSON.parse( localStorage.getItem('user') ) || {}     
+      user.value = JSON.parse( localStorage.getItem('user') ) || {}  
+      /* setTimeout(() => {        
+        getUrlBase64('https://uploads.sitepoint.com/wp-content/uploads/2015/12/1450377118cors3.png')
+        //getUrlBase64('https://backend-eventmovile.aicode-test.art/storage/documents/qr-code14235.png')
+      }, 1000); */   
     });
 
     // Obtener datos sobre el primer renderizado
@@ -345,6 +443,10 @@ export default defineComponent({
       tableLoadingFinish,
       showPrint,
       userPrint,
+      printTicket,
+      contentPrint,
+      getUrlBase64,
+      dataUser,
     };
   },
 });
@@ -361,13 +463,24 @@ export default defineComponent({
     left: 0;
   }
 }
+/* @media print{
+  body *:not(#my-print2):not(#my-print2 *) {
+    visibility: hidden;
+  }
+  #my-print2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+} */
 
 .show-print {
   display: block !important;
 }
 
 .print-ticke {
-  width: 340px;
+  /* width: 340px; */
+  width: 80mm;
   height: 168px;
   background: white;
   border-radius: 14px;
@@ -381,6 +494,19 @@ export default defineComponent({
   height: 116px;
   margin-top: 4px;
   float: right;
+}
+
+div#my-print2 {
+  width: 80mm;
+  height: auto;
+  background: white;
+  border-radius: 14px;
+  padding: 15px;
+  text-align: center;
+}
+img.img-qr2 {
+  width: 150px;
+  height: 150px;
 }
 
 .content-data-view {
