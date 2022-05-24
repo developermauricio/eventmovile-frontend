@@ -50,7 +50,7 @@ export default {
     const itemsMenu = ref([
       {name: "Mi Qr"},
       {name: "Chat"},
-      {name: "Preguntar"},
+      /* {name: "Preguntar"}, TODO: esta funcionalidad no esta implementada */
     ])
     const handleSelection = (selectedItem) => {      
       switch (selectedItem){
@@ -60,10 +60,10 @@ export default {
         case "Chat":
           document.querySelectorAll('.openModalChatGlobal').forEach(element => element.click());
           break
-        case "Preguntar":
+        /* case "Preguntar":
           console.log('preguntar...')
           modalQuestionEvent.value.openModal()
-          break
+          break */
       }
     };
 

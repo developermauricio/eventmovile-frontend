@@ -3,7 +3,7 @@
   <div class="partner-logo-slide-wrapper container pe-0" style="margin-top: -40px;">
     <div class="partner-slide">
       <!-- Partner Slide Card -->
-      <div>
+      <!-- <div>
         <div class="partner-slide-card my-2">
           <router-link to="/networking" class="content-a">
             <img src="assets/img/img-ticket.png" alt="">
@@ -14,18 +14,19 @@
             </div>
           </router-link>
         </div>
-      </div>
+      </div> -->
 
       <!-- Partner Slide Card -->
-      <div>
+      <div v-if="event.on_demand == 1">
         <div class="partner-slide-card my-2">
-          <a class="content-a" href="#"><img src="assets/img/img-ticket.png" alt="">
+          <router-link to="/list-on-demand" class="content-a"> 
+            <img src="assets/img/img-ticket.png" alt="">
             <div class="content-info">
               <img class="pb-1" src="assets/img/icon-ondemand-video.png" width="30" alt="">
               <h3>On Demand</h3>
               <p>Todas la grabaciones para que no te pierdas de nada.</p>
             </div>
-          </a>
+          </router-link>
         </div>
       </div>
 
@@ -76,6 +77,16 @@
 <script>
 export default {
   name: "TicketIinfo",
+
+  data() {
+    return {
+      event: {}
+    }
+  },
+
+  created() {
+    this.event = JSON.parse( localStorage.getItem('event') ) || {}
+  },
 
   mounted() {
     if (document.querySelectorAll(".partner-logo-slide-wrapper").length > 0) {

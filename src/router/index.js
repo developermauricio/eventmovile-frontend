@@ -182,6 +182,17 @@ const routes = [
     props: true,
     component: () => import('../modules/client/pages/certificates/Certificate')
   },
+  {
+    meta: {
+      title: 'On Demand',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: "/list-on-demand",
+    name: 'ListOnDemand',
+    props: true,
+    component: () => import('../modules/client/pages/contentOnDemand/ListOnDemand')
+  },
   
   {
     meta: {

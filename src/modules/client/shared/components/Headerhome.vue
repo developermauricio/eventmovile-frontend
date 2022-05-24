@@ -6,6 +6,7 @@
       <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
         <!-- Logo Wrapper -->
         <div class="logo-wrapper">
+          <!-- TODO: aqui debe ir un slider con diferentes logos -->
           <router-link to="/">
             <img :src="eventStyles.home_img_logo ? urlBaseFile + eventStyles.home_img_logo : 'assets/img/logo-pm.png'" alt="Logo event">
           </router-link>
