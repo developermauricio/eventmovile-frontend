@@ -2,7 +2,7 @@
   <div>
     <Headerhome :dataUser="dataUser" :eventStyles="eventStyles"/>
     <Headerwelcome :userName="userName"/>
-    <Bannerprincipal :eventStyles="eventStyles"/>
+    <Bannerprincipal :eventStyles="eventStyles" :event="event"/>
     <Ticketinfo/>
     <Schedule/>
     <Speakers/>
