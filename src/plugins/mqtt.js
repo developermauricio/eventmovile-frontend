@@ -38,6 +38,7 @@ const createConnection = () => {
     const { host, port, endpoint, ...options } = connection;
     const connectUrl = `wss://${host}:${port}${endpoint}`;
     try {
+        
         clientMQ = mqtt.connect(connectUrl, options);
     } catch (error) {
         console.log("mqtt.connect error", error);

@@ -6,9 +6,19 @@
       <div class="header-content header-style-five position-relative d-flex align-items-center justify-content-between">
         <!-- Logo Wrapper -->
         <div class="logo-wrapper">
-          <!-- TODO: aqui debe ir un slider con diferentes logos -->
-          <router-link to="/">
-            <img :src="eventStyles.home_img_logo ? urlBaseFile + eventStyles.home_img_logo : 'assets/img/logo-pm.png'" alt="Logo event">
+          <!--  Slider con logos  -->
+          <div v-if="listSliderLogos.length" style="width: 120px;">
+            <Carousel :items-to-show="1" :autoplay="2000" :wrap-around="true">
+              <Slide v-for="(item, index) in listSliderLogos" :key="index">
+                <div class="carousel__item">
+                  <img class="item-logo" :src="urlBaseFile + item.name_logo" :alt="item.title_logo">
+                </div>
+              </Slide>
+            </Carousel>
+          </div>
+
+          <router-link v-else to="/">
+            <img :src="eventStyles.home_img_logo ? urlBaseFile + eventStyles.home_img_logo : 'assets/img/logo-pm.png'" class="logo-event" alt="Logo event">
           </router-link>
         </div>
         <!-- Navbar Toggler -->
@@ -31,10 +41,17 @@
 
 <script>
 import { defineAsyncComponent } from '@vue/runtime-core';
+import { getSendRequest } from '@/utils/using-axios';
+import 'vue3-carousel/dist/carousel.css';
+import {Carousel, Slide} from 'vue3-carousel';
+// Navigation
+
 export default {
   components: { 
-    NotificationComponent: defineAsyncComponent(() => import(/* webpackChunkName: "Notification"*/ '@/modules/client/shared/components/NotificationComponent')),
-   },
+    Carousel,
+    Slide,
+    NotificationComponent: defineAsyncComponent(() => import('@/modules/client/shared/components/NotificationComponent')),
+  },
   name: "Headerhome",
   props: {
     dataUser: {
@@ -53,11 +70,25 @@ export default {
   data() {
     return {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      listSliderLogos: []
     }
   },
-  //methods: { },
+  methods: {
+    async getSliderLogos() {
+      if ( this.eventStyles.slider_logos == 0 ) return
+      
+      const responseLogos = await getSendRequest(`list-logos/${this.eventStyles.event_id}`) 
+
+      if ( responseLogos ) {
+        this.listSliderLogos = responseLogos;
+      }
+    }
+  },
   //created() { },
   mounted() {
+    console.log('styles: ', this.eventStyles);
+    this.getSliderLogos()
+
     let settingButton, settingCard, settingOverlay, settingCardClose;
     settingButton = document.getElementById("settingTriggerBtn");
     settingCard = document.getElementById("settingCard");
@@ -83,6 +114,23 @@ export default {
 
 <style scoped>
 .header-area.header-home {
+  height: 60px;
   border-bottom: none !important;
+}
+.header-content {
+  height: 60px;
+}
+.carousel__item {
+  padding: 5px;
+}
+img.item-logo {
+  width: auto;
+  height: 50px;
+  object-fit: contain;
+}
+.logo-event {
+  max-height: 45px;
+  width: auto;
+  object-fit: contain;
 }
 </style>

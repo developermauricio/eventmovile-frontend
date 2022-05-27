@@ -63,7 +63,6 @@ export default {
   },
   mounted() {
     this.event = JSON.parse( localStorage.getItem('event') ) || {}
-    console.log('nav event: ', this.event)
   }
 }
 </script>

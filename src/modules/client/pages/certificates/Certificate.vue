@@ -113,9 +113,12 @@ export default {
     },
     async download() { 
         // https://eventmovil.com/entradas/event-products-certificate.php?id=247 
-        window.open(`https://eventmovil.com/entradas/event-products-certificate.php?id=247`)
-        //window.open(`https://eventmovil.com/entradas/event-products-certificate.php?id${this.event.id}`)
-        
+        if ( this.event.url_certificate ) {
+            console.log('url cerificado: ', this.event.url_certificate)
+            window.open(this.event.url_certificate)
+        } else {
+            console.log('No hay url de valida para descargar el certificado.')
+        }
         
         //window.open(`${process.env.VUE_APP_API_URL}/download-certificate/${this.event.id}/${this.user.id}`)
     }
