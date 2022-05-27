@@ -93,7 +93,8 @@ export default {
     return {
       listActivitiesHalls: [],
       listActivitiesRes: [],
-      hallsEvent: []
+      hallsEvent: [],
+      idUser: null,
     }
   },
   methods: {
@@ -141,7 +142,7 @@ export default {
       }) */
     },
     async getDataActivities() {
-      const responseActivities = getSendRequest(`/get-schedule-event/${this.event.id}`)
+      const responseActivities = getSendRequest(`/get-schedule-event/${this.event.id}/${this.idUser}`)
 
       if (responseActivities) {
         responseActivities.then(res => {
@@ -201,6 +202,7 @@ export default {
     this.dataUser = JSON.parse(localStorage.getItem('user')) || {}
     this.eventStyles = JSON.parse(localStorage.getItem('style-event')) || {}
     this.event = JSON.parse(localStorage.getItem('event')) || {}
+    this.idUser = JSON.parse(localStorage.getItem('user')).id || {}
 
     await this.getDataActivities()
     // await this.getActivitiesHalls()

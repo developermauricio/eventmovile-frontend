@@ -49,6 +49,17 @@ const routes = [
 
   {
     meta: {
+      title: 'Favoritos',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/favorites',
+    name: 'Favorite',
+    component: () => import(/* webpackChunkName: "about" */ '../modules/client/pages/favorites/Favorites.vue')
+  },
+
+  {
+    meta: {
       title: 'Agenda',
       requiresAuth: true,
     },

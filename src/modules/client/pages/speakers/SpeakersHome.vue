@@ -30,6 +30,7 @@
                     <img class="mb-3 img-thumbnail" :src="urlBaseFile + speaker.speaker_photo" alt="Img Speaker">
                     <p class="mb-1 text-truncate">{{ speaker.speaker_description }}</p>
                     <h6 class="text-truncate">{{ speaker.speaker_name }}</h6>
+                    <p class="m-0" v-if="speaker.country">{{ speaker.name }} <img :src="speaker.flag" width="20" alt=""></p>
                   </div>
                 </div>
               </div>

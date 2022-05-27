@@ -61,6 +61,7 @@ const createConnection = () => {
             console.log(`Received message ${message} from topic ${topic}`);
         }
     });
+
 };
 
 createConnection();

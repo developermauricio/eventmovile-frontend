@@ -45,7 +45,23 @@
                   ======================================-->
                     <div v-for="(dataActivity, index) in dataActivities" :key="index">
                       <div v-if="days.day === dayActual">
-                        <p class="date">{{ $dayjs(dataActivity.start_date).format(`ddd DD MMMM, YYYY`) }}</p>
+                        <div class="display-flex justify-content-between">
+                          <p class="date">{{ $dayjs(dataActivity.start_date).format(`ddd DD MMMM, YYYY`) }}</p>
+                          <div @click.prevent="onFavoriteActivity(dataActivity)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-heart-fill" viewBox="0 0 16 16" v-if="dataActivity.is_favorite">
+                              <path fill-rule="evenodd"
+                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-heart" viewBox="0 0 16 16" v-else>
+                              <path
+                                  d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                            </svg>
+                          </div>
+                        </div>
+
+
                         <a class="affan-page-item p-2" @click="openActivity(dataActivity)">
                           <div class="me-3">
 
@@ -72,8 +88,9 @@
                           <div class="p-2 text-title-evaluate-event">
                             <h5 class="mb-0">{{ dataActivity.name }}</h5>
 
-                            <p><span
-                                class="text-primary">Speaker{{ dataActivity.speakers.length > 1 ? 's' : '' }}: </span>{{
+                            <p>
+                              <span
+                                  class="text-primary">Speaker{{ dataActivity.speakers.length > 1 ? 's' : '' }}: </span>{{
                                 dataActivity.speakers.map((speaker) => {
                                   return speaker.name
                                 }).join(", ")
@@ -81,7 +98,8 @@
                                 dataActivity.hall.map((hall) => {
                                   return hall.name
                                 }).join(", ")
-                              }} </p>
+                              }}
+                            </p>
                             <div class="mt-4 display-flex">
                               <div class="style-span-green">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -102,12 +120,6 @@
                               <!--                              </div>-->
                             </div>
                           </div>
-
-                          <!--                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor"-->
-                          <!--                         class="bi bi-heart" viewBox="0 0 16 16">-->
-                          <!--                      <path-->
-                          <!--                          d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>-->
-                          <!--                    </svg>-->
                         </a>
                       </div>
                       <hr>
@@ -150,6 +162,7 @@ export default {
     const dataActivities = ref([])
     const dataFullActivities = ref([]) /*Permite almacenar todas las actividades*/
     const idEvent = ref(null)
+    const idUser = ref(null)
     const countDays = ref([]) /*La cantidad de dias que hay segun la fecha de inicio de las actividades*/
     const tabActual = ref(0)  /* Nos permita saber en que tab nos encontramos*/
     const dayActual = ref(1) /* Nos permite ver el dia, segun el tab, en el cual nos encontramos*/
@@ -157,6 +170,8 @@ export default {
     const $loading = useLoading()
     const fullPage = ref(false)
     const noData = ref(false)
+    const urlBase = ref(process.env.VUE_APP_API_UR)
+    const isFavoriteActivityId = ref(null)
 
     /*=============================================
       TRAEMOS TODAS LAS ACTIVIDADES POR POST
@@ -167,7 +182,7 @@ export default {
         // container: fullPage.value ? null : this.$refs.containerLoarder,
         canCancel: false,
       });
-      const responseActivities = getSendRequest(`/get-schedule-event/${idEvent.value}`)
+      const responseActivities = getSendRequest(`/get-schedule-event/${idEvent.value}/${idUser.value}`)
       if (responseActivities) {
         responseActivities.then(res => {
           dataFullActivities.value = res /*Almacenamos todas las actividades, vienen ordenadas por fecha*/
@@ -205,6 +220,37 @@ export default {
       }
     }
 
+    const onFavoriteActivity = async (activity) => {
+      const data = new FormData();
+      data.append("activity_id", activity.id);
+      data.append("user_id", idUser.value);
+      console.log(activity);
+      if (!activity.is_favorite) {
+        window.axios.post(`/save-favorite-activity`, data).then(res => {
+          console.log(res)
+          activity.is_favorite = true
+          isFavoriteActivityId.value = res.data.is_favorite
+          dataActivities.value.map(item => {
+            item.id === activity.id ? item.is_favorite = true : ''
+          })
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        setTimeout(() => {
+          window.axios.post(`/remove-favorite-activity/${activity.id_favorite.id}`, data).then(response => {
+            console.log(response)
+            activity.is_favorite = false
+            dataActivities.value.map(item => {
+              item.id === activity.id ? item.is_favorite = false : ''
+            })
+          }).catch(err => {
+            console.log(err)
+          })
+        }, 200)
+      }
+    }
+
     /*=============================================
         FUNCIÓN PARA INACTIVAR EL TAB
         =============================================*/
@@ -237,6 +283,7 @@ export default {
 
     onMounted(() => {
       idEvent.value = localStorage.getItem('eventId')
+      idUser.value = JSON.parse(localStorage.getItem('user')).id
       if (document.querySelectorAll(".minimal-tab").length > 0) {
         window.tns({
           container: ".nav-tabs",
@@ -260,17 +307,21 @@ export default {
     return {
       toast,
       noData,
+      idUser,
       idEvent,
+      urlBase,
       fullPage,
       countDays,
       tabActual,
       dayActual,
       dataActivities,
       dataFullActivities,
+      isFavoriteActivityId,
       getDataActivities,
       getCountDays,
       openActivity,
       inactiveTab,
+      onFavoriteActivity
     }
   },
 }
@@ -282,12 +333,14 @@ export default {
   display: none;
 }
 
-.nav{
+.nav {
   flex-wrap: initial !important;
 }
-.minimal-tab .btn{
+
+.minimal-tab .btn {
   width: 102px !important;
 }
+
 ul.nav-tabs {
   justify-content: space-between !important;
   width: 100% !important;
@@ -343,8 +396,12 @@ ul.nav-tabs {
 .minimal-tab .btn {
   color: #00000061 !important;
 }
-
-
+.bi-heart-fill{
+  color: #a033b4 !important;
+}
+.bi-heart{
+  color: #a033b4 !important;
+}
 .color-icon {
   color: #a033b4;
   margin-right: 8px;

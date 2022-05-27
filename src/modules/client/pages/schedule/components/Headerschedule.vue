@@ -42,47 +42,47 @@
   </div>
   <div class="container-fluid content-header-history">
     <div class="container">
-      <div class="chat-user-status-slides-wrapper">
-        <div class="tns-outer" id="tns1-ow">
-          <div id="tns1-mw" class="tns-ovh">
-            <div class="tns-inner" id="tns1-iw">
-              <div class="chat-user-status-slides mb-2  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal"
-                   id="tns1" style="transform: translate3d(-68%, 0px, 0px);">
-                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
-                  <div class="user-status-slide offline">
-                    <a href="#">
-                      <img src="assets/img/bg-img/user2.png" alt="">
-<!--                      <div class="active-status"></div>-->
-                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>
-                    </a>
-                  </div>
-                </div>
+<!--      <div class="chat-user-status-slides-wrapper">-->
+<!--        <div class="tns-outer" id="tns1-ow">-->
+<!--          <div id="tns1-mw" class="tns-ovh">-->
+<!--            <div class="tns-inner" id="tns1-iw">-->
+<!--              <div class="chat-user-status-slides mb-2  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal"-->
+<!--                   id="tns1" style="transform: translate3d(-68%, 0px, 0px);">-->
+<!--                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">-->
+<!--                  <div class="user-status-slide offline">-->
+<!--                    <a href="#">-->
+<!--                      <img src="assets/img/bg-img/user2.png" alt="">-->
+<!--&lt;!&ndash;                      <div class="active-status"></div>&ndash;&gt;-->
+<!--                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>-->
+<!--                    </a>-->
+<!--                  </div>-->
+<!--                </div>-->
 
-                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
-                  <div class="user-status-slide offline">
-                    <a href="#">
-                      <img src="assets/img/bg-img/user2.png" alt="">
-<!--                      <div class="active-status"></div>-->
-                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>
-                    </a>
-                  </div>
-                </div>
+<!--                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">-->
+<!--                  <div class="user-status-slide offline">-->
+<!--                    <a href="#">-->
+<!--                      <img src="assets/img/bg-img/user2.png" alt="">-->
+<!--&lt;!&ndash;                      <div class="active-status"></div>&ndash;&gt;-->
+<!--                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>-->
+<!--                    </a>-->
+<!--                  </div>-->
+<!--                </div>-->
 
-                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
-                  <div class="user-status-slide offline">
-                    <a href="#">
-                      <img src="assets/img/bg-img/user2.png" alt="">
-<!--                      <div class="active-status"></div>-->
-                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>
-                    </a>
-                  </div>
-                </div>
+<!--                <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">-->
+<!--                  <div class="user-status-slide offline">-->
+<!--                    <a href="#">-->
+<!--                      <img src="assets/img/bg-img/user2.png" alt="">-->
+<!--&lt;!&ndash;                      <div class="active-status"></div>&ndash;&gt;-->
+<!--                      <p class="mb-0 mt-2 text-truncate">Wade warren</p>-->
+<!--                    </a>-->
+<!--                  </div>-->
+<!--                </div>-->
 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
