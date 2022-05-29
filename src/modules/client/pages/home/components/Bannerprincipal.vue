@@ -1,7 +1,7 @@
 <template>
   <div class="content-banner-principal container ps-0 pe-0">
     <!-- mostrar video streming -->
-    <div v-if="event.code_streaming" v-html="event.code_streaming" class="content-streaming"></div>
+    <div v-if="event.code_streaming && event.code_streaming != 0" v-html="event.code_streaming" class="content-streaming"></div>
 
     <!-- mostrar banner del evento -->
     <img v-else :src="eventStyles.wa_banner_one ? urlBaseFile + eventStyles.wa_banner_one : 'assets/img/img-generic.png'" alt="">
