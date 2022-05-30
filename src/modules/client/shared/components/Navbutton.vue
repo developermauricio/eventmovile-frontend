@@ -18,7 +18,7 @@
               </svg>
             <span class="text-truncate">Favoritos</span>
           </router-link>
-          </li> -->
+          </li> 
           <li v-if="event.req_networking === 1">
             <router-link to="/networking">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
