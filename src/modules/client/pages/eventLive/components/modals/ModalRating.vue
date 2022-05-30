@@ -13,7 +13,7 @@
           </div>
           <!-- Page Title -->
           <div class="page-heading">
-            <h4 class="mb-0 position-relative text-center">Califica la Actividad</h4>
+            <h4 class="mb-0 position-relative text-center">{{ qualify ? 'Gracias por calificar esta actividad' : 'Califica la Actividad'}}</h4>
           </div>
           <div class="setting-wrapper">
             <div class="setting-trigger-btn" id="settingTriggerBtn">
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Offcanvas Body -->
-        <div class="offcanvas-body p-1">
+        <div class="offcanvas-body p-1" v-if="!qualify">
           <div class="container">
             <p class="text-center">Para nosotros es impoartante tu opinión, por favor califica la actividad</p>
             <div style="margin-top: -1rem">
@@ -33,27 +33,71 @@
                   v-model="rating"/>
             </div>
             <div class="text-center">
-              <button class="btn m-1 btn-primary" @click="sendRateActivity()">ENVIAR CALIFICACIÓN</button>
+              <button @click="openModalConfirm()" class="btn m-1 btn-primary">ENVIAR CALIFICACIÓN</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="modal fade" id="alertConfirmRating" tabindex="-1" aria-labelledby="alertConfirm" aria-hidden="true"
+         style="background-color: rgba(0,0,0,0.7)">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLabel">Confirmar</h6>
+            <button class="btn btn-close p-1 ms-auto" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-0">¿Esta seguro de enviar tu calificación?</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-sm btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+            <button @click="sendRateActivity()" class="btn btn-sm btn-success" type="button">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <ToastAlert ref="toast"/>
 </template>
 
 <script>
 import vue3starRatings from "vue3-star-ratings";
 import {onMounted, ref} from "vue";
+import ToastAlert from "../../../../shared/components/ToastAlert";
 export default {
   name: "ModalRating",
   components: {
     vue3starRatings,
+    ToastAlert
   },
   props:['activity'],
   setup(props){
     const rating = ref(null);
     const user = ref(null)
+    const qualify = ref(false)
+    const toast = ref(null)
+
+    const openModalConfirm = () =>{
+      if (rating.value === null || rating.value === ''){
+        toast.value.toastAlertError('Por favor, asigne una calificación con las estrellas')
+        return
+      }
+      let alertModal = new window.bootstrap.Modal(document.getElementById('alertConfirmRating'), {
+        keyboard: false
+      });
+      alertModal.show();
+    }
+
+    const getRatingActivity = async () =>{
+      setTimeout(async () =>{
+        await window.axios.get(`/get-rate-activity/${props.activity.id}/${user.value.id}`).then(resp =>{
+          rating.value = resp.data.rate
+        }).catch(err =>{
+          console.log(err);
+        })
+      }, 200)
+    }
 
     const sendRateActivity = async () =>{
     if (rating.value === null){
@@ -66,6 +110,7 @@ export default {
       data.append("rate", rating.value);
       await window.axios.post(`/save-rate-activity`, data).then(res => {
         console.log(res)
+        qualify.value = true;
       }).catch(err => {
         console.log(err)
       })
@@ -75,12 +120,16 @@ export default {
 
     onMounted(() => {
       user.value = JSON.parse(localStorage.getItem('user'))
+      // getRatingActivity()
     })
 
     return{
       user,
       rating,
-      sendRateActivity
+      qualify,
+      openModalConfirm,
+      sendRateActivity,
+      getRatingActivity,
     }
   }
   // data() {
