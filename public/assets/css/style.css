@@ -6511,6 +6511,11 @@ input[type=color].form-control.is-valid, input[type=color].form-control:valid {
   font-weight: 500;
 }
 
+.dropzone__item-thumbnail img {
+  max-height: 250px !important;
+  object-fit: contain !important;
+}
+
 /* :: Timeline CSS */
 .timeline-card {
   position: relative;
