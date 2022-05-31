@@ -15,17 +15,16 @@
         <ul class="nav nav-tabs" id="affanTab2" role="tablist">
           <li class="nav-item" role="presentation" v-for="(days, index) in countDays" :key="days">
             <button @click.prevent="inactiveTab(index, days.day)"
-                    :class="`btn btn-tab ${days.day === countDays[0].day ? 'active' : ''}`" :id="`sass-tab${index}`"
+                    :class="`btn btn-tab ${days.day === 1 ? 'active' : ''}`" :id="`sass-tab${index}`"
                     data-bs-toggle="tab" :data-bs-target="`#sass${index}`" role="tab"
-                    aria-controls="sass" :aria-selected="`${days.day === countDays[0].day ? 'true': 'false'}`">
+                    aria-controls="sass" :aria-selected="`${days.day === 1 ? 'true': 'false'}`">
               <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor"
                    class="bi bi-calendar-event" viewBox="0 0 16 16">
                 <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
                 <path
                     d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
               </svg>
-<!--              <span style="font-size: 1rem"> DÍA {{ days.day }}</span>-->
-              <span style="font-size: 1rem"> DÍA {{ $dayjs(days.day).format(`DD MMMM`) }}</span>
+              <span style="font-size: 1rem"> DÍA {{ days.day }}</span>
             </button>
           </li>
         </ul>
@@ -166,7 +165,7 @@ export default {
     const idUser = ref(null)
     const countDays = ref([]) /*La cantidad de dias que hay segun la fecha de inicio de las actividades*/
     const tabActual = ref(0)  /* Nos permita saber en que tab nos encontramos*/
-    const dayActual = ref(null) /* Nos permite ver el dia, segun el tab, en el cual nos encontramos*/
+    const dayActual = ref(1) /* Nos permite ver el dia, segun el tab, en el cual nos encontramos*/
     const toast = ref(null)
     const $loading = useLoading()
     const fullPage = ref(false)
@@ -188,7 +187,7 @@ export default {
         responseActivities.then(res => {
           dataFullActivities.value = res /*Almacenamos todas las actividades, vienen ordenadas por fecha*/
           dataFullActivities.value.map(activities => { /* Aqui recorremos todas las actividades y la almacenamos en el dia actual*/
-            if (activities.start_date === dayActual.value) { /* Si el dia actual es 1, entonces traemos las actividades con del dia 1*/
+            if (activities.day === dayActual.value) { /* Si el dia actual es 1, entonces traemos las actividades con del dia 1*/
               dataActivities.value.push(activities)
               localStorage.setItem('dataActivitiesSchedule', JSON.stringify(dataActivities.value))
               // console.log(dataActivities.value)
@@ -212,7 +211,6 @@ export default {
       if (responseCountDays) {
         responseCountDays.then(res => {
           countDays.value = res
-          dayActual.value = res[0].day
         }).catch(err => {
           console.log(err)
           toast.value.toastAlertError('Error, consulte con el administrador')
@@ -268,8 +266,7 @@ export default {
 
       dataActivities.value = []
       dataFullActivities.value.map(activities => {
-        // console.log('ACTIVIDADES ',activities)
-        if (activities.start_date === dayActual.value) {
+        if (activities.day === dayActual.value) {
           console.log('ACTIVIDADES DIA ', activities.day)
           dataActivities.value.push(activities)
         }
