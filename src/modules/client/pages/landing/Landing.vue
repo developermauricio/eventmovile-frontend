@@ -136,6 +136,12 @@ export default {
       canCancel: false,
     });
 
+    console.log('primero limpiar...')
+    localStorage.clear();
+    localStorage.removeItem('eventId')
+    localStorage.removeItem('event')
+    localStorage.removeItem('style-event')
+
     window.onload = async () => {
       console.log('se recargo la pagina javascript')
       await updateEvent()

@@ -23,7 +23,9 @@
 
   <div class="container">
     <div class="style-content-map">
-      <img :src="urlImgMap ? urlBaseFile + urlImgMap : 'assets/img/img-generic.png'" alt="Img map">
+      <img v-if="urlImgMap" :src="urlImgMap ? urlBaseFile + urlImgMap : 'assets/img/img-generic.png'" alt="Img map">
+
+      <div v-else> Lo sentimos en el momento no hay una imagen del mapa disponible.</div>
     </div>
   </div>
 </template>

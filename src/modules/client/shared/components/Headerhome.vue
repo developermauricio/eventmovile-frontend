@@ -7,7 +7,7 @@
         <!-- Logo Wrapper -->
         <div class="logo-wrapper">
           <!--  Slider con logos  -->
-          <div v-if="listSliderLogos.length" style="width: 120px;">
+         <!--  <div v-if="listSliderLogos.length" style="width: 120px;">
             <Carousel :items-to-show="1" :autoplay="2000" :wrap-around="true">
               <Slide v-for="(item, index) in listSliderLogos" :key="index">
                 <div class="carousel__item">
@@ -15,12 +15,12 @@
                 </div>
               </Slide>
             </Carousel>
-          </div>
-
-          <router-link v-else to="/">
+          </div> v-else -->
+          <router-link to="/">
             <img :src="eventStyles.home_img_logo ? urlBaseFile + eventStyles.home_img_logo : 'assets/img/logo-pm.png'" class="logo-event" alt="Logo event">
           </router-link>
         </div>
+        
         <!-- Navbar Toggler -->
         <div class="chat-user--info d-flex align-items-center">
           <!-- Notification -->
@@ -42,14 +42,13 @@
 <script>
 import { defineAsyncComponent } from '@vue/runtime-core';
 import { getSendRequest } from '@/utils/using-axios';
-import 'vue3-carousel/dist/carousel.css';
-import {Carousel, Slide} from 'vue3-carousel';
-// Navigation
+//import 'vue3-carousel/dist/carousel.css';
+//import {Carousel, Slide} from 'vue3-carousel';
 
 export default {
   components: { 
-    Carousel,
-    Slide,
+    //Carousel,
+    //Slide,
     NotificationComponent: defineAsyncComponent(() => import('@/modules/client/shared/components/NotificationComponent')),
   },
   name: "Headerhome",
@@ -70,7 +69,7 @@ export default {
   data() {
     return {
       urlBaseFile: process.env.VUE_APP_API_URL_FILES,
-      listSliderLogos: []
+      //listSliderLogos: []
     }
   },
   methods: {
@@ -86,8 +85,8 @@ export default {
   },
   //created() { },
   mounted() {
-    console.log('styles: ', this.eventStyles);
-    this.getSliderLogos()
+    //console.log('styles: ', this.eventStyles);
+    //this.getSliderLogos()
 
     let settingButton, settingCard, settingOverlay, settingCardClose;
     settingButton = document.getElementById("settingTriggerBtn");

@@ -27,25 +27,21 @@
                    ======================================-->
                   <!--Radio button-->
                   <div class="form-check" v-if="probe.type_question_id === 3">
-                    <div v-for="selectOption in JSON.parse(probe.options)" :key="selectOption" class="my-2">
-                      <input class="form-check-input" type="radio" name="exampleRadio" :value="selectOption"
-                             v-model="probe.value" :id="`radio-${index}`">
-                      <label class="form-check-label" :for="`radio-${index}`">{{ selectOption }}</label>
+                    <div v-for="(selectOption, i) in JSON.parse(probe.options)" :key="selectOption" class="my-2">
+                      <input class="form-check-input" type="radio" :value="selectOption"
+                             v-model="probe.value" :id="`radio-${i}-${probe.id}`">
+                      <label class="form-check-label" :for="`radio-${i}-${probe.id}`">{{ selectOption }}</label>
                     </div>
-                    <div
-                        v-for="error in v.collection.$each.$response.$errors[index].value"
-                        :key="error"
-                    >
+                    <div v-for="error in v.collection.$each.$response.$errors[index].value"
+                        :key="error">
                       <p class="text-danger">{{ error.$message }}</p>
                     </div>
                   </div>
                   <!--Tipo Number-->
                   <div class="input-number" v-if="probe.type_question_id === 2">
                     <input class="form-control" v-model="probe.value" type="number" min="0" placeholder="12">
-                    <div
-                        v-for="error in v.collection.$each.$response.$errors[index].value"
-                        :key="error"
-                    >
+                    <div v-for="error in v.collection.$each.$response.$errors[index].value"
+                        :key="error">
                       <p class="text-danger">{{ error.$message }}</p>
                     </div>
                   </div>
@@ -54,10 +50,8 @@
                     <textarea class="form-control text-area-poll"
                               name="textarea" cols="3" v-model="probe.value" rows="5"
                               placeholder="Tu respuesta..." :id="`text-area-input-${probe.id}`"></textarea>
-                    <div
-                        v-for="error in v.collection.$each.$response.$errors[index].value"
-                        :key="error"
-                    >
+                    <div v-for="error in v.collection.$each.$response.$errors[index].value"
+                        :key="error">
                       <p class="text-danger">{{ error.$message }}</p>
                     </div>
                   </div>

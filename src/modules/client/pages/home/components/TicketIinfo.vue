@@ -1,6 +1,6 @@
 <template>
-  <!-- Ticket Slide -->
-  <div class="partner-logo-slide-wrapper container pe-0" style="margin-top: -40px;">
+  <!-- Ticket Slide style="margin-top: -40px;" -->
+  <div class="partner-logo-slide-wrapper container pe-0" >
     <div class="partner-slide">
       <!-- Partner Slide Card -->
       <!-- <div>

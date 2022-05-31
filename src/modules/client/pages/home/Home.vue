@@ -3,7 +3,19 @@
     <Headerhome :dataUser="dataUser" :eventStyles="eventStyles"/>
     <Headerwelcome :userName="userName"/>
     <Bannerprincipal :eventStyles="eventStyles" :event="event"/>
-    <Ticketinfo/>
+
+    <!--  Slider con logos :autoplay="2000" :wrap-around="true"-->
+    <div v-if="listSliderLogos.length" class="container" style="margin-top: -20px;">
+      <Carousel :items-to-show="2.5" :autoplay="2000" :wrap-around="true">
+        <Slide v-for="(item, index) in listSliderLogos" :key="index">
+          <div class="carousel__item">
+            <img class="item-logo" :src="urlBaseFile + item.name_logo" :alt="item.title_logo">
+          </div>
+        </Slide>
+      </Carousel>
+    </div>
+
+    <Ticketinfo :style="{'margin-top': listSliderLogos.length ? '0': '-35px'}"/>
     <Schedule/>
     <Speakers/>
     <Photosevent/>
@@ -19,6 +31,9 @@
 <script>
 import {defineAsyncComponent} from "vue";
 import { refreshToken, refreshDataHome } from '@/utils/update-local-storage';
+import { getSendRequest } from '@/utils/using-axios';
+import 'vue3-carousel/dist/carousel.css';
+import {Carousel, Slide} from 'vue3-carousel';
 
 export default {
   name: "Home",
@@ -28,17 +43,19 @@ export default {
       default:''
     },
   },  
-  components: {    
-    Headerhome: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Headerhome')),
-    Ticketinfo: defineAsyncComponent(() => import(/* webpackChunkName: "Ticketinfo"*/ '@/modules/client/pages/home/components/TicketIinfo')),
-    Headerwelcome: defineAsyncComponent(() => import(/* webpackChunkName: "Headerwelcome"*/ '@/modules/client/pages/home/components/Headerwelcome')),
-    Bannerprincipal: defineAsyncComponent(() => import(/* webpackChunkName: "Bannerprincipal"*/ '@/modules/client/pages/home/components/Bannerprincipal')),
-    Schedule: defineAsyncComponent(() => import(/* webpackChunkName: "Schedule"*/ '@/modules/client/pages/home/components/Schedule')),
+  components: {   
+    Carousel,
+    Slide, 
+    Headerhome: defineAsyncComponent(() => import('@/modules/client/shared/components/Headerhome')),
+    Ticketinfo: defineAsyncComponent(() => import('@/modules/client/pages/home/components/TicketIinfo')),
+    Headerwelcome: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Headerwelcome')),
+    Bannerprincipal: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Bannerprincipal')),
+    Schedule: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Schedule')),
     Speakers: defineAsyncComponent(() => import('@/modules/client/pages/speakers/SpeakersHome')),
-    Photosevent: defineAsyncComponent(() => import(/* webpackChunkName: "Photosevent"*/ '@/modules/client/pages/home/components/Photosevent')),
-    Evaluateevent: defineAsyncComponent(() => import(/* webpackChunkName: "Evaluateevent"*/ '@/modules/client/pages/home/components/Evaluateevent')),
-    Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton')),
-    ButtonFloat: defineAsyncComponent(() => import(/* webpackChunkName: "ButtonFloat"*/ '@/modules/client/pages/home/components/ButtonFloat')),
+    Photosevent: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Photosevent')),
+    Evaluateevent: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Evaluateevent')),
+    Navbar: defineAsyncComponent(() => import('@/modules/client/shared/components/Navbutton')),
+    ButtonFloat: defineAsyncComponent(() => import('@/modules/client/pages/home/components/ButtonFloat')),
   },
   data(){
     return {
@@ -46,6 +63,8 @@ export default {
       eventStyles: {},
       event: {},
       userName: '',
+      urlBaseFile: process.env.VUE_APP_API_URL_FILES,
+      listSliderLogos: []
     }
   },
   methods: {
@@ -54,7 +73,18 @@ export default {
       this.eventStyles = JSON.parse( localStorage.getItem('style-event') ) || {}
       this.event = JSON.parse( localStorage.getItem('event') ) || {}
       this.userName = this.dataUser.name + ' ' + this.dataUser.lastname
+
+      this.getSliderLogos()
     },    
+    async getSliderLogos() {
+      if ( this.eventStyles.slider_logos == 0 || this.eventStyles.slider_logos == '0' || this.eventStyles.slider_logos == null ) return
+      
+      const responseLogos = await getSendRequest(`list-logos/${this.eventStyles.event_id}`) 
+
+      if ( responseLogos ) {
+        this.listSliderLogos = responseLogos;        
+      }
+    }
   },
   created() {
     window.onload = async () => {
@@ -70,5 +100,8 @@ export default {
 </script>
 
 <style scoped>
-
+img.item-logo {
+  max-height: 120px;
+  object-fit: contain;
+}
 </style>

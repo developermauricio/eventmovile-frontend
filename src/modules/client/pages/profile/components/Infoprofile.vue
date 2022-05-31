@@ -47,6 +47,13 @@ export default {
     },
     loggout(){
       this.inactiveOnlineUser()
+      localStorage.removeItem('eventId')
+      localStorage.removeItem('webAppPath')
+      localStorage.removeItem('event')
+      localStorage.removeItem('list_activities')
+      localStorage.removeItem('dataActivitiesSchedule')
+      localStorage.removeItem('event')
+      localStorage.removeItem('style-event')
       localStorage.removeItem('itemsGallery')
       localStorage.removeItem('listUserChat')
       localStorage.removeItem('listChat')
@@ -55,6 +62,7 @@ export default {
       localStorage.removeItem('listSpeakers')
       localStorage.removeItem('galleryHome')
       localStorage.removeItem('current_Activity')
+      localStorage.clear();
       this.$router.push('Login')
     }
   },
