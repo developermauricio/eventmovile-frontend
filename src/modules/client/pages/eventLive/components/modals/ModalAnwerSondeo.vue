@@ -104,7 +104,7 @@ export default {
   components: {
     ToastAlert
   },
-  setup() {
+  setup(props, { emit }) {
     const user = ref(null)
     const probe = ref(null)
     const toast = ref(null)
@@ -169,8 +169,8 @@ export default {
       const truck_modal_form = document.querySelector('#modalSondeoAnswer');
       const modalForm = window.bootstrap.Modal.getInstance(truck_modal_form);
 
-      const truck_modal_probe = document.querySelector('#modalSondeo');
-      const modalProbe = window.bootstrap.Modal.getInstance(truck_modal_probe)
+      // const truck_modal_probe = document.querySelector('#modalSondeo');
+      // const modalProbe = window.bootstrap.Modal.getInstance(truck_modal_probe)
 
       setTimeout(() => {
         const data = new FormData();
@@ -180,15 +180,16 @@ export default {
         data.append("probe_answer", JSON.stringify(state.collection));
 
         window.axios.post('/probe-save-webapp', data).then(res => {
-          console.log(res)
+          console.log('RESPUES OK',res)
           modalAlert.hide();
           modalForm.hide();
-          modalProbe.hide();
+          emit("closeModalSondeo", event.target.value)
+          // modalProbe.hide();
           toast.value.toastAlertSuccess('Respuestas enviadas correctamente')
           // router.push('/certificados')
 
         }).catch(err => {
-          console.log(err)
+          console.log('RESPUES ERROR', err)
           toast.value.toastAlertError('Error, consulte con el administrador')
         })
       }, 200)

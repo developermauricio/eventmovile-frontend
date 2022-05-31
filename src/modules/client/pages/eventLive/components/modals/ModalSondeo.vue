@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-  <ModalAnwerSondeo ref="modalAnswer"/>
+  <ModalAnwerSondeo ref="modalAnswer" @closeModalSondeo="closeModal"/>
 
   <div @click="showModal = false" :class="{'show': showModal}" class="offcanvas-backdrop fade" style="display: none"></div>
 </template>
@@ -81,6 +81,10 @@ export default {
       showModal.value = true
     }
 
+    const closeModal = () =>{
+      showModal.value = false
+    }
+
     onBeforeMount(() => {
       activity.value = JSON.parse(localStorage.getItem('current_Activity'))
       user.value = JSON.parse(localStorage.getItem('user'))
@@ -103,6 +107,7 @@ export default {
       verifyUserProbe,
       showModal,
       openModal,
+      closeModal
     }
   },
 

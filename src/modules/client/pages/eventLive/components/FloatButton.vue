@@ -95,7 +95,7 @@ export default defineComponent({
 <style scoped>
 .content-btn-actions {
   position: fixed;
-  bottom: 2rem;
+  bottom: 5rem;
   right: 15px;
   z-index: 1000;
 }

@@ -6,6 +6,9 @@
     <FloatButton />
   </div>
   <!-- <RateActivity/> -->
+  <div id="nav">
+    <Navbar/>
+  </div>
 </template>
 
 <script>
@@ -14,6 +17,7 @@ import {defineAsyncComponent} from "vue";
 export default {
   name: "Layout",  
   components: {
+    Navbar: defineAsyncComponent(() => import(/* webpackChunkName: "Navbar"*/ '@/modules/client/shared/components/Navbutton')),
     Header: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Header')),
     EframeLIVE: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/EframeLIVE')),
     Tabs: defineAsyncComponent(() => import('@/modules/client/pages/eventLive/components/Tabs')), 

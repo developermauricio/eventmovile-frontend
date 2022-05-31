@@ -27,11 +27,12 @@
                    ======================================-->
                   <!--Radio button-->
                   <div class="form-check" v-if="poll.type_question_id === 3">
-                    <div v-for="selectOption in JSON.parse(poll.options)" :key="selectOption" class="my-2">
-                      <input class="form-check-input" type="radio" name="exampleRadio" :value="selectOption"
-                             v-model="poll.value" :id="`radio-${index}`">
-                      <label class="form-check-label" :for="`radio-${index}`">{{ selectOption }}</label>
-                    </div>
+                    <template v-for="(selectOption, i) in JSON.parse(poll.options)" :key="selectOption" class="my-2">
+                      <input class="form-check-input" type="radio" :value="selectOption"
+                             v-model="poll.value" :id="`radio-${i}-${poll.id}`">
+                      <label class="form-check-label" :for="`radio-${i}-${poll.id}`">{{ selectOption }}</label>
+                      <br>
+                    </template>
                     <div
                         v-for="error in v.collection.$each.$response.$errors[index].value"
                         :key="error"

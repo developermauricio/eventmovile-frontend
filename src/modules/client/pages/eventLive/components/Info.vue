@@ -44,7 +44,7 @@
           </Popper>
         </div>
       </div>
-      <div class="row mt-4">
+      <div class="row mt-4" v-if="!activity.is_qualify">
         <div class="col-12 col-md-5 col-lg-6">
           <div class="setting-wrapper me-4" data-bs-toggle="offcanvas" data-bs-target="#modalRatingActivity"
                aria-controls="modalRatingActivity">
@@ -77,7 +77,10 @@
           <div class="col-9 pt-2">
             <h6 class="text-truncate mb-0">{{ speaker.name }}</h6>
             <div class="last-chat mt-2">
-              <p class="text-truncate mb-0">{{ speaker.profesion ? speaker.profesion : 'Por definir' }}</p>
+              <div v-if="speaker.country_event">
+                <p class="text-truncate mb-0">{{ speaker.country_event.name }} <img  width="20" :src="speaker.country_event.flag" alt=""></p>
+              </div>
+              <p class="text-truncate mb-0" v-else>Por definir</p>
             </div>
           </div>
         </div>
