@@ -279,6 +279,7 @@ export default {
         let date = dayjs(activities.start_date).format(`YYYY-MM-DD`);
         if (date === dayActual.value) {
           console.log('ACTIVIDADES DIA ', activities.day)
+          // dataActivities.value = []
           dataActivities.value.push(activities)
         }
       })
