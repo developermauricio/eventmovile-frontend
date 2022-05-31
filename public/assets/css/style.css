@@ -6514,6 +6514,7 @@ input[type=color].form-control.is-valid, input[type=color].form-control:valid {
 .dropzone__item-thumbnail img {
   max-height: 250px !important;
   object-fit: contain !important;
+
 }
 
 /* :: Timeline CSS */
@@ -7298,6 +7299,9 @@ input[type=color].form-control.is-valid, input[type=color].form-control:valid {
 @media only screen and (max-width:767px) {
   .preview-iframe-wrapper .preview-hero-area iframe {
     display: none;
+  }
+  .img-list-gallery{
+    height: 150px !important;
   }
 }
 .preview-iframe-wrapper .section-heading {
