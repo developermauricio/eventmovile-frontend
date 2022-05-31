@@ -9,6 +9,7 @@
       :url="urlBase+'/upload-image-gallery'"
       :uploadOnDrop="true"
       :multipleUpload="false"
+      :maxFileSize="600000000"
       ref="dropzone"
       :addRemoveLinks="true"
       :parallelUpload="1"/>
