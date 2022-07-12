@@ -39,6 +39,7 @@
         </div>
       </div>
     </div>
+
     <div class="modal fade" id="alertConfirmRating" tabindex="-1" aria-labelledby="alertConfirm" aria-hidden="true"
          style="background-color: rgba(0,0,0,0.7)">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -51,7 +52,7 @@
             <p class="mb-0">¿Esta seguro de enviar tu calificación?</p>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-sm btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+            <button id="closeModalConfirm" class="btn btn-sm btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
             <button @click="sendRateActivity()" class="btn btn-sm btn-success" type="button">Aceptar</button>
           </div>
         </div>
@@ -104,13 +105,19 @@ export default {
       return
     }
     setTimeout(async ()=>{
+      let event = JSON.parse( localStorage.getItem('event') ) || {}
+      let eventId = event.id ? event.id : 0;      
+
       const data = new FormData();
       data.append("activity_id", props.activity.id);
       data.append("user_id", user.value.id);
       data.append("rate", rating.value);
+      data.append("event_id", eventId);
+      
       await window.axios.post(`/save-rate-activity`, data).then(res => {
         console.log(res)
         qualify.value = true;
+        document.getElementById('closeModalConfirm').click()        
       }).catch(err => {
         console.log(err)
       })

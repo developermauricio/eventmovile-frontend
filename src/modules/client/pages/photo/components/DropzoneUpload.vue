@@ -3,7 +3,7 @@
       @removedFile="onRemovePicture"
       @sending="sending"
       @addedFile="addFile"
-      :acceptedFiles="['png,jpg,jpeg,gif']"
+      :acceptedFiles="['png','jpg','jpeg','gif']"
       paramName="picture"
       :maxFiles="Number(1)"
       :url="urlBase+'/upload-image-gallery'"
@@ -12,6 +12,8 @@
       :maxFileSize="600000000"
       ref="dropzone"
       :addRemoveLinks="true"
+      @errorUpload="onErrorUpload"
+      @errorAdd="onError"
       :parallelUpload="1"/>
 </template>
 
@@ -26,7 +28,6 @@ export default defineComponent({
     DropZone,
   },
 
-
   props: ['removedPicture'],
   setup(props, context) {
     let fileDropzone = ref(null)
@@ -37,6 +38,14 @@ export default defineComponent({
 
     const clearDropzone = () => {
       console.log('dropzone', dropzone.value.removeFile(fileDropzone.value.id))
+    }
+
+    const onErrorUpload = () => {
+      console.log('Error al subir el archivo...')
+    }
+
+    const onError = ( files ) => {
+      console.log('Error al agregar un archivo...', files)
     }
 
     const addFile = (file) => {
@@ -80,7 +89,7 @@ export default defineComponent({
     })
 
 
-    return {dropzone, fileDropzone, urlArchiveServe, urlBase, clearDropzone, addFile, sending, onRemovePicture}
+    return {dropzone, fileDropzone, urlArchiveServe, urlBase, clearDropzone, addFile, onErrorUpload, onError, sending, onRemovePicture}
   },
   methods: {
 

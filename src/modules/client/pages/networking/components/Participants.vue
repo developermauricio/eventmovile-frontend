@@ -176,10 +176,10 @@ export default {
             loader.hide();
             user.request_sent = null;
             user.request_received = null;
-            localStorage.setItem(
+            /* localStorage.setItem(
                 "listUserChat",
                 JSON.stringify(this.listUserChat)
-            );
+            ); */
           })
           .catch((err) => {
             loader.hide();
@@ -202,10 +202,10 @@ export default {
           .post("/networking-wa/send-solicitud", data)
           .then((response) => {
             user.request_sent = response.data;
-            localStorage.setItem(
+            /* localStorage.setItem(
                 "listUserChat",
                 JSON.stringify(this.listUserChat)
-            );
+            ); */
             createNotification(
                 data.guest,
                 "Nueva Solicitud",
@@ -251,11 +251,13 @@ export default {
       window.axios
           .get(`/networking-wa/get-participants/${this.eventID}`)
           .then((response) => {
-            this.listUserChat = response.data.data;
-            localStorage.setItem(
+            console.log('get data participantes: ', response)
+            //this.listUserChat = response.data.data;
+            this.listUserChat = response.data;
+            /* localStorage.setItem(
                 "listUserChat",
                 JSON.stringify(this.listUserChat)
-            );
+            ); */
             if (this.showOnlineUser === false) {
               loader.hide();
             }
@@ -283,9 +285,9 @@ export default {
   },
   mounted() {
     this.eventID = localStorage.getItem("eventId") || 0;
-    this.listUserChat = JSON.parse(
+    /* this.listUserChat = JSON.parse(
         localStorage.getItem("listUserChat") || "[]"
-    );
+    ); */
     // if (this.listUserChat.length === 0) {
     this.getListsUserEvent();
     // }
