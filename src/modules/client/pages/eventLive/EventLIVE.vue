@@ -38,6 +38,9 @@ export default {
     } else {
       this.codeStreaming = this.activity.code_streaming
     }
+
+    let params = {activity_id: this.activity.id}
+    window.axios.post('trackingActivity', params)
   }
 }
 </script>
