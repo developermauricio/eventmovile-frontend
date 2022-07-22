@@ -163,6 +163,16 @@ const routes = [
   },
   {
     meta: {
+      title: 'Feria',
+      requiresAuth: true,
+    },
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/feria-comercial',
+    name: 'ListFeria',
+    component: () => import('../modules/client/pages/feriaComercial/ListFeria')
+  },
+  {
+    meta: {
       title: 'Event Live',
       requiresAuth: true,
     },

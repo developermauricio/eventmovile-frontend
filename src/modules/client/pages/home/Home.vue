@@ -18,6 +18,7 @@
     <Ticketinfo :style="{'margin-top': listSliderLogos.length ? '0': '-35px'}"/>
     <Schedule/>
     <Speakers/>
+    <FeriaComercial/>
     <Photosevent/>
     <Evaluateevent/>
     <ButtonFloat/>
@@ -52,6 +53,7 @@ export default {
     Bannerprincipal: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Bannerprincipal')),
     Schedule: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Schedule')),
     Speakers: defineAsyncComponent(() => import('@/modules/client/pages/speakers/SpeakersHome')),
+    FeriaComercial: defineAsyncComponent(() => import('@/modules/client/pages/feriaComercial/FeriaHome')),
     Photosevent: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Photosevent')),
     Evaluateevent: defineAsyncComponent(() => import('@/modules/client/pages/home/components/Evaluateevent')),
     Navbar: defineAsyncComponent(() => import('@/modules/client/shared/components/Navbutton')),
