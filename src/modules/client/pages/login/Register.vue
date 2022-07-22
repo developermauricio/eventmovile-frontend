@@ -75,6 +75,11 @@
                         <div v-if="errors.email.required" :class="{'invalid-feedback': errors.email.required}">{{ errors.email.msg }}</div>
                     </div>
 
+                    <div v-if="event.enable_company && event.enable_company == '1'" class="form-group mb-4">
+                        <label class="form-label">Nombre empresa</label>
+                        <input v-model="newUser.name_company" class="form-control" type="text" placeholder="Ingrese el nombre de la empresa.">
+                    </div>
+
                     <!-- Dymanic form -->
                     <template v-for="(field, index) in fieldsEvent" :key="index">
                         <div v-if="field.type == 'text' || field.type == 'number'" class="form-group mb-4">
@@ -145,6 +150,7 @@ export default defineComponent ({
                 event: 0,
                 event_type_id: null,       
                 pic: '',
+                name_company: '',
             },
             showTextDropzone: true,
             loader: null,
@@ -319,7 +325,20 @@ export default defineComponent ({
                 localStorage.setItem("_current_token", loginUser.token);
                 window.axios.defaults.headers.common["Authorization"] = `Bearer ${loginUser.token}`;
                 this.$router.push({path: "/"});
-            }
+
+                // TODO: se guarda el regitro del login para el usario.
+                let loginParams = {
+                    event_id: this.newUser.event,
+                    user_id: loginUser.id
+                }
+                window.axios.post('loginTracking', loginParams)
+                .then( resp => {
+                    console.log("resp register tracking:", resp.data);
+                    localStorage.setItem("current_tracking_login", resp.data.data.id)
+                }).catch( error => {
+                    console.log(error)
+                })
+            }            
         },
 
         async setInfoPage() {

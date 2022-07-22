@@ -12,7 +12,7 @@
         </div>
         <div class="form-group mb-3">
           <label class="form-label">Empresa</label>
-          <p>{{ dataUser.company ? dataUser.company : 'Por definir' }}</p>
+          <p>{{ dataUser.name_company ? dataUser.name_company : 'Por definir' }}</p>
         </div>
         <button @click="loggout" class="btn btn-danger w-100" type="submit">Cerrar sesión</button>
       </div>
@@ -46,6 +46,12 @@ export default {
       })
     },
     loggout(){
+      const trackingId = localStorage.getItem('current_tracking_login')
+      if ( trackingId ){
+        let params = { actived: false }
+        window.axios.put(`loginTracking/${trackingId}`, params)
+      }
+
       this.inactiveOnlineUser()
       localStorage.removeItem('eventId')
       localStorage.removeItem('webAppPath')
@@ -67,6 +73,7 @@ export default {
     }
   },
   created() {
+    console.log('user: ', this.dataUser.name_company);
     this.fullName = this.dataUser.name + ' ' + this.dataUser.lastname
   },
   mounted() {

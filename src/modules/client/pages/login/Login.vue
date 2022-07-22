@@ -143,6 +143,20 @@ export default {
           window.axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
           let dataUserQr = JSON.stringify(user)          
           this.$router.push({name: "Home", params: {inSession: true, dataUser: dataUserQr}});
+
+
+          // TODO: se guarda el regitro del login para el usario.
+          let loginParams = {
+            event_id: this.eventId,
+            user_id: user.id
+          }
+          window.axios.post('loginTracking', loginParams)
+          .then( resp => {
+            console.log("resp login tracking:", resp.data);
+            localStorage.setItem("current_tracking_login", resp.data.data.id)
+          }).catch( error => {
+            console.log(error)
+          })
         })
         .catch( error => {
           this.loader.hide()

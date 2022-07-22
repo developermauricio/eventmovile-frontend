@@ -9,7 +9,7 @@
           <div class="d-flex align-items-center">
             <h6 class="mb-1">{{ fullName }}</h6>
           </div>
-          <p class="mb-0">{{ dataUser.user_type ? dataUser.user_type : 'Por definir' }}</p>
+          <p class="mb-0">{{ dataUser.name_company ? dataUser.name_company : 'Por definir' }}</p>
         </div>
       </div>
     </div>

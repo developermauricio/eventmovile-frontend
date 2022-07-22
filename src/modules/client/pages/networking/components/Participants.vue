@@ -31,7 +31,7 @@
                     </h6>
                     <div class="last-chat">
                       <p class="mb-0 text-truncate">
-                        {{ user.empresa ? user.empresa : "Por definir" }}
+                        {{ user.name_company ? user.name_company : "Por definir" }}
                       </p>
                     </div>
                   </div>
